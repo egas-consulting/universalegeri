@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Universul Românesc</title>
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <style>
+    *, *:before, *:after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+      background-color: #000;
+    }
+
+    .headline-wrapper {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding-top: 8vh;
+      padding-bottom: 4vh;
+      color: white;
+    }
+
+    .cosmic-supratitle {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6em;
+      font-weight: 300;
+      color: white;
+      text-shadow: 0 0 6px #88b5ff, 0 0 10px #5573d6;
+      margin-bottom: 10px;
+    }
+
+    .cosmic-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.8em;
+      font-weight: 400;
+      padding: 0 6vw;
+      line-height: 1.4;
+      color: white;
+      text-shadow: 0 0 6px #88b5ff, 0 0 12px #335bc4;
+    }
+
+    .text-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 5vw;
+      padding-top: 5vh;
+      color: #fff;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1em;
+      margin: 1em 0;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 200vh;
+    }
+
+    .chart-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(ellipse at center, #0b1f4c 0%, #000000 100%);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  transition: top 0.6s ease, transform 0.6s ease;
+}
+
+.svg-inner {
+  width: 100%;
+  max-width: 1000px;
+  position: relative;
+
+  
+  transition: transform 0.6s ease, max-width 0.6s ease;
+}
+
+@media (min-width: 800px) {
+  
+  .chart-container.small-sphere {
+    top: 20vh;                    
+    bottom: 0;
+    transform: scale(0.8);        
+    transform-origin: top center;
+  }
+
+  .svg-inner.small-sphere {
+    max-width: 900px;             
+    transform: scale(0.9);        
+    transform-origin: top center;
+  }
+}
+
+    .svg-inner {
+      width: 100%;
+      max-width: 1000px;
+      position: relative;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid #aaa;
+      padding: 0.85em 1em;
+      font-size: 0.9em;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      max-width: 90vw;
+      min-width: 80px;
+    }
+
+    .top-spacer { height: 15vh; }
+
+    #search-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: none;      /* initially hidden */
+    background: rgba(0,0,0,0.5);
+    padding: 8px 12px;
+    border-radius: 6px;
+    }
+
+
+    #search-input, #clear-search, #winner-filter {
+    padding: 6px 12px;
+    font-size: 1em;
+    margin: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    }
+
+    #clear-search {
+      padding: 6px 10px;
+      font-size: 1em;
+      margin-left: 6px;
+
+    }
+
+    
+    #scatter-steps {
+    position: relative;         
+    z-index: 5;                 
+    }
+
+    .step {
+    position: relative;
+    max-width: 340px;
+    margin: 60vh auto;          
+    padding: 1.25em 1.5em;
+    background: rgba(255,255,255,0.9);
+    border-radius: 8px;
+    font-size: .95em;
+    line-height: 1.35;
+    box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    }
+
+    
+.step{
+  max-width: min(90vw, 340px);   
+  margin: 55vh auto;             
+}
+
+
+@media (max-width:600px){
+  #search-container{
+     top: 8px;                 
+     transform: translateX(-50%) scale(.9); 
+  }
+}
+
+
+html,body{ overscroll-behavior: contain; }
+
+@media (min-width: 800px){
+
+:root{
+  
+  --headline-gap: 8vh;
+}
+
+
+.chart-container{
+                            
+  top:   var(--headline-gap);
+  
+  bottom: calc(-1 * var(--headline-gap));
+}
+
+
+.chart-container.small-sphere{
+  top:    calc(var(--headline-gap) + 20vh);
+  bottom: calc(-1 * (var(--headline-gap) + 20vh));
+}
+}
+
+
+@media (min-width: 800px){
+#search-container{
+  
+  left:auto;          right:2rem;
+  transform:none;
+}
+}
+
+
+#sphere-intro{
+  position:fixed;
+  inset:0;                               
+  z-index:6;                             
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  gap:1.5rem;
+  font-family:'Roboto',sans-serif;
+  background:rgba(0,0,0,0.78);           
+  color:#fff;
+  opacity:1;
+  pointer-events:auto;                  
+  transition:opacity .6s ease;
+}
+#sphere-intro h2{font-size:2rem; margin:0;}
+#sphere-intro p {font-size:1rem; line-height:1.4; margin:0;}
+#sphere-intro button{
+  padding:.6rem 1.4rem;
+  font-size:1rem;
+  border:none;
+  border-radius:6px;
+  background:#88b5ff;
+  color:#000;
+  cursor:pointer;
+}
+#sphere-intro.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+    
+
+    
+  </style>
+</head>
+
+<body>
+  <div class="headline-wrapper">
+    <div class="cosmic-supratitle">Universul Românesc</div>
+    <h1 class="cosmic-title">
+      Cât de mult impactează statutul socio-economic al localităților rezultatele la prezidențiale
+    </h1>
+  </div>
+
+  <div class="text-container">
+    <p>
+      Am corelat <strong>rezultatele obținute</strong> și <strong>prezența</strong> în alegerile prezidențiale din 2024.<br>
+      <strong>Scroll</strong> pentru a explora.
+    </p>
+  </div>
+
+  <div class="top-spacer"></div>
+
+  
+
+  <div class="chart-wrapper">
+    <div class="chart-container">
+        <div id="search-container">
+            <div style="margin-bottom: 10px;">
+              <input id="search-input" type="text" placeholder="Caută localitate..." list="localitati-list">
+              <button id="clear-search">Reset</button>
+              <datalist id="localitati-list"></datalist>
+            </div>
+          
+            <div style="margin-top: 8px;">
+              <label for="winner-filter" style="color: white; margin-right: 6px;">Filtrează după câștigător:</label>
+              <select id="winner-filter">
+                <option value="all">Toți</option>
+                <option value="ION-MARCEL CIOLACU">ION-MARCEL CIOLACU</option>
+                <option value="NICOLAE-IONEL CIUCĂ">NICOLAE-IONEL CIUCĂ</option>
+                <option value="ELENA-VALERICA LASCONI">ELENA-VALERICA LASCONI</option>
+                <option value="GEORGE-NICOLAE SIMION">GEORGE-NICOLAE SIMION</option>
+                <option value="HUNOR KELEMEN">HUNOR KELEMEN</option>
+                <option value="CĂLIN GEORGESCU">CĂLIN GEORGESCU</option>
+              </select>
+            </div>
+          </div>
+      <div class="svg-inner">
+        <svg id="viz" viewBox="0 0 1000 700" preserveAspectRatio="xMinYMin meet"></svg>
+      </div>
+    </div>
+  </div>
+
+  <div id="sphere-intro">
+    <h2>Bine ai venit!</h2>
+    <p>Am luat rezultatele din primul tur al alegerilor prezidențiale din 2024<br>
+       și le-am reprezentat corelându-le cu 8 indicatori economici și sociali relevanți<br>
+       pentru a înțelege în ce măsură aceștia înfluențează opțiunea electorală.<br>
+       Fiecare cerc este interactiv, click pe el pentru detalii.
+    </p>
+    <button id="intro-ok">Parcurge materialul</button>
+  </div>
+
+ 
+<section id="scatter-steps">
+    <div class="step" data-quad="I">
+      <p><strong>I. Populație tânără și suprafață locuibilă mare</strong><br>
+        Graficul este împărțit în patru cadrane, plecând de la mediana datelor disponibile. Aglomerările din cadran arată o caracteristică a localităților. Primul cadran se referă la localități tinere, de regulă prospere sau suburbii aflate în creștere.</p>
+    </div>
+  
+    <div class="step" data-quad="II">
+      <p><strong>II. Populație îmbătrânită și suprafață locuibilă mare</strong><br>
+        Localități depopulate, unde rămân preponderent vârstnici care locuiesc singuri în case mari</p>
+    </div>
+  
+    <div class="step" data-quad="III">
+      <p><strong>III. Populație tânără, suprafață locuibilă mică</strong><br>Zone urbane dense, cu locuințe compacte</p>
+    </div>
+  
+    <div class="step" data-quad="IV">
+      <p><strong>IV. Populație îmbătrânită, suprafață locuibilă mică</strong><br>omunități îmbătrânite și sărace, cu condiții de locuire limitate</p>
+    </div>
+  
+    <div class="step" data-quad="all">
+      <p><strong>Acelasi principiu se aplică graficelor de mai jos. Explorează toate graficele interactive mai jos.</strong></p>
+    </div>
+  </section>
+
+  <div class="tooltip" id="tooltip"></div>
+  <div style="height:150vh;"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script>
+    let allDataGlobal;
+    const width = 1000, height = 700;
+    const margin = { top: 50, right: 60, bottom: 60, left: 80 };
+    const baseCircleDiameter =
+       window.innerWidth <= 400 ? 3 :        
+       window.innerWidth >  800 ? 6 : 4;     
+
+    const svg = d3.select("#viz");
+    const tooltip = d3.select("#tooltip");
+
+ 
+function basicTooltip(d) {
+  return `
+    <strong>${d.jud}</strong><br/>
+    ${d.uat}<br/>
+    Câștigător: ${d.Castigator}<br/>
+    Procent: ${d["Procent castigator"]}%<br/>
+    Prezența: ${d.Prezenta}%
+  `;
+}
+
+
+function scatterTooltip(d) {
+  return `
+    <strong>${d.jud}</strong><br/>
+    ${d.uat}<br/>
+    Vârsta medie (2023): ${d["Varsta medie a populatiei in 2023"]}<br/>
+    Suprafață locuibilă / cap locuitor (m², 2023): ${d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]}<br/>
+    Câștigător: ${d.Castigator}<br/>
+    Procent: ${d["Procent castigator"]}%<br/>
+    Prezența: ${d.Prezenta}%
+  `;
+}
+    const chart = svg.append("g").attr("id", "chartGroup");
+    
+    const searchEl   = d3.select("#search-container");
+
+    const winnerColors = {
+      "ION-MARCEL CIOLACU": "#FF2A1F",
+      "NICOLAE-IONEL CIUCĂ": "#00B7FF",
+      "ELENA-VALERICA LASCONI": "#D066F2",
+      "GEORGE-NICOLAE SIMION": "#FFB623",
+      "HUNOR KELEMEN": "#36FC00",
+      "CĂLIN GEORGESCU": "#865750"
+    };
+    const colorScale = d3.scaleOrdinal()
+      .domain(Object.keys(winnerColors))
+      .range(Object.values(winnerColors));
+
+    let currentView = "sphere";
+    let currentFilter = "all";  
+    let circles;
+
+    function createSpherePositions(data, radius = 250){
+      data.forEach((d,i) => {
+        const phi = Math.acos(1 - 2 * (i + 0.5) / data.length);
+        const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+        d.x = radius * Math.sin(phi) * Math.cos(theta);
+        d.y = radius * Math.sin(phi) * Math.sin(theta);
+        d.z = radius * Math.cos(phi);
+      });
+    }
+
+    let rotationAngle = 0;
+    function updateSphere() {
+  const f = 400,
+        cx = width / 2,
+        cy = height / 2;
+
+  circles
+    .attr("cx", d => {
+      const xRot = d.x * Math.cos(rotationAngle) - d.z * Math.sin(rotationAngle);
+      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
+      const s    = f / (f + zRot);
+      return cx + xRot * s;
+    })
+    .attr("cy", d => {
+      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
+      const s    = f / (f + zRot);
+      return cy + d.y * s;
+    })
+    .attr("r", d => {
+      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
+      const s    = f / (f + zRot);
+      return baseCircleDiameter * s;
+    })
+    .attr("opacity", d =>
+      currentFilter === "all" || d.Castigator === currentFilter ? 1 : 0.1
+    )
+    .attr("stroke-width", d =>
+      d.Castigator === currentFilter ? 2 : 0
+    )
+    .attr("stroke", d =>
+      d.Castigator === currentFilter ? "#000" : "none"
+    );
+}
+
+
+    d3.csv("scatter.csv", d3.autoType).then(data=>{
+      allDataGlobal = data;
+      createSpherePositions(data,250);
+
+      const xGeo = d3.scaleLinear()
+        .domain(d3.extent(data,d=>d.Long))
+        .range([margin.left, width-margin.right]);
+      const yGeo = d3.scaleLinear()
+        .domain(d3.extent(data,d=>d.Lat))
+        .range([height-margin.bottom, margin.top]);
+    const areaScale = d3.scaleLinear()
+        .domain(d3.extent(data, d => d["Procent castigator"]))
+        .range([
+            Math.PI * Math.pow(baseCircleDiameter, 1),              
+            Math.PI * Math.pow(baseCircleDiameter * 1, 2.1)          
+        ]);
+
+      circles = chart.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("fill", d => colorScale(d.Castigator) || "#999")
+        .attr("opacity",1)
+        .on("mouseover", (e, d) => {
+  tooltip
+    .style("opacity", 1)
+    .html(basicTooltip(d)); (`
+      <strong>${d.jud}</strong><br/>
+      ${d.uat}<br/>
+      Vârsta medie (2023): ${d["Varsta medie a populatiei in 2023"]}<br/>
+      Suprafață locuibilă / cap locuitor (m², 2023):
+        ${d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]}<br/>
+      Câștigător: ${d.Castigator}<br/>
+      Procent: ${d["Procent castigator"]}%<br/>
+      Prezența: ${d.Prezenta}%`
+          );
+        })
+        .on("mousemove",e=>{
+          const t = tooltip.node().getBoundingClientRect();
+          let left = e.pageX + 6, top = e.pageY - 10;
+          if(left+t.width > window.innerWidth) left = e.pageX - t.width - 15;
+          if(top < 0) top = e.pageY + 15;
+          tooltip.style("left",left+"px").style("top",top+"px");
+        })
+        .on("mouseout",()=>tooltip.style("opacity",0));
+
+      updateSphere();
+
+      
+      anime({
+        targets: { angle: 0 },
+        angle:   2 * Math.PI,
+        duration: 20000,
+        easing: 'linear',
+        loop: true,
+        update: anim => {
+          rotationAngle = anim.animations[0].currentValue;
+          if (currentView === "sphere") updateSphere();
+        }
+      });
+
+      
+  const datalist = document.getElementById("localitati-list");
+
+//  unique names, sorted alphabetically (Romanian collation)
+[...new Set(data.map(d => d.uat).filter(Boolean))]
+  .sort((a, b) => a.localeCompare(b, "ro-RO"))
+  .forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    datalist.appendChild(opt);
+  });
+
+
+const normalize = str =>
+  (str || "")
+    .toString()
+    .normalize("NFD")               
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+
+d3.select("#search-input").on("input", function () {
+  const v = normalize(this.value);
+
+  circles
+    .attr("opacity", d =>
+      v && normalize(d.uat).includes(v) ? 1 : 0.1
+    )
+    .attr("stroke-width", d =>
+      v && normalize(d.uat) === v ? 3 : 0
+    )
+    .attr("stroke", d =>
+      v && normalize(d.uat) === v ? "#000" : "none"
+    );
+});
+
+d3.select("#clear-search").on("click", () => {
+  d3.select("#search-input").property("value", "");
+  circles
+    .attr("opacity", 1)
+    .attr("stroke-width", 0)
+    .attr("stroke", "none");
+});
+
+
+
+
+
+      d3.select("#search-input").on("input",function(){
+        const v = this.value.trim().toLowerCase();
+        circles.transition().duration(300)
+          .attr("opacity",d => d.uat && d.uat.toLowerCase()===v ? 1 : 0.1)
+          .attr("stroke-width",d => d.uat && d.uat.toLowerCase()===v ? 3 : 0)
+          .attr("stroke",d => d.uat && d.uat.toLowerCase()===v ? "#000":"none");
+      });
+
+      d3.select("#clear-search").on("click",()=>{
+        d3.select("#search-input").property("value","");
+        circles.transition().duration(300)
+          .attr("opacity",1)
+          .attr("stroke-width",0)
+          .attr("stroke","none");
+      });
+      d3.select("#winner-filter").on("change", function() {
+        currentFilter = this.value;
+        if      (currentView === "scatter") toScatter();
+        else if (currentView === "map")     toMap();
+        else if (currentView === "sphere")  toSphere();
+        });
+
+        function toSphere() {
+  currentView = "sphere";
+  searchEl.style("display", "none");
+
+ 
+  svg.selectAll(
+    ".map-title, .map-subtitle, .scatter-title," +
+    " .x-axis, .y-axis, .x-label, .y-label," +
+    " .quadrant-line, .quadrant-label"
+  ).remove();
+
+  
+  circles
+    .on("mouseover", (e, d) => {
+      tooltip
+        .style("opacity", 1)
+        .html(basicTooltip(d));
+    })
+    .on("mousemove", (e) => {
+      const tRect = tooltip.node().getBoundingClientRect();
+      let left = e.pageX + 6, top = e.pageY - 10;
+      if (left + tRect.width > window.innerWidth) left = e.pageX - tRect.width - 15;
+      if (top < 0) top = e.pageY + 15;
+      tooltip.style("left", left + "px").style("top", top + "px");
+    })
+    .on("mouseout", () => {
+      tooltip.style("opacity", 0);
+    });
+
+  
+  circles.interrupt()
+    .transition().duration(1200).ease(d3.easeCubicInOut)
+    .attrTween("cx", d => t => {
+      const xRot = d.x * Math.cos(rotationAngle) - d.z * Math.sin(rotationAngle);
+      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
+      const s    = 400 / (400 + zRot);
+      return width / 2 + xRot * s;
+    })
+    .attrTween("cy", d => t => {
+      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
+      const s    = 400 / (400 + zRot);
+      return height / 2 + d.y * s;
+    })
+    .attrTween("r", d => t => {
+      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
+      const s    = 400 / (400 + zRot);
+      return baseCircleDiameter * s;
+    });
+
+    if(window.IO) IO.disconnect();
+}
+
+    function toMap() {
+  currentView = "map";
+  searchEl.style("display", "block");
+
+  
+    svg.selectAll(
+    ".map-title, .map-subtitle, .scatter-title," +
+    " .x-axis, .y-axis, .x-label, .y-label," +
+    " .quadrant-line, .quadrant-label"
+    ).remove();
+
+ 
+  svg.append("text")
+    .attr("class", "map-title")
+    .attr("x", width / 2)
+    .attr("y", margin.top / 2)
+    .attr("text-anchor", "middle")
+    .attr("fill", "#fff")
+    .style("font-size", "1.5em")
+    .style("font-weight", "600")
+    .text("Distribuția rezultatelor pe câștigători");
+
+  
+  svg.append("text")
+    .attr("class", "map-subtitle")
+    .attr("x", width / 2)
+    .attr("y", margin.top / 2 + 24)
+    .attr("text-anchor", "middle")
+    .attr("fill", "#ccc")
+    .style("font-size", "0.9em")
+    .text("dimensiunea cercurilor se referă la procentul câștigătorului");
+
+ 
+  circles.transition().duration(1500)
+    .attr("cx", d => xGeo(d.Long))
+    .attr("cy", d => yGeo(d.Lat) + 60)
+    .attr("r", d => Math.sqrt(areaScale(d["Procent castigator"]) / Math.PI))
+    .attr("opacity",   d => currentFilter === "all" || d.Castigator === currentFilter ? 1 : 0.1)
+    .attr("stroke-width", d => d.Castigator === currentFilter ? 2 : 0)
+    .attr("stroke",      d => d.Castigator === currentFilter ? "#000" : "none");
+
+    if(window.IO) IO.disconnect();
+
+}
+circles
+  .on("mouseover", (e, d) => {
+     tooltip
+       .style("opacity", 1)
+       .html(basicTooltip(d));
+  })
+  .on("mousemove", (e) => {
+     const t = tooltip.node().getBoundingClientRect();
+     let left = e.pageX + 6, top = e.pageY - 10;
+     if (left + t.width > window.innerWidth) left = e.pageX - t.width - 15;
+     if (top < 0) top = e.pageY + 15;
+     tooltip.style("left", left + "px").style("top", top + "px");
+  })
+  .on("mouseout", () => tooltip.style("opacity", 0));
+
+
+function toScatter() {
+  currentView = "scatter";
+  searchEl.style("display", "block");
+
+
+svg.selectAll(
+".map-title, .map-subtitle, .scatter-title," +
+" .x-axis, .y-axis, .x-label, .y-label," +
+" .quadrant-line, .quadrant-label"
+).remove();
+
+ 
+  svg.append("text")
+    .attr("class", "scatter-title")
+    .attr("x", width / 2)
+    .attr("y", margin.top / 2)
+    .attr("text-anchor", "middle")
+    .attr("fill", "#fff")
+    .style("font-size", "1.5em")
+    .style("font-weight", "600")
+    .text("Cu cine votează marile agromerări urbane sau localitățile îmbătrânite? ");
+
+  
+  const x = d3.scaleLinear()
+      .domain(d3.extent(allDataGlobal, d => d["Varsta medie a populatiei in 2023"]))
+      .nice()
+      .range([margin.left, width - margin.right]);
+
+  const y = d3.scaleLinear()
+      .domain(d3.extent(allDataGlobal, d => d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]))
+      .nice()
+      .range([height - margin.bottom, margin.top]);
+
+  const xMedian = d3.median(allDataGlobal, d => d["Varsta medie a populatiei in 2023"]);
+  const yMedian = d3.median(allDataGlobal, d => d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]);
+
+const overlays = svg.selectAll(".quadrant-overlay").data(["I","II","III","IV"]);
+overlays.enter().append("rect").attr("class","quadrant-overlay")
+  .merge(overlays)
+  .attr("fill", "#ffffff")
+  .attr("opacity", 0)     // start invisible
+  .attr("pointer-events","none")   // don’t capture the mouse
+  .each(function(q){          // position & size for each quadrant
+    const isLeft  = q==="I" || q==="III";
+    const isTop   = q==="I" || q==="II";
+    d3.select(this)
+      .attr("x", isLeft ? margin.left : x(xMedian))
+      .attr("y", isTop  ? margin.top  : y(yMedian))
+      .attr("width",  isLeft ? x(xMedian)-margin.left : width-margin.right-x(xMedian))
+      .attr("height", isTop  ? y(yMedian)-margin.top  : height-margin.bottom-y(yMedian));
+  });
+
+
+const steps = document.querySelectorAll("#scatter-steps .step");
+let activeQuad = "all";                         
+
+
+function renderHighlight(quad) {
+  svg.selectAll(".quadrant-overlay")
+     .transition().duration(300)
+     .attr("opacity", d => quad === "all" ? 0 : d === quad ? 0.18 : 0);
+
+  circles
+     .transition().duration(300)
+     .attr("opacity", d => {
+        if (quad === "all") return 1;
+
+       
+        const q = (d["Varsta medie a populatiei in 2023"] < xMedian ? "I" : "II")
+                  .replace("I",
+                     d["Suprafata locuibila/cap de locuitor (m patrati) 2023"] < yMedian ? "III" : "I")
+                  .replace("II",
+                     d["Suprafata locuibila/cap de locuitor (m patrati) 2023"] < yMedian ? "IV"  : "II");
+        return q === quad ? 1 : 0.05;
+     });
+}
+
+
+window.IO?.disconnect();
+
+window.IO = new IntersectionObserver(entries => {
+
+  
+  entries.forEach(e => {
+    e.target.__visible = e.intersectionRatio >= 0.5;
+  });
+
+  
+  const firstVisible = [...steps].find(s => s.__visible);
+
+  
+  const quad = firstVisible ? firstVisible.dataset.quad : "all";
+
+  if (quad !== activeQuad) {        
+    activeQuad = quad;
+    renderHighlight(activeQuad);
+  }
+
+}, { threshold: 0.5 });             
+
+steps.forEach(s => window.IO.observe(s));
+  // 4) Transition circles into position
+  circles.transition().duration(1500)
+    .attr("cx", d => x(d["Varsta medie a populatiei in 2023"]))
+    .attr("cy", d => y(d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]))
+    .attr("r", baseCircleDiameter * 0.8)
+    .attr("opacity", d =>
+      currentFilter === "all" || d.Castigator === currentFilter ? 1 : 0.1
+    )
+    .attr("stroke-width", d => d.Castigator === currentFilter ? 2 : 0)
+    .attr("stroke",      d => d.Castigator === currentFilter ? "#000" : "none");
+
+  
+  circles
+    .on("mouseover", (e, d) => {
+      tooltip
+        .style("opacity", 1)
+        .html(scatterTooltip(d));
+    })
+    
+    .on("mousemove", (e) => {
+      const t = tooltip.node().getBoundingClientRect();
+      let left = e.pageX + 6, top = e.pageY - 10;
+      if (left + t.width > window.innerWidth) left = e.pageX - t.width - 15;
+      if (top < 0) top = e.pageY + 15;
+      tooltip.style("left", left + "px").style("top", top + "px");
+    })
+    .on("mouseout", () => tooltip.style("opacity", 0));
+
+  
+  svg.selectAll(".x-axis, .y-axis, .x-label, .y-label, .quadrant-line, .quadrant-label").remove();
+
+  
+  svg.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x));
+  svg.append("text")
+    .attr("class", "x-label")
+    .attr("x", width - margin.right)
+    .attr("y", height - 10)
+    .attr("text-anchor", "end")
+    .attr("fill", "#fff")
+    .text("Vârsta medie a populației (2023)");
+
+  
+  svg.append("g")
+    .attr("class", "y-axis")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y));
+  svg.append("text")
+    .attr("class", "y-label")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -margin.top)
+    .attr("y", 20)
+    .attr("text-anchor", "end")
+    .attr("fill", "#fff")
+    .text("Suprafață locuibilă / cap de locuitor (m²)");
+
+  svg.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line")
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 0.5);
+  svg.selectAll(".x-axis text, .y-axis text")
+    .attr("fill", "#ffffff")
+    .style("font-weight", 300)
+    .style("font-size", "12px");
+
+  
+  svg.append("line")
+    .attr("class", "quadrant-line")
+    .attr("x1", x(xMedian)).attr("x2", x(xMedian))
+    .attr("y1", margin.top).attr("y2", height - margin.bottom)
+    .attr("stroke", "#ffffff").attr("stroke-dasharray", "4 4").attr("stroke-width", 1);
+  svg.append("line")
+    .attr("class", "quadrant-line")
+    .attr("x1", margin.left).attr("x2", width - margin.right)
+    .attr("y1", y(yMedian)).attr("y2", y(yMedian))
+    .attr("stroke", "#ffffff").attr("stroke-dasharray", "4 4").attr("stroke-width", 1);
+
+  
+  const quadrantLabels = [
+    { text: "II. Localitate îmbătrânită, dar cu locuințe spațioase", x: width - margin.right - 10, y: margin.top + 20, anchor: "end" },
+    { text: "I. Populație tânără și confortabilă",        x: margin.left + 10,      y: margin.top + 20, anchor: "start" },
+    { text: "III. Tineri în spații mici, densitate mare",  x: margin.left + 10,      y: height - margin.bottom - 20, anchor: "start" },
+    { text: "IV. Îmbătrânire în condiții de locuire modeste", x: width - margin.right - 10, y: height - margin.bottom - 20, anchor: "end" }
+  ];
+
+  svg.selectAll(".quadrant-label")
+    .data(quadrantLabels)
+    .enter()
+    .append("text")
+      .attr("class", "quadrant-label")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .attr("text-anchor", d => d.anchor)
+      .attr("fill", "#88b5ff")
+      .style("font-size", "0.9em")
+      .style("font-weight", "400")
+      .style("opacity", 0.9)
+      .text(d => d.text);
+}
+
+window.addEventListener("scroll", () => {
+  const y = window.scrollY;
+  const h = window.innerHeight;          // viewport height
+
+  if (y < 0.15 * h && currentView !== "sphere") {
+      toSphere();                        // ≈ top 15 % of screen
+  } else if (y >= 0.15 * h && y < 1.1 * h && currentView !== "map") {
+      toMap();                           // ≈ next one screen-height
+  } else if (y >= 1.1 * h && currentView !== "scatter") {
+      toScatter();                       // everything after that
+  }
+});
+
+
+const intro   = document.getElementById("sphere-intro");
+const introOk = document.getElementById("intro-ok");
+
+
+function hideIntro()  { intro.classList.add("hidden"); }
+function showIntro()  { intro.classList.remove("hidden"); }
+
+
+introOk.addEventListener("click", hideIntro);
+
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (window.scrollY < 80) showIntro();  
+    else                     hideIntro();  
+  },
+  { passive: true }
+);
+
+
+
+
+
+    });
+  </script>
+</body>
+</html>
