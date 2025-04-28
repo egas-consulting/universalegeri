@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
- 
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
   <style>
@@ -266,6 +266,21 @@ html,body{ overscroll-behavior: contain; }
   pointer-events:none;
 }
 
+#flourish-block{
+  padding:10vh 0 6vh;
+  background: radial-gradient(ellipse at center, #0b1f4c 0%, #000000 100%);;
+  text-align:center;
+  position:relative;
+  z-index:3;         /*  ← higher than .chart-container (2) */
+}
+
+#flourish-block .flourish-embed{
+  max-width:1000px;
+  width:90%;
+  margin:10vh auto;
+}
+
+#chart-container { transition: opacity .5s ease; }
     
 
     
@@ -292,7 +307,7 @@ html,body{ overscroll-behavior: contain; }
   
 
   <div class="chart-wrapper">
-    <div class="chart-container">
+    <div class="chart-container" id="chart-container">
         <div id="search-container">
             <div style="margin-bottom: 10px;">
               <input id="search-input" type="text" placeholder="Caută localitate..." list="localitati-list">
@@ -354,8 +369,36 @@ html,body{ overscroll-behavior: contain; }
     </div>
   </section>
 
+
+<section id="flourish-block">
+  <h2 class="cosmic-title">Analiza indicatorilor</h2>
+
+  <div class="flourish-embed flourish-scatter" data-src="visualisation/22888981">
+      <noscript><img src="https://public.flourish.studio/visualisation/22888981/thumbnail"
+                     width="100%" alt="scatter visualization" /></noscript>
+  </div>
+
+  <div class="flourish-embed flourish-scatter" data-src="visualisation/22890584">
+      <noscript><img src="https://public.flourish.studio/visualisation/22890584/thumbnail"
+                     width="100%" alt="scatter visualization" /></noscript>
+  </div>
+
+  <div class="flourish-embed flourish-scatter" data-src="visualisation/22891164">
+      <noscript><img src="https://public.flourish.studio/visualisation/22891164/thumbnail"
+                     width="100%" alt="scatter visualization" /></noscript>
+  </div>
+
+  <div class="flourish-embed flourish-scatter" data-src="visualisation/22891173">
+      <noscript><img src="https://public.flourish.studio/visualisation/22891173/thumbnail"
+                     width="100%" alt="scatter visualization" /></noscript>
+  </div>
+</section>
+
+<!-- keep the loader ONCE, just before </body> -->
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+
   <div class="tooltip" id="tooltip"></div>
-  <div style="height:150vh;"></div>
+  
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
@@ -915,6 +958,18 @@ window.addEventListener("scroll", () => {
       toScatter();                       // everything after that
   }
 });
+/*  ▶▶  paste the new observer RIGHT HERE  ◀◀  */
+const chartBox   = document.getElementById("chart-container");
+  const flourishEl = document.getElementById("flourish-block");
+
+  new IntersectionObserver(
+    entries => {
+      const showFlourish = entries[0].isIntersecting;
+      chartBox.style.opacity        = showFlourish ? 0 : 1;   // fade
+      chartBox.style.pointerEvents  = showFlourish ? "none" : "auto";
+    },
+    { threshold: 0.05 }     // fire when ≥ 5 % of the section is visible
+  ).observe(flourishEl);
 
 
 const intro   = document.getElementById("sphere-intro");
