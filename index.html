@@ -16,7 +16,7 @@
             font-family: 'Roboto', sans-serif;
             overflow-x: hidden;
             background-color: #000;
-            color: #fff; 
+            color: #fff;
         }
 
         .headline-wrapper {
@@ -61,11 +61,10 @@
             margin: 1em 0;
         }
 
-       
+
         .chart-wrapper {
             position: relative;
-            
-            height: 250vh; 
+            height: 250vh;
             margin-bottom: 5vh;
         }
 
@@ -82,20 +81,21 @@
             transition: opacity 0.6s ease;
         }
 
-        
-        .svg-inner { 
+
+        .svg-inner {
             width: 100%;
             max-width: 1000px;
             position: relative;
         }
-        svg { 
+        svg {
             width: 100%;
             height: auto;
             display: block;
             background-color: transparent;
+            overflow: visible; 
         }
 
-       
+
         .tooltip {
             position: absolute;
             background: rgba(255,255,255,0.95);
@@ -104,7 +104,7 @@
             font-size: 0.9em;
             pointer-events: none;
             opacity: 0;
-            z-index: 10; /* Below search controls */
+            z-index: 10; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border-radius: 4px;
             max-width: 90vw;
@@ -115,7 +115,7 @@
 
         .top-spacer { height: 15vh; }
 
-        
+
         #search-container {
             position: fixed;
             top: 20px;
@@ -176,20 +176,20 @@
              white-space: nowrap;
          }
 
-        
+
         #scatter-steps {
-            position: relative; 
+            position: relative;
             z-index: 5;
-            
-             margin-top: 100vh; 
-             padding-top: 1vh; 
-             padding-bottom: 5vh; 
+
+             margin-top: 100vh;
+             padding-top: 1vh;
+             padding-bottom: 5vh;
         }
         .step {
             position: relative;
             max-width: min(90vw, 340px);
-           
-            margin: 70vh auto; 
+
+            margin: 70vh auto;
             padding: 1.25em 1.5em;
             background: rgba(255,255,255,0.92);
             border-radius: 8px;
@@ -198,11 +198,11 @@
             box-shadow: 0 2px 10px rgba(0,0,0,.25);
             color: #333;
         }
-        
-         .step:first-child { margin-top: 40vh; } 
-         .step:last-child { margin-bottom: 50vh; } 
 
-        
+         .step:first-child { margin-top: 40vh; }
+         .step:last-child { margin-bottom: 50vh; }
+
+
         #sphere-intro{
             position:fixed; inset:0; z-index:6; display:flex;
             flex-direction:column; justify-content:center; align-items:center;
@@ -218,7 +218,7 @@
         }
         #sphere-intro.hidden{ opacity:0; pointer-events:none; }
 
-        
+
         #flourish-block{
             padding: 10vh 0 6vh;
             background: #000;
@@ -232,7 +232,7 @@
             margin: 10vh auto;
             background-color: rgba(11, 31, 76, 0.2);
             border-radius: 8px;
-            padding: 25px 15px 15px 15px;
+            padding: 25px 15px 15px 15px; 
             box-shadow: 0 0 15px rgba(136, 181, 255, 0.15);
         }
         .scatter-explainer {
@@ -241,7 +241,7 @@
             padding: 0 15px; line-height: 1.4; text-align: center;
         }
 
-        
+
         .axis path, .axis line { stroke: #aaa; stroke-width: 0.5; shape-rendering: crispEdges; }
         .axis text { fill: #ccc; font-weight: 300; font-size: 10px; }
         .axis-label { fill: #ddd; font-size: 0.85em; text-anchor: middle; }
@@ -249,7 +249,17 @@
         .map-title { fill: #fff; font-size: 1.3em; font-weight: 600; text-anchor: middle; }
         .map-subtitle { fill: #ccc; font-size: 0.9em; text-anchor: middle; }
         .quadrant-line { stroke: #ffffff; stroke-dasharray: 3 3; stroke-width: 1.5px; opacity: 0.8; }
-        .quadrant-label { fill: #ffffff; font-size: 0.8em; font-weight: 400; opacity: 0.9; }
+        .quadrant-label { /* Base style for all quadrant labels */
+            fill: #ffffff;
+            font-size: 1em;
+            font-weight: 400;
+            opacity: 0.9;
+         }
+         .quadrant-label-outer { 
+             font-size: 0.75em;
+             fill: #ccc;
+             opacity: 0.85;
+         }
          .quadrant-overlay {
              fill: #ffffff;
              opacity: 0;
@@ -257,7 +267,7 @@
              transition: opacity 0.3s ease;
          }
 
-        
+
         @media (max-width: 600px) {
              #search-container {
                  top: 10px; left: 50%; right: auto; transform: translateX(-50%);
@@ -281,15 +291,18 @@
             .scatter-explainer { padding: 0 5px; font-size: 0.8em; margin-top: 8px; line-height: 1.3; }
              .plot-title { font-size: 1.1em; }
              .axis-label { font-size: 0.75em; }
-             
+
              .quadrant-label {
                  font-size: 0.65em; 
              }
-            
+             .quadrant-label-outer {
+                  font-size: 0.6em; 
+             }
+
              .axis text { font-size: 9.5px; }
 
-            
-            .step { margin: 60vh auto; } 
+
+            .step { margin: 60vh auto; }
             .step:first-child { margin-top: 30vh; }
             .step:last-child { margin-bottom: 40vh; }
 
@@ -299,8 +312,8 @@
             .cosmic-supratitle { font-size: 1.3em; }
         }
 
-       
-        body { min-height: 500vh; } 
+
+        body { min-height: 500vh; }
         html,body{ overscroll-behavior: none; }
 
     </style>
@@ -417,12 +430,14 @@
     <div class="tooltip" id="tooltip"></div>
 
     <script>
-        
+
         let allDataGlobal;
         const mainWidth = 1000, mainHeight = 700;
         const plotWidth = 900, plotHeight = 550;
-        const margin = { top: 60, right: 40, bottom: 50, left: 60 };
-        const marginMain = { top: 50, right: 60, bottom: 60, left: 80 };
+        // Increased static plot margins slightly to make room for outer labels
+        const margin = { top: 60, right: 50, bottom: 50, left: 70 };
+        // Increased main plot margins slightly to make room for outer labels
+        const marginMain = { top: 60, right: 70, bottom: 60, left: 80 };
 
         const baseCircleDiameter = window.innerWidth <= 600 ? 9 : window.innerWidth > 800 ? 4 : 3.5;
 
@@ -438,20 +453,20 @@
         };
         const colorScale = d3.scaleOrdinal(Object.keys(winnerColors), Object.values(winnerColors));
 
-        let currentView = "sphere"; 
+        let currentView = "sphere";
         let currentFilter = "all";
         let mainCircles;
         let staticCircles = [];
         let staticConfigs = {};
-        let activeQuad = "all"; 
-        let mainScatterConfig = {}; 
+        let activeQuad = "all";
+        let mainScatterConfig = {};
         let staticPlotsVisible = false;
-        let observerInitialized = false; 
+        let observerInitialized = false;
 
-        
+
         const normalize = str => (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
-        
+
         function showSearchControls() { searchEl.classed("visible", true); }
         function hideSearchControls() { searchEl.classed("visible", false); }
         function updateSearchControlsVisibility() {
@@ -462,7 +477,7 @@
             }
         }
 
-        
+
         function basicTooltip(d) {
             return `<strong>${d.jud}</strong><br/>${d.uat}<br/>Câștigător: ${d.Castigator}<br/>Procent: ${d["Procent castigator"]}%<br/>Prezența: ${d.Prezenta}%`;
          }
@@ -474,15 +489,15 @@
          function updateTooltipPosition(event) {
             const tRect = tooltip.node().getBoundingClientRect();
             let left = event.pageX + 10, top = event.pageY - 15;
-            const margin = 10;
-            if (left + tRect.width > window.innerWidth - margin) left = event.pageX - tRect.width - 10;
-            if (top + tRect.height > window.innerHeight - margin) top = event.pageY - tRect.height - 5;
-            if (top < margin) top = margin;
-            if (left < margin) left = margin;
+            const marginTT = 10; // Tooltip margin
+            if (left + tRect.width > window.innerWidth - marginTT) left = event.pageX - tRect.width - 10;
+            if (top + tRect.height > window.innerHeight - marginTT) top = event.pageY - tRect.height - 5;
+            if (top < marginTT) top = marginTT;
+            if (left < marginTT) left = marginTT;
             tooltip.style("left", left + "px").style("top", top + "px");
          }
 
-        
+
         function createSpherePositions(data, radius = 250){
             data.forEach((d,i) => {
                 const phi = Math.acos(-1 + (2 * i) / data.length);
@@ -516,23 +531,27 @@
             applyGlobalFilterAndSearch();
         }
 
-        
+
         function isPointInQuad(d, config, quad) {
             if (!config || !config.xField || !config.yField || !allDataGlobal) return false;
+            // Use cached medians if available
             const xMedian = config._xMedian ?? (config._xMedian = d3.median(allDataGlobal, dataPoint => dataPoint[config.xField]));
             const yMedian = config._yMedian ?? (config._yMedian = d3.median(allDataGlobal, dataPoint => dataPoint[config.yField]));
-            if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return false;
+            if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return false; // Medians invalid
             const xVal = d[config.xField], yVal = d[config.yField];
-            if (xVal === undefined || yVal === undefined || xVal === null || yVal === null) return false;
+            if (xVal === undefined || yVal === undefined || xVal === null || yVal === null) return false; // Data point invalid
+
             let pointQuad = "";
+            // Quadrant Definition: I=TopLeft, II=TopRight, III=BottomLeft, IV=BottomRight
             if (xVal <= xMedian && yVal >= yMedian) pointQuad = "I";
             else if (xVal > xMedian && yVal >= yMedian) pointQuad = "II";
             else if (xVal <= xMedian && yVal < yMedian) pointQuad = "III";
             else if (xVal > xMedian && yVal < yMedian) pointQuad = "IV";
+
             return pointQuad === quad;
          }
 
-        
+
         function applyGlobalFilterAndSearch() {
             const searchTerm = normalize(d3.select("#search-input").property("value"));
             const isSearching = searchTerm.length > 0;
@@ -547,66 +566,125 @@
                 }
             }
 
+            // Raise exact search matches
             d3.selectAll(".data-circle").each(function(d) {
                 if (isSearching && normalize(d.uat) === searchTerm) d3.select(this).raise();
             });
 
+            // Apply filters and styles via transition
             d3.selectAll(".data-circle")
                 .transition("filterSearch").duration(350)
                 .attr("opacity", function(d) {
                     const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
+
+                    // Basic visibility check
                     if (!isWinnerMatch || !isSearchMatch) return 0.08;
 
                     let baseOpacity = 1.0;
                     const isMain = d3.select(this).classed('main-circle');
                     const isStatic = d3.select(this).classed('static-circle');
 
-                    if (isStatic) { baseOpacity = 0.75; }
-                    else if (isMain) {
-                        if (currentView === 'sphere') { baseOpacity = d.display_opacity_z ?? 1.0; }
-                        else if (currentView === 'map') { baseOpacity = 0.8; }
-                        else if (currentView === 'scatter') {
-                            const isQuadActive = activeQuad !== 'all';
-                            const config = mainScatterConfig; // Use main config
-                            const inActiveQuad = isQuadActive && isPointInQuad(d, config, activeQuad);
+                    if (isStatic) {
+                         const parentSvgId = d3.select(this.ownerSVGElement).attr('id');
+                         const config = staticConfigs[parentSvgId];
+                         // Dim static circles if their data is invalid for the plot axes
+                         if(config && (d[config.xField] === null || d[config.yField] === null)) {
+                             baseOpacity = 0.05;
+                         } else {
+                             baseOpacity = 0.75;
+                         }
+                    } else if (isMain) {
+                        
+                        if (currentView === 'sphere') {
+                            baseOpacity = d.display_opacity_z ?? 1.0;
+                        } else if (currentView === 'map') {
+                            baseOpacity = (d.Lat && d.Long) ? 0.8 : 0; 
+                        } else if (currentView === 'scatter') {
+                            const config = mainScatterConfig;
                             const xVal = d[config.xField], yVal = d[config.yField];
                             const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
-                            // Dim if a quad is active, the point has data, BUT it's not in the active quad
-                            if (isQuadActive && hasValidScatterData && !inActiveQuad) baseOpacity = 0.05;
+
+                            if (!hasValidScatterData) return 0; 
+
+                            const isQuadActive = activeQuad !== 'all';
+                            const inActiveQuad = isQuadActive && isPointInQuad(d, config, activeQuad);
+
+                            // Dim if a quad is active, BUT the point is not in the active quad
+                            if (isQuadActive && !inActiveQuad) baseOpacity = 0.05;
                             else baseOpacity = 0.8; // Default scatter opacity
                         }
                     }
-                    if (isSearching && !exactSearchMatch && isWinnerMatch && isSearchMatch) baseOpacity *= 0.6;
-                    if (exactSearchMatch) baseOpacity = isStatic ? 0.9 : 1.0;
-                    return Math.max(0.08, baseOpacity);
+
+                    
+                    if (isSearching && !exactSearchMatch && isWinnerMatch && isSearchMatch) {
+                         baseOpacity *= 0.6;
+                    }
+                    // Highlight exact match
+                    if (exactSearchMatch) {
+                        baseOpacity = isStatic ? 0.9 : 1.0;
+                    }
+
+                    return Math.max(0.05, baseOpacity); 
                 })
                 .attr("stroke", function(d) {
                     const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
-                    if (!isWinnerMatch || !isSearchMatch) return "none";
-                    if (exactSearchMatch) return "#FFFFFF";
-                    if (currentFilter !== "all" && isWinnerMatch) return "#FFFFFF";
-                    return "none";
+
+                    if (!isWinnerMatch || !isSearchMatch) return "none"; 
+
+                    if (exactSearchMatch) return "#FFFFFF"; 
+                    if (currentFilter !== "all" && isWinnerMatch) return "#FFFFFF"; 
+
+                    
+                    const isMain = d3.select(this).classed('main-circle');
+                    if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
+                         const config = mainScatterConfig;
+                         const xVal = d[config.xField], yVal = d[config.yField];
+                         const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
+                         if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
+                             return "#FFF"; 
+                         }
+                    }
+
+
+                    return "none"; 
                 })
                 .attr("stroke-width", function(d) {
                      const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                      const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
-                     if (!isWinnerMatch || !isSearchMatch) return 0;
+
+                     if (!isWinnerMatch || !isSearchMatch) return 0; 
+
                      const isMain = d3.select(this).classed('main-circle');
-                     if (exactSearchMatch) return isMain ? 3 : 2.5;
-                     if (currentFilter !== "all" && isWinnerMatch) return 1;
-                     return 0;
+
+                     if (exactSearchMatch) return isMain ? 3 : 2.5; 
+                     if (currentFilter !== "all" && isWinnerMatch) return 1; 
+
+                     
+                     if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
+                          const config = mainScatterConfig;
+                          const xVal = d[config.xField], yVal = d[config.yField];
+                          const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
+                          if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
+                              return 1; 
+                          }
+                     }
+
+
+                     return 0; 
                  })
                  .attr("cx", function(d) {
                     if (currentView === 'sphere' && d3.select(this).classed('main-circle')) return d.display_x;
+                    // Keep existing calculated cx for map/scatter if transitioning
                     return d3.select(this).attr("cx");
                  })
                  .attr("cy", function(d) {
                     if (currentView === 'sphere' && d3.select(this).classed('main-circle')) return d.display_y;
+                    // Keep existing calculated cy for map/scatter if transitioning
                     return d3.select(this).attr("cy");
                  })
                  .attr("r", function(d) {
@@ -614,343 +692,588 @@
                      const boostFactor = 1.8;
                      const isMain = d3.select(this).classed('main-circle');
                      let baseRadius = 0;
+
                      if (isMain) {
-                         if (currentView === 'sphere') { baseRadius = d.base_sphere_r ?? 0; }
-                         else if (currentView === 'map' && areaScale) { baseRadius = (d.Lat && d.Long) ? areaScale(d["Procent castigator"]) : 0; }
-                         else if (currentView === 'scatter') {
+                         
+                         if (currentView === 'sphere') {
+                             baseRadius = d.base_sphere_r ?? 0;
+                         } else if (currentView === 'map' && areaScale) {
+                             baseRadius = (d.Lat && d.Long) ? areaScale(d["Procent castigator"]) : 0;
+                         } else if (currentView === 'scatter') {
                              const config = mainScatterConfig;
                              const xVal = d[config.xField], yVal = d[config.yField];
                              baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 1.1 : 0;
                          }
-                     } else {
+                     } else { 
                           const parentSvgId = d3.select(this.ownerSVGElement).attr('id');
                           const config = staticConfigs[parentSvgId];
                           if (config) {
                               const xVal = d[config.xField], yVal = d[config.yField];
+                             
                               baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
-                          } else { baseRadius = 0; }
+                          } else {
+                              baseRadius = 0; 
+                          }
                      }
+
+                     
                      baseRadius = (typeof baseRadius === 'number' && !isNaN(baseRadius)) ? baseRadius : 0;
+
+                     
                      return (exactSearchMatch && baseRadius > 0) ? baseRadius * boostFactor : baseRadius;
+                 })
+                 
+                 .style("pointer-events", function(d) {
+                     const opacity = parseFloat(d3.select(this).attr("opacity"));
+                     const radius = parseFloat(d3.select(this).attr("r"));
+                     // Allow events only if reasonably visible and has size
+                     return (opacity > 0.05 && radius > 0.1) ? 'auto' : 'none';
                  });
          }
 
-        
+
         function createScatterPlot(containerSelector, data, config) {
              const svg = d3.select(containerSelector);
              const svgId = svg.attr('id');
-             staticConfigs[svgId] = config;
-             config._xMedian = d3.median(data, d => d[config.xField]);
-             config._yMedian = d3.median(data, d => d[config.yField]);
-             svg.selectAll("*").remove();
-             const plotGroup = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+             staticConfigs[svgId] = config; 
+             config._xMedian = d3.median(data, d => d[config.xField]); 
+             config._yMedian = d3.median(data, d => d[config.yField]); 
+
+             svg.selectAll("*").remove(); 
+
+            
+             const plotGroup = svg.append("g")
+                 .attr("transform", `translate(${margin.left},${margin.top})`);
+
              const innerWidth = plotWidth - margin.left - margin.right;
              const innerHeight = plotHeight - margin.top - margin.bottom;
+
+             // Determine data extents and setup scales
              const xExtent = d3.extent(data, d => d[config.xField]);
              const yExtent = d3.extent(data, d => d[config.yField]);
+             // Handle cases where extent might be undefined (e.g., no valid data)
              const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
              const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
+
              const x = d3.scaleLinear().domain(xDomain).nice().range([0, innerWidth]);
              const y = d3.scaleLinear().domain(yDomain).nice().range([innerHeight, 0]);
-             const xMedian = config._xMedian, yMedian = config._yMedian;
 
-            plotGroup.append("g").attr("class", "x-axis axis").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(x).ticks(7).tickSizeOuter(0));
-            plotGroup.append("text").attr("class", "axis-label x-label").attr("x", innerWidth / 2).attr("y", innerHeight + margin.bottom - 10).text(config.xLabelFull || config.xLabel);
-            plotGroup.append("g").attr("class", "y-axis axis").call(d3.axisLeft(y).ticks(7).tickSizeOuter(0));
-            plotGroup.append("text").attr("class", "axis-label y-label").attr("transform", "rotate(-90)").attr("x", -innerHeight / 2).attr("y", -margin.left + 15).text(config.yLabelFull || config.yLabel);
-            plotGroup.append("text").attr("class", "plot-title").attr("x", innerWidth / 2).attr("y", -margin.top / 2).text(config.title);
-            if (xMedian !== undefined && xMedian !== null) plotGroup.append("line").attr("class", "quadrant-line").attr("x1", x(xMedian)).attr("x2", x(xMedian)).attr("y1", 0).attr("y2", innerHeight);
-            if (yMedian !== undefined && yMedian !== null) plotGroup.append("line").attr("class", "quadrant-line").attr("x1", 0).attr("x2", innerWidth).attr("y1", y(yMedian)).attr("y2", y(yMedian));
+             const xMedian = config._xMedian; 
+             const yMedian = config._yMedian; 
+
+            // --- Draw Axes and Titles ---
+            plotGroup.append("g").attr("class", "x-axis axis")
+                .attr("transform", `translate(0,${innerHeight})`)
+                .call(d3.axisBottom(x).ticks(7).tickSizeOuter(0));
+            plotGroup.append("text").attr("class", "axis-label x-label")
+                .attr("x", innerWidth / 2)
+                .attr("y", innerHeight + margin.bottom - 10)
+                .text(config.xLabelFull || config.xLabel);
+            plotGroup.append("g").attr("class", "y-axis axis")
+                .call(d3.axisLeft(y).ticks(7).tickSizeOuter(0));
+            plotGroup.append("text").attr("class", "axis-label y-label")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -innerHeight / 2)
+                .attr("y", -margin.left + 15) 
+                .text(config.yLabelFull || config.yLabel);
+            plotGroup.append("text").attr("class", "plot-title")
+                .attr("x", innerWidth / 2)
+                .attr("y", -margin.top / 2) 
+                .text(config.title);
+
+           
+            if (xMedian !== undefined && xMedian !== null) {
+                plotGroup.append("line").attr("class", "quadrant-line")
+                    .attr("x1", x(xMedian)).attr("x2", x(xMedian))
+                    .attr("y1", 0).attr("y2", innerHeight);
+            }
+            if (yMedian !== undefined && yMedian !== null) {
+                plotGroup.append("line").attr("class", "quadrant-line")
+                    .attr("x1", 0).attr("x2", innerWidth)
+                    .attr("y1", y(yMedian)).attr("y2", y(yMedian));
+            }
 
             
             const isMobile = window.innerWidth <= 600;
-            const labelPadding = isMobile ? 6 : 8; 
-            
-            const verticalLabelOffset = labelPadding * (isMobile ? 1.8 : 2); 
-            
+            const outerLabelPadding = isMobile ? 15 : 20; 
+            const outerLabelYOffset = isMobile ? -15 : -20; 
+            const outerLabelYOffsetBottom = isMobile ? 20 : 35; 
 
             if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
-                
-                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + labelPadding).attr("y", verticalLabelOffset).text(config.quadLabels.II).attr("text-anchor", "start");
-                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - labelPadding).attr("y", verticalLabelOffset).text(config.quadLabels.I).attr("text-anchor", "end");
-                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - labelPadding).attr("y", innerHeight - labelPadding).text(config.quadLabels.III).attr("text-anchor", "end"); // Bottom labels might need less vertical adjustment
-                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + labelPadding).attr("y", innerHeight - labelPadding).text(config.quadLabels.IV).attr("text-anchor", "start"); // Bottom labels might need less vertical adjustment
-             }
+                 
 
+                 
+                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                     .attr("x", innerWidth + outerLabelPadding) 
+                     .attr("y", outerLabelYOffset) 
+                     .attr("text-anchor", "end")
+                     .text(config.quadLabels.II);
+
+                 
+                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                     .attr("x", -outerLabelPadding) 
+                     .attr("y", outerLabelYOffset) 
+                     .attr("text-anchor", "start")
+                     .text(config.quadLabels.I);
+
+                 // Quadrant III (Bottom Left Corner Area) - Text anchored start, placed left of plot
+                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                     .attr("x", -outerLabelPadding) // Left of plot area
+                     .attr("y", innerHeight + outerLabelYOffsetBottom) // Below plot area bottom
+                     .attr("text-anchor", "start")
+                     .text(config.quadLabels.III);
+
+                 // Quadrant IV (Bottom Right Corner Area) - Text anchored end, placed right of plot
+                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                     .attr("x", innerWidth + outerLabelPadding) 
+                     .attr("y", innerHeight + outerLabelYOffsetBottom) 
+                     .attr("text-anchor", "end")
+                     .text(config.quadLabels.IV);
+             }
+             
              const circles = plotGroup.selectAll(".data-circle")
-                .data(data, d => d.uat + d.jud)
+                .data(data, d => d.uat + d.jud) 
                 .enter().append("circle")
-                .attr("class", "data-circle static-circle")
-                .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -10; })
-                .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -10; })
-                .attr("r", d => { const xVal = d[config.xField]; const yVal = d[config.yField]; return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0; })
-                .attr("fill", d => colorScale(d.Castigator) || "#999")
-                .attr("opacity", 0.75).attr("stroke", "none").attr("stroke-width", 0)
-                .style("pointer-events", d => { const xVal = d[config.xField]; const yVal = d[config.yField]; return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? 'auto' : 'none'; })
+                .attr("class", "data-circle static-circle") 
+                
+                .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -100; })
+                .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -100; })
+                
+                .attr("r", d => {
+                    const xVal = d[config.xField];
+                    const yVal = d[config.yField];
+                    return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
+                })
+                .attr("fill", d => colorScale(d.Castigator) || "#999") 
+                .attr("opacity", 0.75) 
+                .attr("stroke", "none")
+                .attr("stroke-width", 0)
+               
+                .style("pointer-events", d => {
+                    const xVal = d[config.xField];
+                    const yVal = d[config.yField];
+                    return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? 'auto' : 'none';
+                })
+               
                 .on("mouseover", (event, d) => {
+                   
                     const xVal = d[config.xField], yVal = d[config.yField];
                     if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
-                    tooltip.style("opacity", 1).html(scatterTooltip(d, config));
-                    d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", 1.5);
+
+                    tooltip.style("opacity", 1).html(scatterTooltip(d, config)); // Show tooltip
+                    d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", 1.5); // Highlight
                 })
-                .on("mousemove", updateTooltipPosition)
+                .on("mousemove", updateTooltipPosition) 
                 .on("mouseout", (event, d) => {
+                     
                      const xVal = d[config.xField], yVal = d[config.yField];
                      if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
-                     tooltip.style("opacity", 0);
+
+                     tooltip.style("opacity", 0); // Hide tooltip
+
+                   
                      const searchTerm = normalize(d3.select("#search-input").property("value"));
                      const isSearching = searchTerm.length > 0;
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
                      const isHighlightedByFilter = currentFilter !== "all" && d.Castigator === currentFilter;
+
                      let finalStroke = "none", finalStrokeWidth = 0;
-                     const isMain = d3.select(event.currentTarget).classed('main-circle');
-                     if (exactSearchMatch) { finalStroke = "#FFFFFF"; finalStrokeWidth = isMain ? 3 : 2.5; }
-                     else if (isHighlightedByFilter) { finalStroke = "#FFFFFF"; finalStrokeWidth = 1; }
+                     if (exactSearchMatch) { // Exact search match has priority
+                         finalStroke = "#FFFFFF";
+                         finalStrokeWidth = 2.5; // Slightly thinner for static plots
+                     } else if (isHighlightedByFilter) { // Winner filter highlight
+                         finalStroke = "#FFFFFF";
+                         finalStrokeWidth = 1;
+                     }
+                     // Reset stroke based on persistent state (search/filter)
                      d3.select(event.currentTarget).attr("stroke", finalStroke).attr("stroke-width", finalStrokeWidth);
                 });
-             staticCircles.push(circles);
-             return circles;
+
+             staticCircles.push(circles); // Keep track of static circle selections
+             return circles; // Return the selection
          }
+
 
         
         d3.csv("scatter.csv", d3.autoType).then(data => {
-            allDataGlobal = data.filter(d => d.Lat && d.Long && d.Castigator && d.uat && d["Procent castigator"]);
+            // Filter data: ensure essential fields exist
+            allDataGlobal = data.filter(d => d.Lat && d.Long && d.Castigator && d.uat && d["Procent castigator"] != null);
 
-            
-            const scatterConfig1 = { xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1, title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor", xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)", quadLabels: { I: "I. Suburbii sau localități periurbane prospere, spațiu mare", II: "II. Localități îmbătrânite cu case mari sau zone turistice rurale", III: "III. Orașe cu cartiere aglomerate, densitate mare", IV: "IV. Zone rurale sărace, cu case modeste și populație vârstnică" } };
-            const scatterConfig2 = { xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1, title: "Plecările din localitate și ponderea șomerilor", xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)", quadLabels: { I: "I. Neatractiv", II: "II. Probleme multiple", III: "III. Stabili", IV: "IV. Exod mascat" } };
-            const scatterConfig3 = { xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0, title: "Salariați vs. Venituri din Impozite", xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)", quadLabels: { I: "I. Turism/Rentă?", II: "II. Autonomi", III: "III. Vulnerabili", IV: "IV. Navetiști?" } };
-            const scatterConfig4 = { xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0, title: "Fonduri Europene vs. Acces la Medici", xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic", quadLabels: { I: "I. Zone fără fonduri europene semnificative și cu servicii medicale sub presiune", II: "II. Zone care atrag fonduri, dar fără impact încă asupra sistemului medical", III: "III. Zone tradițional stabile sau atipice", IV: "Investiții consistente" } };
+           
+            allDataGlobal.forEach(d => {
+                // Convert "#DIV/0!" string in the specific column to null
+                if (d["Pacienti la un medic 2023"] === "#DIV/0!") {
+                    d["Pacienti la un medic 2023"] = null;
+                }
+                
+            });
+           
+            const scatterConfig1 = { xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1, title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor", xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)", quadLabels: { I: "I. Tineri, Spațiu Mare", II: "II. Vârstnici, Spațiu Mare", III: "III. Tineri, Spațiu Mic", IV: "IV. Vârstnici, Spațiu Mic" } };
+            const scatterConfig2 = { xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1, title: "Plecările din localitate și ponderea șomerilor", xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)", quadLabels: { I: "I. Puține plecări, Șomaj mare", II: "II. Multe plecări, Șomaj mare", III: "III. Puține plecări, Șomaj mic", IV: "IV. Multe plecări, Șomaj mic" } };
+            const scatterConfig3 = { xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0, title: "Salariați vs. Venituri din Impozite", xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)", quadLabels: { I: "I. Puțini Salariați, Impozit Mare", II: "II. Mulți Salariați, Impozit Mare", III: "III. Puțini Salariați, Impozit Mic", IV: "IV. Mulți Salariați, Impozit Mic" } };
+            const scatterConfig4 = { xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0, title: "Fonduri Europene vs. Acces la Medici", xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic", quadLabels: { I: "I. Fonduri puține, Medici puțini", II: "II. Fonduri multe, Medici puțini", III: "III. Fonduri puține, Medici mulți", IV: "IV. Fonduri multe, Medici mulți" } };
 
-            
+
+            // Set the first config as the one for the main interactive scatter
             mainScatterConfig = scatterConfig1;
+            // Pre-calculate medians for the main scatter config
             mainScatterConfig._xMedian = d3.median(allDataGlobal, d => d[mainScatterConfig.xField]);
             mainScatterConfig._yMedian = d3.median(allDataGlobal, d => d[mainScatterConfig.yField]);
 
-            
+            // Setup scales for map view and circle size
             const areaScale = d3.scaleSqrt().domain(d3.extent(allDataGlobal, d => d["Procent castigator"])).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
             const xGeo = d3.scaleLinear().domain(d3.extent(allDataGlobal, d => d.Long)).range([marginMain.left, mainWidth - marginMain.right]);
             const yGeo = d3.scaleLinear().domain(d3.extent(allDataGlobal, d => d.Lat)).range([mainHeight - marginMain.bottom, marginMain.top]);
 
-           
-            createSpherePositions(allDataGlobal, 250);
+
+            
+            createSpherePositions(allDataGlobal, 250); // Calculate sphere positions
+
+            // Create main circles (initially positioned for sphere)
             mainCircles = chartMain.selectAll("circle.main-circle")
-                .data(allDataGlobal, d => d.uat + d.jud)
+                .data(allDataGlobal, d => d.uat + d.jud) // Key for object constancy
                 .enter().append("circle")
-                .attr("class", "data-circle main-circle")
+                .attr("class", "data-circle main-circle") // Add main class
                 .attr("fill", d => colorScale(d.Castigator) || "#999")
-                .attr("opacity", 0).style("pointer-events", "auto")
+                .attr("opacity", 0) // Start invisible
+                .style("pointer-events", "auto") // Allow interactions
                 .on("mouseover", (event, d) => {
                      tooltip.style("opacity", 1);
-                     if (currentView === 'sphere' || currentView === 'map') tooltip.html(basicTooltip(d));
-                     else if (currentView === 'scatter') {
+                     // Show tooltip based on current view
+                     if (currentView === 'sphere' || currentView === 'map') {
+                         tooltip.html(basicTooltip(d));
+                     } else if (currentView === 'scatter') {
                          const config = mainScatterConfig;
                          const xVal = d[config.xField], yVal = d[config.yField];
-                         if (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) tooltip.html(scatterTooltip(d, config));
-                         else tooltip.html(basicTooltip(d));
+                         // Show scatter tooltip only if data is valid, else basic
+                         if (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) {
+                             tooltip.html(scatterTooltip(d, config));
+                         } else {
+                             tooltip.html(basicTooltip(d)); // Fallback
+                         }
                      }
+                     // Highlight on hover
                      d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", currentView === 'sphere' ? 2.5 : 2);
                  })
                 .on("mousemove", updateTooltipPosition)
                 .on("mouseout", (event, d) => {
-                    tooltip.style("opacity", 0);
+                    tooltip.style("opacity", 0); // Hide tooltip
+                    // Determine persistent stroke based on filters/search/quadrant
                     const searchTerm = normalize(d3.select("#search-input").property("value"));
                     const isSearching = searchTerm.length > 0;
                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
                     const isHighlightedByFilter = currentFilter !== "all" && d.Castigator === currentFilter;
+                    let inActiveQuadHighlight = false;
+                     if (currentView === 'scatter' && activeQuad !== 'all') {
+                         const config = mainScatterConfig;
+                         const xVal = d[config.xField], yVal = d[config.yField];
+                         const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
+                         if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
+                             inActiveQuadHighlight = true;
+                         }
+                     }
+
                     let finalStroke = "none", finalStrokeWidth = 0;
-                    const isMain = d3.select(event.currentTarget).classed('main-circle');
-                    if (exactSearchMatch) { finalStroke = "#FFFFFF"; finalStrokeWidth = isMain ? 3 : 2.5; }
-                    else if (isHighlightedByFilter) { finalStroke = "#FFFFFF"; finalStrokeWidth = 1; }
+                    if (exactSearchMatch) {
+                        finalStroke = "#FFFFFF"; finalStrokeWidth = 3;
+                    } else if (isHighlightedByFilter) {
+                        finalStroke = "#FFFFFF"; finalStrokeWidth = 1;
+                    } else if (inActiveQuadHighlight) {
+                        finalStroke = "#FFFFFF"; finalStrokeWidth = 1;
+                    }
+                    // Apply persistent stroke state
                     d3.select(event.currentTarget).attr("stroke", finalStroke).attr("stroke-width", finalStrokeWidth);
                 });
-            updateSphereVisuals();
-            sphereAnimation.play();
 
-            
+            updateSphereVisuals(); // Initial sphere rendering
+            sphereAnimation.play(); // Start animation
+
+            // --- Setup Search and Filters ---
             const datalist = document.getElementById("localitati-list");
-            [...new Set(allDataGlobal.map(d => d.uat).filter(Boolean))]
-                .sort((a, b) => a.localeCompare(b, "ro-RO"))
-                .forEach(name => { const opt = document.createElement("option"); opt.value = name; datalist.appendChild(opt); });
+            // Populate datalist for search suggestions
+            [...new Set(allDataGlobal.map(d => d.uat).filter(Boolean))] // Get unique UAT names
+                .sort((a, b) => a.localeCompare(b, "ro-RO")) // Sort alphabetically
+                .forEach(name => {
+                    const opt = document.createElement("option");
+                    opt.value = name;
+                    datalist.appendChild(opt);
+                });
 
-            
+            // Attach event listeners for search/filter controls
             d3.select("#search-input").on("input", applyGlobalFilterAndSearch);
-            d3.select("#clear-search").on("click", () => { d3.select("#search-input").property("value", ""); applyGlobalFilterAndSearch(); });
+            d3.select("#clear-search").on("click", () => {
+                d3.select("#search-input").property("value", ""); // Clear input
+                applyGlobalFilterAndSearch(); // Re-apply filters
+            });
             d3.select("#winner-filter").on("change", applyGlobalFilterAndSearch);
 
-            
-            staticCircles = []; staticConfigs = {};
+            // --- Create Static Scatter Plots ---
+            staticCircles = []; // Reset array holding static circle selections
+            staticConfigs = {}; // Reset object holding static configs
             createScatterPlot("#scatter-viz-1", allDataGlobal, scatterConfig1);
             createScatterPlot("#scatter-viz-2", allDataGlobal, scatterConfig2);
             createScatterPlot("#scatter-viz-3", allDataGlobal, scatterConfig3);
-            createScatterPlot("#scatter-viz-4", allDataGlobal, scatterConfig4);
-            applyGlobalFilterAndSearch(); 
+            createScatterPlot("#scatter-viz-4", allDataGlobal, scatterConfig4); // This now uses cleaned data
+            applyGlobalFilterAndSearch(); // Apply initial filter state to static plots
 
-            
+
+            // --- View Transition Functions ---
             function toSphere() {
-                if (currentView === 'sphere') return;
+                if (currentView === 'sphere') return; // Avoid redundant transitions
                 console.log("Transitioning to Sphere");
                 currentView = "sphere";
-                window.IO?.disconnect(); // DEACTIVATE IO
-                activeQuad = 'all'; observerInitialized = false;
-                sphereAnimation.play();
-                updateSearchControlsVisibility();
+                window.IO?.disconnect(); // DEACTIVATE Intersection Observer
+                activeQuad = 'all'; // Reset quadrant highlighting
+                observerInitialized = false; // Reset IO flag
+                sphereAnimation.play(); // Resume sphere rotation
+                updateSearchControlsVisibility(); // Show/hide search based on view
+                // Remove non-sphere elements (axes, titles, lines, etc.)
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
-                updateSphereVisuals();
+                updateSphereVisuals(); // Trigger sphere position update and filter application
             }
 
             function toMap() {
-                if (currentView === 'map') return;
+                if (currentView === 'map') return; // Avoid redundant transitions
                 console.log("Transitioning to Map");
                 currentView = "map";
-                window.IO?.disconnect(); // DEACTIVATE IO
-                activeQuad = 'all'; observerInitialized = false;
-                sphereAnimation.pause();
-                updateSearchControlsVisibility();
+                window.IO?.disconnect(); // DEACTIVATE Intersection Observer
+                activeQuad = 'all'; // Reset quadrant highlighting
+                observerInitialized = false; // Reset IO flag
+                sphereAnimation.pause(); // Pause sphere rotation
+                updateSearchControlsVisibility(); // Show/hide search based on view
+                // Remove non-map elements
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
-                svgMain.append("text").attr("class", "map-title").attr("x", mainWidth / 2).attr("y", marginMain.top / 2).text("Distribuția câștigătorilor pe localități");
-                svgMain.append("text").attr("class", "map-subtitle").attr("x", mainWidth / 2).attr("y", marginMain.top / 2 + 22).text("Dimensiunea cercurilor indică procentul obținut de câștigător. Click pe fiecare localitate sau folosește filtrele");
+                // Add Map Titles
+                svgMain.append("text").attr("class", "map-title")
+                    .attr("x", mainWidth / 2).attr("y", marginMain.top / 2)
+                    .text("Distribuția câștigătorilor pe localități");
+                svgMain.append("text").attr("class", "map-subtitle")
+                    .attr("x", mainWidth / 2).attr("y", marginMain.top / 2 + 22)
+                    .text("Dimensiunea cercurilor indică procentul obținut de câștigător.");
+
+                // Transition main circles to map positions
                 mainCircles.transition("mapPos").duration(1500).ease(d3.easeCubicInOut)
-                    .attr("cx", d => (d.Long && !isNaN(xGeo(d.Long))) ? xGeo(d.Long) : -10)
-                    .attr("cy", d => (d.Lat && !isNaN(yGeo(d.Lat))) ? yGeo(d.Lat) : -10)
-                    .attr("r", d => (d.Lat && d.Long && areaScale) ? areaScale(d["Procent castigator"]) : 0)
-                    .end().then(applyGlobalFilterAndSearch).catch(err => { console.error("Map transition error:", err); applyGlobalFilterAndSearch(); });
-                applyGlobalFilterAndSearch();
+                    .attr("cx", d => (d.Long && !isNaN(xGeo(d.Long))) ? xGeo(d.Long) : -100) // Use geo coords or hide
+                    .attr("cy", d => (d.Lat && !isNaN(yGeo(d.Lat))) ? yGeo(d.Lat) : -100) // Use geo coords or hide
+                    .attr("r", d => (d.Lat && d.Long && areaScale) ? areaScale(d["Procent castigator"]) : 0) // Use area scale or hide
+                    .end().then(applyGlobalFilterAndSearch).catch(err => { // Apply filters after transition
+                        console.error("Map transition error:", err);
+                        applyGlobalFilterAndSearch(); // Ensure filters applied even on error
+                    });
+                applyGlobalFilterAndSearch(); // Apply filters immediately for responsiveness
             }
 
             function toScatter() {
-                if (currentView === 'scatter') return;
+                if (currentView === 'scatter') return; // Avoid redundant transitions
                 console.log("Transitioning to Main Scatter");
                 currentView = "scatter";
-                sphereAnimation.pause();
-                updateSearchControlsVisibility();
+                sphereAnimation.pause(); // Pause sphere rotation
+                updateSearchControlsVisibility(); // Show/hide search based on view
+                // Remove non-scatter elements
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
 
-                const config = mainScatterConfig;
+                const config = mainScatterConfig; // Use the pre-defined main config
+                // Define inner dimensions using main margins
                 const innerWidth = mainWidth - marginMain.left - marginMain.right;
                 const innerHeight = mainHeight - marginMain.top - marginMain.bottom;
+
+                // Setup scales using main scatter config and dimensions
                 const xExtent = d3.extent(allDataGlobal, d => d[config.xField]);
                 const yExtent = d3.extent(allDataGlobal, d => d[config.yField]);
                 const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
                 const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
+                // Scales map data to SVG coordinates within the main margins
                 const x = d3.scaleLinear().domain(xDomain).nice().range([marginMain.left, mainWidth - marginMain.right]);
-                const y = d3.scaleLinear().domain(yDomain).nice().range([mainHeight - marginMain.bottom, marginMain.top]);
-                const xMedian = config._xMedian, yMedian = config._yMedian;
+                const y = d3.scaleLinear().domain(yDomain).nice().range([mainHeight - marginMain.bottom, marginMain.top]); // Inverted for SVG y-axis
 
-                 svgMain.append("text").attr("class", "plot-title").attr("x", mainWidth / 2).attr("y", marginMain.top / 2 - 5).text(config.title);
-                 svgMain.append("g").attr("class", "x-axis axis").attr("transform", `translate(0,${mainHeight - marginMain.bottom})`).call(d3.axisBottom(x).ticks(7));
-                 svgMain.append("text").attr("class", "x-label axis-label").attr("x", mainWidth / 2).attr("y", mainHeight - 15).text(config.xLabelFull);
-                 svgMain.append("g").attr("class", "y-axis axis").attr("transform", `translate(${marginMain.left},0)`).call(d3.axisLeft(y).ticks(7));
-                 svgMain.append("text").attr("class", "y-label axis-label").attr("transform", "rotate(-90)").attr("x", -(marginMain.top + innerHeight / 2)).attr("y", marginMain.left - 50).text(config.yLabelFull);
-                 if (xMedian !== undefined && xMedian !== null) svgMain.append("line").attr("class", "quadrant-line").attr("x1", x(xMedian)).attr("x2", x(xMedian)).attr("y1", marginMain.top).attr("y2", mainHeight - marginMain.bottom);
-                 if (yMedian !== undefined && yMedian !== null) svgMain.append("line").attr("class", "quadrant-line").attr("x1", marginMain.left).attr("x2", mainWidth - marginMain.right).attr("y1", y(yMedian)).attr("y2", y(yMedian));
+                const xMedian = config._xMedian; // Use cached median
+                const yMedian = config._yMedian; // Use cached median
 
-                 
+                 // --- Draw Axes, Titles, Median Lines for main plot ---
+                 svgMain.append("text").attr("class", "plot-title")
+                     .attr("x", mainWidth / 2).attr("y", marginMain.top / 2 - 5) // Centered above plot
+                     .text(config.title);
+                 svgMain.append("g").attr("class", "x-axis axis")
+                     .attr("transform", `translate(0,${mainHeight - marginMain.bottom})`) // Positioned at bottom
+                     .call(d3.axisBottom(x).ticks(7));
+                 svgMain.append("text").attr("class", "x-label axis-label")
+                     .attr("x", mainWidth / 2).attr("y", mainHeight - 15) // Centered below x-axis
+                     .text(config.xLabelFull);
+                 svgMain.append("g").attr("class", "y-axis axis")
+                     .attr("transform", `translate(${marginMain.left},0)`) // Positioned at left
+                     .call(d3.axisLeft(y).ticks(7));
+                 svgMain.append("text").attr("class", "y-label axis-label")
+                     .attr("transform", "rotate(-90)") // Rotated for y-axis
+                     .attr("x", -(marginMain.top + innerHeight / 2)) // Centered along y-axis height
+                     .attr("y", marginMain.left - 50) // Positioned left of y-axis
+                     .text(config.yLabelFull);
+                 // Draw median lines if valid
+                 if (xMedian !== undefined && xMedian !== null) {
+                     svgMain.append("line").attr("class", "quadrant-line")
+                         .attr("x1", x(xMedian)).attr("x2", x(xMedian))
+                         .attr("y1", marginMain.top).attr("y2", mainHeight - marginMain.bottom); // Vertical line
+                 }
+                 if (yMedian !== undefined && yMedian !== null) {
+                     svgMain.append("line").attr("class", "quadrant-line")
+                         .attr("x1", marginMain.left).attr("x2", mainWidth - marginMain.right)
+                         .attr("y1", y(yMedian)).attr("y2", y(yMedian)); // Horizontal line
+                 }
+
+                 // --- Draw Quadrant Labels OUTSIDE the plot area for main plot ---
                  const isMobile = window.innerWidth <= 600;
-                 const mainLabelPadding = isMobile ? 8 : 12; 
-                 
-                 const mainVerticalLabelOffset = mainLabelPadding * (isMobile ? 1.8 : 1.5); // Adjust multiplier as needed
-                 
+                 const mainOuterLabelPadding = isMobile ? 8 : 12; // Padding from plot edge
+                 const mainOuterLabelYOffset = isMobile ? -10 : -15; // Negative offset for above top edge
+                 const mainOuterLabelYOffsetBottom = isMobile ? 15 : 20; // Positive offset for below bottom edge
 
                  if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
-                     
-                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + mainLabelPadding).attr("y", marginMain.top + mainVerticalLabelOffset).text(config.quadLabels.II).attr("text-anchor", "start");
-                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - mainLabelPadding).attr("y", marginMain.top + mainVerticalLabelOffset).text(config.quadLabels.I).attr("text-anchor", "end");
-                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - mainLabelPadding).attr("y", mainHeight - marginMain.bottom - mainLabelPadding).text(config.quadLabels.III).attr("text-anchor", "end"); // Bottom labels might need less vertical adjustment
-                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + mainLabelPadding).attr("y", mainHeight - marginMain.bottom - mainLabelPadding).text(config.quadLabels.IV).attr("text-anchor", "start"); // Bottom labels might need less vertical adjustment
-                  }
+                     // Positions are relative to the SVG root (0,0 top-left), using margin values
 
+                     // Quadrant II (Top Right Area)
+                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                         .attr("x", mainWidth - marginMain.right + mainOuterLabelPadding) // Right of plot area
+                         .attr("y", marginMain.top + mainOuterLabelYOffset) // Above plot area top
+                         .attr("text-anchor", "end")
+                         .text(config.quadLabels.II);
+
+                     // Quadrant I (Top Left Area)
+                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                         .attr("x", marginMain.left - mainOuterLabelPadding) // Left of plot area
+                         .attr("y", marginMain.top + mainOuterLabelYOffset) // Above plot area top
+                         .attr("text-anchor", "start")
+                         .text(config.quadLabels.I);
+
+                     // Quadrant III (Bottom Left Area)
+                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                         .attr("x", marginMain.left - mainOuterLabelPadding) // Left of plot area
+                         .attr("y", mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom) // Below plot area bottom
+                         .attr("text-anchor", "start")
+                         .text(config.quadLabels.III);
+
+                     // Quadrant IV (Bottom Right Area)
+                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
+                         .attr("x", mainWidth - marginMain.right + mainOuterLabelPadding) // Right of plot area
+                         .attr("y", mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom) // Below plot area bottom
+                         .attr("text-anchor", "end")
+                         .text(config.quadLabels.IV);
+                 }
+                 // --- End NEW Quadrant Labels ---
+
+
+                 // --- Draw Quadrant Overlays (for highlighting) ---
                  const overlays = svgMain.selectAll(".quadrant-overlay").data(["I","II","III","IV"]);
-                 overlays.enter().append("rect").attr("class","quadrant-overlay").merge(overlays)
-                    .attr("opacity", 0).attr("pointer-events","none")
-                    .each(function(q){
-                        if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return;
-                        const isLeft = q==="I" || q==="III", isTop = q==="I" || q==="II";
+                 overlays.enter().append("rect")
+                    .attr("class","quadrant-overlay")
+                    .merge(overlays)
+                    .attr("opacity", 0) // Start hidden
+                    .attr("pointer-events","none") // Not interactive
+                    .each(function(q){ // Calculate position and size for each quadrant overlay
+                        if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return; // Skip if medians invalid
+                        const isLeft = q==="I" || q==="III";
+                        const isTop = q==="I" || q==="II";
+                        // Calculate position based on margins and median lines
                         const xPos = isLeft ? marginMain.left : x(xMedian);
                         const yPos = isTop ? marginMain.top : y(yMedian);
+                        // Calculate width/height based on margins and median lines
                         const width = Math.max(0, isLeft ? x(xMedian)-marginMain.left : mainWidth-marginMain.right-x(xMedian));
                         const height = Math.max(0, isTop ? y(yMedian)-marginMain.top : mainHeight-marginMain.bottom-y(yMedian));
+                        // Apply dimensions only if valid numbers
                         if (isFinite(xPos) && isFinite(yPos) && isFinite(width) && width >= 0 && isFinite(height) && height >= 0) {
                             d3.select(this).attr("x", xPos).attr("y", yPos).attr("width", width).attr("height", height);
-                        } else { d3.select(this).attr("width", 0).attr("height", 0); }
+                        } else {
+                            // Fallback if calculation fails
+                            d3.select(this).attr("width", 0).attr("height", 0);
+                        }
                  });
 
+                 // --- Transition Main Circles to Scatter Positions ---
                  mainCircles.transition("scatterPos").duration(1500).ease(d3.easeCubicInOut)
-                    .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -10; })
-                    .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -10; })
+                    // Position circles using scatter scales, hide if data invalid
+                    .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -100; })
+                    .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -100; })
+                    // Set radius, hide if data invalid
                     .attr("r", d => { const xVal = d[config.xField], yVal = d[config.yField]; return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 1.1 : 0; })
                     .end().then(() => {
+                         // After transition: apply filters and setup Intersection Observer
                          console.log("Scatter transition finished. Setting up IO.");
                          applyGlobalFilterAndSearch();
-                         setupIntersectionObserver(config); 
+                         setupIntersectionObserver(config); // Pass the correct config
                     }).catch(err => {
+                         // Handle transition errors
                          console.error("Scatter transition error:", err);
-                         applyGlobalFilterAndSearch();
-                         setupIntersectionObserver(config); 
+                         applyGlobalFilterAndSearch(); // Ensure filters are applied
+                         setupIntersectionObserver(config); // Still try to setup IO
                     });
-                applyGlobalFilterAndSearch();
+                applyGlobalFilterAndSearch(); // Apply filters immediately for responsiveness
             }
 
 
-            
+            // --- Intersection Observer for Scroll Steps ---
             const steps = document.querySelectorAll("#scatter-steps .step");
 
             function setupIntersectionObserver(config) { // Expects mainScatterConfig
-                window.IO?.disconnect();
+                window.IO?.disconnect(); // Disconnect previous observer if exists
                 observerInitialized = false; // Reset flag
-                console.log("[IO] Setting up Intersection Observer (Revised Logic)");
+                console.log("[IO] Setting up Intersection Observer");
 
                 window.IO = new IntersectionObserver(entries => {
-                    if (currentView !== 'scatter') return; 
+                    // Ignore callbacks if not in scatter view
+                    if (currentView !== 'scatter') return;
 
-                    const minVisibilityThreshold = 0.05; 
+                    const minVisibilityThreshold = 0.05; // Minimum ratio to be considered "visible"
 
-                    
+                    // Find the step elements that are currently intersecting above the threshold
                     const visibleSteps = entries.filter(entry =>
                         entry.isIntersecting && entry.intersectionRatio >= minVisibilityThreshold
                     );
 
                     let highestVisibleStep = null;
                     if (visibleSteps.length > 0) {
-                        
+                        // Sort visible steps by their top position (lowest top value = highest on screen)
                         visibleSteps.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-                        
+                        // The first one in the sorted list is the highest visible step
                         highestVisibleStep = visibleSteps[0].target;
                     }
 
-                    
+                    // Determine the quadrant associated with the highest visible step, default to 'all'
                     const nextActiveQuad = highestVisibleStep ? highestVisibleStep.dataset.quad : 'all';
 
-                   
+                    // Only update if the active quadrant changes
                     if (nextActiveQuad !== activeQuad) {
                         console.log(`[IO Callback] *** Changing highlight: ${activeQuad} -> ${nextActiveQuad} *** (Highest visible: ${highestVisibleStep ? highestVisibleStep.dataset.quad : 'None'})`);
-                        activeQuad = nextActiveQuad;
-                        renderHighlight(activeQuad, config); // Pass config
+                        activeQuad = nextActiveQuad; // Update the global state
+                        renderHighlight(activeQuad, config); // Render the highlight effect
                     }
                 }, {
-                    
-                    threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) // Use multiple thresholds (0, 0.05, ..., 1.0)
+                    // Use multiple thresholds to trigger callback frequently during scroll
+                    threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) // [0, 0.05, 0.1, ..., 1.0]
                 });
 
+                // Observe each step element
                 steps.forEach(s => window.IO.observe(s));
                 console.log("[IO] Observer attached to steps.");
 
-                 
+                 // Initial check in case a step is already visible on load/transition
                  if (!observerInitialized) {
-                      console.log("[IO Initial Check] Scheduling (Revised)...");
+                      console.log("[IO Initial Check] Scheduling...");
+                      // Use setTimeout to allow layout settling after transition
                       setTimeout(() => {
+                         // Abort if view changed during timeout
                          if (currentView !== 'scatter') { console.log("[IO Initial Check] Aborted, view changed."); return; }
-                         console.log("[IO Initial Check] Running (Revised)...");
+                         console.log("[IO Initial Check] Running...");
 
                          const minVisibilityThreshold = 0.05;
                          const currentVisibleSteps = [];
+                         // Manually check visibility of each step
                          steps.forEach(step => {
                             const rect = step.getBoundingClientRect();
+                            // Check if vertically within viewport
                             const isIntersecting = rect.top < window.innerHeight && rect.bottom > 0;
                             if (isIntersecting) {
+                                // Calculate approximate intersection ratio
                                 const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
                                 const ratio = Math.max(0, Math.min(1, visibleHeight / rect.height));
                                 if (ratio >= minVisibilityThreshold) {
+                                    // Store step and its top position if visible enough
                                     currentVisibleSteps.push({ target: step, top: rect.top });
                                 }
                             }
@@ -958,59 +1281,70 @@
 
                          let initialHighestStep = null;
                          if (currentVisibleSteps.length > 0) {
+                             // Find the highest visible step (lowest top value)
                              currentVisibleSteps.sort((a, b) => a.top - b.top);
                              initialHighestStep = currentVisibleSteps[0].target;
                          }
 
+                         // Determine the initial quadrant based on the highest visible step
                          const initialActiveQuad = initialHighestStep ? initialHighestStep.dataset.quad : 'all';
                          console.log(`[IO Initial Check] Determined initial quad: ${initialActiveQuad}.`);
 
+                         // Update state and render highlight only if different from default
                          if (initialActiveQuad !== activeQuad) {
                               console.log(`[IO Initial Check] *** Setting initial highlight: ${activeQuad} -> ${initialActiveQuad} ***`);
                               activeQuad = initialActiveQuad;
                          }
-                         renderHighlight(activeQuad, config); 
-                         observerInitialized = true;
-                     }, 350); 
+                         renderHighlight(activeQuad, config); // Render initial highlight state
+                         observerInitialized = true; // Mark as initialized
+                     }, 350); // Delay to ensure transitions/layout are stable
                  }
-             } 
+             }
 
             function renderHighlight(quad, config) { // Expects mainScatterConfig
-                if (currentView !== 'scatter' || !svgMain || !svgMain.node()) { // GUARD
+                // Guard against rendering if not in scatter view or SVG is gone
+                if (currentView !== 'scatter' || !svgMain || !svgMain.node()) {
                     console.warn(`[RenderHighlight] Aborting. View: ${currentView}, SVG exists: ${!!svgMain?.node()}`);
-                    if (currentView !== 'scatter') activeQuad = 'all';
+                    if (currentView !== 'scatter') activeQuad = 'all'; // Reset if view changed
                     return;
                 }
                 console.log(`[RenderHighlight] Rendering for quad: ${quad}`);
+                // Transition the opacity of the quadrant overlays
                 svgMain.selectAll(".quadrant-overlay")
-                    .filter(qData => qData).transition("overlayHighlight").duration(300)
+                    .filter(qData => qData) // Ensure data is bound
+                    .transition("overlayHighlight").duration(300)
+                    // Show the overlay for the active quad, hide others
                     .attr("opacity", qData => (quad === "all") ? 0 : (qData === quad ? 0.12 : 0));
-                
+
+                // Re-apply global filters/search, which now includes quadrant dimming logic
                 applyGlobalFilterAndSearch();
-            } 
+            }
 
 
-            
+            // --- Scroll Listener for View Changes ---
             const chartWrapper = document.querySelector('.chart-wrapper');
             const scatterStepsSection = document.getElementById('scatter-steps');
 
             window.addEventListener("scroll", () => {
                 const y = window.scrollY;
                 const wh = window.innerHeight;
+                // Exit if essential elements aren't found
                 if (!chartWrapper || !scatterStepsSection) return;
 
+                // Get positions and dimensions needed for calculations
                 const wrapperRect = chartWrapper.getBoundingClientRect();
                 const stepsRect = scatterStepsSection.getBoundingClientRect();
-                const wrapperTop = wrapperRect.top + y;
-                const stepsTop = stepsRect.top + y;
+                const wrapperTop = wrapperRect.top + y; // Absolute top position of wrapper
+                const stepsTop = stepsRect.top + y;     // Absolute top position of steps section
                 const wrapperHeight = chartWrapper.offsetHeight;
 
-                
+                // Define scroll thresholds for changing views
+                // Transition to Map when 1/3 of the wrapper has scrolled past the bottom of the viewport
                 const mapStartPoint = wrapperTop + wrapperHeight * 0.33 - wh;
-                
-                const scatterStartPoint = stepsTop - wh * 0.6; 
+                // Transition to Scatter when the top of the steps section is about 60% up the viewport
+                const scatterStartPoint = stepsTop - wh * 0.6;
 
-                let targetView;
+                let targetView; // Determine the target view based on scroll position
 
                 if (y < mapStartPoint) {
                     targetView = "sphere";
@@ -1020,6 +1354,7 @@
                     targetView = "scatter";
                 }
 
+                // If the target view is different from the current view, trigger the transition
                 if (targetView !== currentView) {
                     console.log(`Scroll Trigger: Changing view from ${currentView} to ${targetView} (y=${y.toFixed(0)}, mapStart=${mapStartPoint.toFixed(0)}, scatterStart=${scatterStartPoint.toFixed(0)})`);
                     if (targetView === "sphere") toSphere();
@@ -1027,20 +1362,20 @@
                     else if (targetView === "scatter") toScatter();
                 }
 
-                
+                // Update search controls visibility based on the current view
                 updateSearchControlsVisibility();
 
-               
+                // Hide intro overlay when scrolling down or not in sphere view
                 const intro = document.getElementById("sphere-intro");
                 if (intro) {
                     if (y < 80 && currentView === 'sphere') intro.classList.remove("hidden");
                     else intro.classList.add("hidden");
                 }
 
-            }, { passive: true });
+            }, { passive: true }); // Use passive listener for better scroll performance
 
 
-            
+            // --- Intersection Observer for Fading Main Chart ---
             const chartContainer = document.getElementById("chart-container");
             const staticPlotsSection = document.getElementById("flourish-block");
 
@@ -1048,56 +1383,85 @@
                 new IntersectionObserver(
                     entries => {
                         const staticPlotsEntry = entries[0];
-                        const fadeStartRatio = 0.05, fadeEndRatio = 0.25;
-                        let opacity = 1;
-                        staticPlotsVisible = staticPlotsEntry.isIntersecting;
+                        const fadeStartRatio = 0.05; // Start fading when 5% visible
+                        const fadeEndRatio = 0.25; // Fully faded when 25% visible
+                        let opacity = 1; // Default opacity
+
+                        staticPlotsVisible = staticPlotsEntry.isIntersecting; // Update visibility flag
+
                         if (staticPlotsEntry.isIntersecting) {
+                            // Calculate opacity based on intersection ratio within the fade range
                             const ratio = staticPlotsEntry.intersectionRatio;
-                            if (ratio >= fadeStartRatio) opacity = 1 - Math.min(1, Math.max(0, (ratio - fadeStartRatio) / (fadeEndRatio - fadeStartRatio)));
-                        } else if (staticPlotsEntry.boundingClientRect.top < 0) { opacity = 0; staticPlotsVisible = false; }
-                        else { opacity = 1; staticPlotsVisible = false; }
+                            if (ratio >= fadeStartRatio) {
+                                opacity = 1 - Math.min(1, Math.max(0, (ratio - fadeStartRatio) / (fadeEndRatio - fadeStartRatio)));
+                            }
+                        } else if (staticPlotsEntry.boundingClientRect.top < 0) {
+                            // If scrolled past (top is negative), force opacity to 0
+                            opacity = 0;
+                            staticPlotsVisible = false;
+                        } else {
+                            // If not intersecting and above the viewport, opacity is 1
+                            opacity = 1;
+                            staticPlotsVisible = false;
+                        }
+
+                        // Apply opacity and pointer events
                         chartContainer.style.opacity = opacity;
                         chartContainer.style.pointerEvents = opacity < 0.5 ? "none" : "auto";
-                        updateSearchControlsVisibility();
+
+                        updateSearchControlsVisibility(); // Update search controls based on visibility
+
+                        // Hide intro if chart starts fading
                         const intro = document.getElementById("sphere-intro");
                         if (intro && opacity < 0.8) intro.classList.add("hidden");
-                        if (opacity < 0.5 && window.IO) { // Disconnect IO if chart hidden
+
+                        // Disconnect Intersection Observer for steps if main chart is mostly hidden
+                        if (opacity < 0.5 && window.IO) {
                              console.log("Disconnecting IO due to main chart fade");
                              window.IO.disconnect();
-                             activeQuad = 'all'; observerInitialized = false;
+                             activeQuad = 'all'; // Reset active quadrant
+                             observerInitialized = false; // Reset IO flag
                         }
-                    }, { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) }
-                ).observe(staticPlotsSection);
+                    },
+                    { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) } // Multiple thresholds for smooth fade calculation
+                ).observe(staticPlotsSection); // Observe the static plots section
              }
 
-            
+            // --- Intro Button ---
             const intro = document.getElementById("sphere-intro");
             const introOk = document.getElementById("intro-ok");
             if (intro && introOk) {
                 function hideIntro() { intro.classList.add("hidden"); }
                 introOk.addEventListener("click", hideIntro);
+                // Optional: Hide intro on first scroll
+                // window.addEventListener('scroll', hideIntro, { once: true });
             }
 
-            
+            // --- Initial View Setup on Load ---
+            // Use setTimeout to ensure layout is stable before calculating positions
             setTimeout(() => {
                  const y = window.scrollY;
                  const wh = window.innerHeight;
+                 // Check if elements exist before proceeding
                  if (!chartWrapper || !scatterStepsSection) {
                      console.error("Initial view check failed: Elements not found.");
-                     toSphere(); applyGlobalFilterAndSearch(); updateSearchControlsVisibility(); return;
+                     toSphere(); // Default to sphere view
+                     applyGlobalFilterAndSearch();
+                     updateSearchControlsVisibility();
+                     return;
                  }
+                 // Recalculate positions (same logic as scroll handler)
                  const wrapperRect = chartWrapper.getBoundingClientRect();
                  const stepsRect = scatterStepsSection.getBoundingClientRect();
                  const wrapperTop = wrapperRect.top + y;
                  const stepsTop = stepsRect.top + y;
                  const wrapperHeight = chartWrapper.offsetHeight;
-
-                 
                  const mapStartPoint = wrapperTop + wrapperHeight * 0.33 - wh;
-                 const scatterStartPoint = stepsTop - wh * 0.6; // <<< ADJUSTED: Transition earlier
+                 const scatterStartPoint = stepsTop - wh * 0.6;
 
-                 let initialViewFunction = toSphere;
+                 let initialViewFunction = toSphere; // Default view
 
+                 // Determine initial view based on current scroll position
                  if (y >= mapStartPoint && y < scatterStartPoint) {
                      initialViewFunction = toMap;
                  } else if (y >= scatterStartPoint) {
@@ -1105,23 +1469,28 @@
                  }
 
                  console.log(`Setting initial view: ${initialViewFunction.name} (y=${y.toFixed(0)}, mapStart=${mapStartPoint.toFixed(0)}, scatterStart=${scatterStartPoint.toFixed(0)})`);
-                 initialViewFunction();
+                 initialViewFunction(); // Call the function to set the initial view
 
-                 
+                 // Update search visibility after a short delay to ensure view is set
                  setTimeout(updateSearchControlsVisibility, 200);
 
-                 
-                 const intro = document.getElementById("sphere-intro");
-                 if (intro) {
-                     if (y < 80 && currentView === 'sphere') intro.classList.remove("hidden");
-                     else intro.classList.add("hidden");
+                 // Handle initial intro visibility
+                 const introElem = document.getElementById("sphere-intro");
+                 if (introElem) {
+                     if (y < 80 && currentView === 'sphere') {
+                         introElem.classList.remove("hidden");
+                     } else {
+                         introElem.classList.add("hidden");
+                     }
                  }
                  console.log("Initial view determined:", currentView);
-            }, 150); 
+            }, 150); // Short delay for safety
 
 
         }).catch(error => {
+            // --- Error Handling ---
             console.error("Error loading or processing data:", error);
+            // Display user-friendly error message
             document.body.innerHTML = `<div style="color: red; padding: 50px; text-align: center; font-size: 1.2em;">A apărut o eroare la încărcarea datelor (${error.message}). Vă rugăm reîncărcați pagina.</div>`;
         });
 
