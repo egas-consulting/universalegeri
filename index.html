@@ -92,7 +92,7 @@
             height: auto;
             display: block;
             background-color: transparent;
-            overflow: visible; 
+            overflow: visible;
         }
 
 
@@ -104,7 +104,7 @@
             font-size: 0.9em;
             pointer-events: none;
             opacity: 0;
-            z-index: 10; 
+            z-index: 10;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border-radius: 4px;
             max-width: 90vw;
@@ -232,7 +232,7 @@
             margin: 10vh auto;
             background-color: rgba(11, 31, 76, 0.2);
             border-radius: 8px;
-            padding: 25px 15px 15px 15px; 
+            padding: 25px 15px 15px 15px;
             box-shadow: 0 0 15px rgba(136, 181, 255, 0.15);
         }
         .scatter-explainer {
@@ -249,17 +249,32 @@
         .map-title { fill: #fff; font-size: 1.3em; font-weight: 600; text-anchor: middle; }
         .map-subtitle { fill: #ccc; font-size: 0.9em; text-anchor: middle; }
         .quadrant-line { stroke: #ffffff; stroke-dasharray: 3 3; stroke-width: 1.5px; opacity: 0.8; }
-        .quadrant-label { /* Base style for all quadrant labels */
+
+        /* --- START: Updated Quadrant Label Styles --- */
+        .quadrant-label { /* Base style for all quadrant labels - applied to <text> */
             fill: #ffffff;
-            font-size: 1em;
+            font-size: 1em; /* Base size - inherited by outer */
             font-weight: 400;
             opacity: 0.9;
          }
-         .quadrant-label-outer { 
-             font-size: 0.75em;
-             fill: #ccc;
-             opacity: 0.85;
+         .quadrant-label-outer { /* Style for labels outside the plot */
+             /* Increased font size */
+             font-size: 0.9em; /* Larger base size */
+             /* Improved contrast/visibility */
+             fill: #e0e0e0; /* Lighter grey */
+             font-weight: 500; /* Slightly bolder */
+             opacity: 0.95; /* Ensure high opacity */
+             /* Add subtle shadow for definition */
+             text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+             pointer-events: none; /* Ensure labels don't block mouse events */
+             /* Line height is controlled by 'dy' on tspans in JS */
          }
+         /* Optional: Style for the tspan lines if needed */
+         .quadrant-label-outer tspan {
+             /* Specific styles for tspans if required */
+         }
+         /* --- END: Updated Quadrant Label Styles --- */
+
          .quadrant-overlay {
              fill: #ffffff;
              opacity: 0;
@@ -292,11 +307,15 @@
              .plot-title { font-size: 1.1em; }
              .axis-label { font-size: 0.75em; }
 
+             /* Mobile Quadrant Label Adjustments */
              .quadrant-label {
-                 font-size: 0.65em; 
+                 font-size: 0.8em; /* Adjust base size for mobile if needed */
              }
              .quadrant-label-outer {
-                  font-size: 0.6em; 
+                  /* Adjust mobile font size */
+                  font-size: 0.75em;
+                  /* Mobile text shadow might be less necessary or smaller */
+                  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
              }
 
              .axis text { font-size: 9.5px; }
@@ -359,6 +378,7 @@
         <div class="chart-container" id="chart-container">
             <div class="svg-inner">
                 <svg id="viz" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
+                <!-- Note: Arrowhead <defs> would go here if implemented -->
             </div>
         </div>
     </div>
@@ -434,10 +454,10 @@
         let allDataGlobal;
         const mainWidth = 1000, mainHeight = 700;
         const plotWidth = 900, plotHeight = 550;
-        // Increased static plot margins slightly to make room for outer labels
-        const margin = { top: 60, right: 50, bottom: 50, left: 70 };
-        // Increased main plot margins slightly to make room for outer labels
-        const marginMain = { top: 60, right: 70, bottom: 60, left: 80 };
+        // Static plot margins (might need slight adjustment with larger labels)
+        const margin = { top: 60, right: 60, bottom: 60, left: 80 }; // Increased right/bottom slightly
+        // Main plot margins (might need slight adjustment with larger labels)
+        const marginMain = { top: 60, right: 80, bottom: 70, left: 90 }; // Increased right/bottom slightly
 
         const baseCircleDiameter = window.innerWidth <= 600 ? 9 : window.innerWidth > 800 ? 4 : 3.5;
 
@@ -596,17 +616,17 @@
                              baseOpacity = 0.75;
                          }
                     } else if (isMain) {
-                        
+
                         if (currentView === 'sphere') {
                             baseOpacity = d.display_opacity_z ?? 1.0;
                         } else if (currentView === 'map') {
-                            baseOpacity = (d.Lat && d.Long) ? 0.8 : 0; 
+                            baseOpacity = (d.Lat && d.Long) ? 0.8 : 0;
                         } else if (currentView === 'scatter') {
                             const config = mainScatterConfig;
                             const xVal = d[config.xField], yVal = d[config.yField];
                             const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
 
-                            if (!hasValidScatterData) return 0; 
+                            if (!hasValidScatterData) return 0;
 
                             const isQuadActive = activeQuad !== 'all';
                             const inActiveQuad = isQuadActive && isPointInQuad(d, config, activeQuad);
@@ -617,7 +637,7 @@
                         }
                     }
 
-                    
+
                     if (isSearching && !exactSearchMatch && isWinnerMatch && isSearchMatch) {
                          baseOpacity *= 0.6;
                     }
@@ -626,56 +646,56 @@
                         baseOpacity = isStatic ? 0.9 : 1.0;
                     }
 
-                    return Math.max(0.05, baseOpacity); 
+                    return Math.max(0.05, baseOpacity);
                 })
                 .attr("stroke", function(d) {
                     const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
 
-                    if (!isWinnerMatch || !isSearchMatch) return "none"; 
+                    if (!isWinnerMatch || !isSearchMatch) return "none";
 
-                    if (exactSearchMatch) return "#FFFFFF"; 
-                    if (currentFilter !== "all" && isWinnerMatch) return "#FFFFFF"; 
+                    if (exactSearchMatch) return "#FFFFFF";
+                    if (currentFilter !== "all" && isWinnerMatch) return "#FFFFFF";
 
-                    
+
                     const isMain = d3.select(this).classed('main-circle');
                     if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
                          const config = mainScatterConfig;
                          const xVal = d[config.xField], yVal = d[config.yField];
                          const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
                          if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
-                             return "#FFF"; 
+                             return "#FFF";
                          }
                     }
 
 
-                    return "none"; 
+                    return "none";
                 })
                 .attr("stroke-width", function(d) {
                      const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                      const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
 
-                     if (!isWinnerMatch || !isSearchMatch) return 0; 
+                     if (!isWinnerMatch || !isSearchMatch) return 0;
 
                      const isMain = d3.select(this).classed('main-circle');
 
-                     if (exactSearchMatch) return isMain ? 3 : 2.5; 
-                     if (currentFilter !== "all" && isWinnerMatch) return 1; 
+                     if (exactSearchMatch) return isMain ? 3 : 2.5;
+                     if (currentFilter !== "all" && isWinnerMatch) return 1;
 
-                     
+
                      if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
                           const config = mainScatterConfig;
                           const xVal = d[config.xField], yVal = d[config.yField];
                           const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
                           if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
-                              return 1; 
+                              return 1;
                           }
                      }
 
 
-                     return 0; 
+                     return 0;
                  })
                  .attr("cx", function(d) {
                     if (currentView === 'sphere' && d3.select(this).classed('main-circle')) return d.display_x;
@@ -694,7 +714,7 @@
                      let baseRadius = 0;
 
                      if (isMain) {
-                         
+
                          if (currentView === 'sphere') {
                              baseRadius = d.base_sphere_r ?? 0;
                          } else if (currentView === 'map' && areaScale) {
@@ -704,25 +724,25 @@
                              const xVal = d[config.xField], yVal = d[config.yField];
                              baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 1.1 : 0;
                          }
-                     } else { 
+                     } else {
                           const parentSvgId = d3.select(this.ownerSVGElement).attr('id');
                           const config = staticConfigs[parentSvgId];
                           if (config) {
                               const xVal = d[config.xField], yVal = d[config.yField];
-                             
+
                               baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
                           } else {
-                              baseRadius = 0; 
+                              baseRadius = 0;
                           }
                      }
 
-                     
+
                      baseRadius = (typeof baseRadius === 'number' && !isNaN(baseRadius)) ? baseRadius : 0;
 
-                     
+
                      return (exactSearchMatch && baseRadius > 0) ? baseRadius * boostFactor : baseRadius;
                  })
-                 
+
                  .style("pointer-events", function(d) {
                      const opacity = parseFloat(d3.select(this).attr("opacity"));
                      const radius = parseFloat(d3.select(this).attr("r"));
@@ -735,13 +755,13 @@
         function createScatterPlot(containerSelector, data, config) {
              const svg = d3.select(containerSelector);
              const svgId = svg.attr('id');
-             staticConfigs[svgId] = config; 
-             config._xMedian = d3.median(data, d => d[config.xField]); 
-             config._yMedian = d3.median(data, d => d[config.yField]); 
+             staticConfigs[svgId] = config;
+             config._xMedian = d3.median(data, d => d[config.xField]);
+             config._yMedian = d3.median(data, d => d[config.yField]);
 
-             svg.selectAll("*").remove(); 
+             svg.selectAll("*").remove();
 
-            
+
              const plotGroup = svg.append("g")
                  .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -758,8 +778,8 @@
              const x = d3.scaleLinear().domain(xDomain).nice().range([0, innerWidth]);
              const y = d3.scaleLinear().domain(yDomain).nice().range([innerHeight, 0]);
 
-             const xMedian = config._xMedian; 
-             const yMedian = config._yMedian; 
+             const xMedian = config._xMedian;
+             const yMedian = config._yMedian;
 
             // --- Draw Axes and Titles ---
             plotGroup.append("g").attr("class", "x-axis axis")
@@ -767,21 +787,21 @@
                 .call(d3.axisBottom(x).ticks(7).tickSizeOuter(0));
             plotGroup.append("text").attr("class", "axis-label x-label")
                 .attr("x", innerWidth / 2)
-                .attr("y", innerHeight + margin.bottom - 10)
+                .attr("y", innerHeight + margin.bottom - 15) // Adjusted y slightly
                 .text(config.xLabelFull || config.xLabel);
             plotGroup.append("g").attr("class", "y-axis axis")
                 .call(d3.axisLeft(y).ticks(7).tickSizeOuter(0));
             plotGroup.append("text").attr("class", "axis-label y-label")
                 .attr("transform", "rotate(-90)")
                 .attr("x", -innerHeight / 2)
-                .attr("y", -margin.left + 15) 
+                .attr("y", -margin.left + 20) // Adjusted y slightly
                 .text(config.yLabelFull || config.yLabel);
             plotGroup.append("text").attr("class", "plot-title")
                 .attr("x", innerWidth / 2)
-                .attr("y", -margin.top / 2) 
+                .attr("y", -margin.top / 2 - 40) // Adjusted y slightly
                 .text(config.title);
 
-           
+
             if (xMedian !== undefined && xMedian !== null) {
                 plotGroup.append("line").attr("class", "quadrant-line")
                     .attr("x1", x(xMedian)).attr("x2", x(xMedian))
@@ -793,85 +813,86 @@
                     .attr("y1", y(yMedian)).attr("y2", y(yMedian));
             }
 
-            
+
+            // --- Draw Quadrant Labels OUTSIDE the plot area using TSPAN for wrapping ---
             const isMobile = window.innerWidth <= 600;
-            const outerLabelPadding = isMobile ? 15 : 20; 
-            const outerLabelYOffset = isMobile ? -15 : -20; 
-            const outerLabelYOffsetBottom = isMobile ? 20 : 35; 
+            // Adjusted padding values for larger/multi-line labels
+            const outerLabelPadding = isMobile ? 20 : 25; // Increased padding from plot edge
+            const outerLabelYOffset = isMobile ? -18 : -25; // Increased negative offset for top labels
+            const outerLabelYOffsetBottom = isMobile ? 25 : 45; // Increased positive offset for bottom labels
 
             if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
-                 
+                const labelData = [
+                     { quad: 'II', anchor: 'end', x: innerWidth + outerLabelPadding, y: outerLabelYOffset },
+                     { quad: 'I', anchor: 'start', x: -outerLabelPadding, y: outerLabelYOffset },
+                     { quad: 'III', anchor: 'start', x: -outerLabelPadding, y: innerHeight + outerLabelYOffsetBottom },
+                     { quad: 'IV', anchor: 'end', x: innerWidth + outerLabelPadding, y: innerHeight + outerLabelYOffsetBottom }
+                ];
 
-                 
-                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                     .attr("x", innerWidth + outerLabelPadding) 
-                     .attr("y", outerLabelYOffset) 
-                     .attr("text-anchor", "end")
-                     .text(config.quadLabels.II);
+                labelData.forEach(lbl => {
+                     const labelText = config.quadLabels[lbl.quad];
+                     if (!labelText) return; // Skip if label text is missing
 
-                 
-                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                     .attr("x", -outerLabelPadding) 
-                     .attr("y", outerLabelYOffset) 
-                     .attr("text-anchor", "start")
-                     .text(config.quadLabels.I);
+                     const lines = labelText.split('\n'); // Split by newline character
+                     const textElement = plotGroup.append("text")
+                         .attr("class", "quadrant-label quadrant-label-outer") // Use updated class
+                         .attr("x", lbl.x)
+                         .attr("y", lbl.y) // Base y position for the first line
+                         .attr("text-anchor", lbl.anchor);
 
-                 // Quadrant III (Bottom Left Corner Area) - Text anchored start, placed left of plot
-                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                     .attr("x", -outerLabelPadding) // Left of plot area
-                     .attr("y", innerHeight + outerLabelYOffsetBottom) // Below plot area bottom
-                     .attr("text-anchor", "start")
-                     .text(config.quadLabels.III);
+                     // Append tspans for each line
+                     lines.forEach((line, i) => {
+                         textElement.append("tspan")
+                             .attr("x", lbl.x) // Re-apply x for each tspan for correct anchor alignment
+                             .attr("dy", i === 0 ? "0" : "1.1em") // Add vertical spacing (dy) for subsequent lines
+                             .text(line);
+                     });
+                 });
+            }
+             // --- END NEW Quadrant Labels ---
 
-                 // Quadrant IV (Bottom Right Corner Area) - Text anchored end, placed right of plot
-                 plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                     .attr("x", innerWidth + outerLabelPadding) 
-                     .attr("y", innerHeight + outerLabelYOffsetBottom) 
-                     .attr("text-anchor", "end")
-                     .text(config.quadLabels.IV);
-             }
-             
+
              const circles = plotGroup.selectAll(".data-circle")
-                .data(data, d => d.uat + d.jud) 
+                .data(data, d => d.uat + d.jud)
                 .enter().append("circle")
-                .attr("class", "data-circle static-circle") 
-                
+                .attr("class", "data-circle static-circle")
+
                 .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -100; })
                 .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -100; })
-                
+
                 .attr("r", d => {
                     const xVal = d[config.xField];
                     const yVal = d[config.yField];
                     return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
                 })
-                .attr("fill", d => colorScale(d.Castigator) || "#999") 
-                .attr("opacity", 0.75) 
+                .attr("fill", d => colorScale(d.Castigator) || "#999")
+                .attr("opacity", 0.75)
                 .attr("stroke", "none")
                 .attr("stroke-width", 0)
-               
+
                 .style("pointer-events", d => {
                     const xVal = d[config.xField];
                     const yVal = d[config.yField];
                     return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? 'auto' : 'none';
                 })
-               
+
                 .on("mouseover", (event, d) => {
-                   
+
                     const xVal = d[config.xField], yVal = d[config.yField];
                     if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
 
                     tooltip.style("opacity", 1).html(scatterTooltip(d, config)); // Show tooltip
                     d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", 1.5); // Highlight
                 })
-                .on("mousemove", updateTooltipPosition) 
+                .on("mousemove", updateTooltipPosition)
                 .on("mouseout", (event, d) => {
-                     
+
                      const xVal = d[config.xField], yVal = d[config.yField];
                      if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
 
                      tooltip.style("opacity", 0); // Hide tooltip
 
-                   
+
                      const searchTerm = normalize(d3.select("#search-input").property("value"));
                      const isSearching = searchTerm.length > 0;
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
@@ -894,24 +915,58 @@
          }
 
 
-        
+
         d3.csv("scatter.csv", d3.autoType).then(data => {
             // Filter data: ensure essential fields exist
             allDataGlobal = data.filter(d => d.Lat && d.Long && d.Castigator && d.uat && d["Procent castigator"] != null);
 
-           
+
             allDataGlobal.forEach(d => {
                 // Convert "#DIV/0!" string in the specific column to null
                 if (d["Pacienti la un medic 2023"] === "#DIV/0!") {
                     d["Pacienti la un medic 2023"] = null;
                 }
-                
+
             });
-           
-            const scatterConfig1 = { xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1, title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor", xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)", quadLabels: { I: "I. Tineri, Spațiu Mare", II: "II. Vârstnici, Spațiu Mare", III: "III. Tineri, Spațiu Mic", IV: "IV. Vârstnici, Spațiu Mic" } };
-            const scatterConfig2 = { xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1, title: "Plecările din localitate și ponderea șomerilor", xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)", quadLabels: { I: "I. Puține plecări, Șomaj mare", II: "II. Multe plecări, Șomaj mare", III: "III. Puține plecări, Șomaj mic", IV: "IV. Multe plecări, Șomaj mic" } };
-            const scatterConfig3 = { xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0, title: "Salariați vs. Venituri din Impozite", xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)", quadLabels: { I: "I. Puțini Salariați, Impozit Mare", II: "II. Mulți Salariați, Impozit Mare", III: "III. Puțini Salariați, Impozit Mic", IV: "IV. Mulți Salariați, Impozit Mic" } };
-            const scatterConfig4 = { xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0, title: "Fonduri Europene vs. Acces la Medici", xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic", quadLabels: { I: "I. Fonduri puține, Medici puțini", II: "II. Fonduri multe, Medici puțini", III: "III. Fonduri puține, Medici mulți", IV: "IV. Fonduri multe, Medici mulți" } };
+
+            // --- Scatter Plot Configurations with newline characters (\n) in quadLabels ---
+            const scatterConfig1 = {
+                xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1,
+                title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor",
+                xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)",
+                quadLabels: {
+                    I: "I. Suburbii sau localități \nperiurbane prospere, spațiu mare", II: "II. Localități îmbătrânite\n sau zone turistice rurale",
+                    III: "III. Orașe cu cartiere \naglomerate/densitate mare", IV: "IV. Zone rurale sărace \ncu care modeste și vârstnici"
+                }
+            };
+            const scatterConfig2 = {
+                xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1,
+                title: "Plecările din localitate și ponderea șomerilor",
+                xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)",
+                quadLabels: {
+                    I: "I. Zone unde populația rămâne \ndin lipsă de alternative", II: "II. Zone aflate \nîn declin economic sever",
+                    III: "III. Zone stabile economic", IV: "IV. Zone dinamice, \ndar tranzitorii"
+                }
+            };
+            const scatterConfig3 = {
+                xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0,
+                title: "Salariați vs. Venituri din Impozite",
+                xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)",
+                quadLabels: {
+                    I: "I. Comunități mici/turistice \nsau cu venituri speciale", II: "II. Economie solidă, \ncolectare fiscală eficientă",
+                    III: "III. Zone sărace, \nfără activitate economică", IV: "IV. Zone industriale sau muncitorești \ncu salarii mici"
+                }
+            };
+            const scatterConfig4 = {
+                xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0,
+                title: "Fonduri Europene vs. Acces la Medici",
+                xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic",
+                quadLabels: {
+                    I: "I. Zone sărace, \nfără fonduri", II: "II. Investiții recente \nfără impact asupra sistemului medical",
+                    III: "III. Zone izolate, populație \nmică sau posibile excepții", IV: "IV. Investiții consistente, \ninfrastructură bună"
+                }
+            };
+            // --- End Scatter Plot Configurations ---
 
 
             // Set the first config as the one for the main interactive scatter
@@ -926,7 +981,7 @@
             const yGeo = d3.scaleLinear().domain(d3.extent(allDataGlobal, d => d.Lat)).range([mainHeight - marginMain.bottom, marginMain.top]);
 
 
-            
+
             createSpherePositions(allDataGlobal, 250); // Calculate sphere positions
 
             // Create main circles (initially positioned for sphere)
@@ -1027,7 +1082,7 @@
                 observerInitialized = false; // Reset IO flag
                 sphereAnimation.play(); // Resume sphere rotation
                 updateSearchControlsVisibility(); // Show/hide search based on view
-                // Remove non-sphere elements (axes, titles, lines, etc.)
+                // Remove non-sphere elements (axes, titles, lines, labels, etc.)
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
                 updateSphereVisuals(); // Trigger sphere position update and filter application
             }
@@ -1091,13 +1146,13 @@
 
                  // --- Draw Axes, Titles, Median Lines for main plot ---
                  svgMain.append("text").attr("class", "plot-title")
-                     .attr("x", mainWidth / 2).attr("y", marginMain.top / 2 - 5) // Centered above plot
+                     .attr("x", mainWidth / 2).attr("y", marginMain.top / 2 - 10) // Adjusted Y slightly
                      .text(config.title);
                  svgMain.append("g").attr("class", "x-axis axis")
                      .attr("transform", `translate(0,${mainHeight - marginMain.bottom})`) // Positioned at bottom
                      .call(d3.axisBottom(x).ticks(7));
                  svgMain.append("text").attr("class", "x-label axis-label")
-                     .attr("x", mainWidth / 2).attr("y", mainHeight - 15) // Centered below x-axis
+                     .attr("x", mainWidth / 2).attr("y", mainHeight - 20) // Adjusted Y slightly
                      .text(config.xLabelFull);
                  svgMain.append("g").attr("class", "y-axis axis")
                      .attr("transform", `translate(${marginMain.left},0)`) // Positioned at left
@@ -1105,7 +1160,7 @@
                  svgMain.append("text").attr("class", "y-label axis-label")
                      .attr("transform", "rotate(-90)") // Rotated for y-axis
                      .attr("x", -(marginMain.top + innerHeight / 2)) // Centered along y-axis height
-                     .attr("y", marginMain.left - 50) // Positioned left of y-axis
+                     .attr("y", marginMain.left - 60) // Adjusted Y slightly
                      .text(config.yLabelFull);
                  // Draw median lines if valid
                  if (xMedian !== undefined && xMedian !== null) {
@@ -1119,44 +1174,43 @@
                          .attr("y1", y(yMedian)).attr("y2", y(yMedian)); // Horizontal line
                  }
 
-                 // --- Draw Quadrant Labels OUTSIDE the plot area for main plot ---
+                 // --- Draw Quadrant Labels OUTSIDE the plot area using TSPAN for wrapping ---
                  const isMobile = window.innerWidth <= 600;
-                 const mainOuterLabelPadding = isMobile ? 8 : 12; // Padding from plot edge
-                 const mainOuterLabelYOffset = isMobile ? -10 : -15; // Negative offset for above top edge
-                 const mainOuterLabelYOffsetBottom = isMobile ? 15 : 20; // Positive offset for below bottom edge
+                 // Adjusted padding values for larger/multi-line labels in main plot
+                 const mainOuterLabelPadding = isMobile ? 12 : 18; // Increased padding from plot edge
+                 const mainOuterLabelYOffset = isMobile ? -15 : -22; // Increased negative offset for top labels
+                 const mainOuterLabelYOffsetBottom = isMobile ? 20 : 30; // Increased positive offset for bottom labels
+
 
                  if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
-                     // Positions are relative to the SVG root (0,0 top-left), using margin values
+                     const mainLabelData = [
+                         { quad: 'II', anchor: 'end', x: mainWidth - marginMain.right + mainOuterLabelPadding, y: marginMain.top + mainOuterLabelYOffset },
+                         { quad: 'I', anchor: 'start', x: marginMain.left - mainOuterLabelPadding, y: marginMain.top + mainOuterLabelYOffset },
+                         { quad: 'III', anchor: 'start', x: marginMain.left - mainOuterLabelPadding, y: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom },
+                         { quad: 'IV', anchor: 'end', x: mainWidth - marginMain.right + mainOuterLabelPadding, y: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom }
+                     ];
 
-                     // Quadrant II (Top Right Area)
-                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                         .attr("x", mainWidth - marginMain.right + mainOuterLabelPadding) // Right of plot area
-                         .attr("y", marginMain.top + mainOuterLabelYOffset) // Above plot area top
-                         .attr("text-anchor", "end")
-                         .text(config.quadLabels.II);
+                     mainLabelData.forEach(lbl => {
+                         const labelText = config.quadLabels[lbl.quad];
+                          if (!labelText) return; // Skip if label text is missing
 
-                     // Quadrant I (Top Left Area)
-                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                         .attr("x", marginMain.left - mainOuterLabelPadding) // Left of plot area
-                         .attr("y", marginMain.top + mainOuterLabelYOffset) // Above plot area top
-                         .attr("text-anchor", "start")
-                         .text(config.quadLabels.I);
+                         const lines = labelText.split('\n'); // Split by newline
+                         const textElement = svgMain.append("text") // Append directly to svgMain
+                             .attr("class", "quadrant-label quadrant-label-outer") // Use updated class
+                             .attr("x", lbl.x)
+                             .attr("y", lbl.y) // Base y position
+                             .attr("text-anchor", lbl.anchor);
 
-                     // Quadrant III (Bottom Left Area)
-                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                         .attr("x", marginMain.left - mainOuterLabelPadding) // Left of plot area
-                         .attr("y", mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom) // Below plot area bottom
-                         .attr("text-anchor", "start")
-                         .text(config.quadLabels.III);
-
-                     // Quadrant IV (Bottom Right Area)
-                     svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer")
-                         .attr("x", mainWidth - marginMain.right + mainOuterLabelPadding) // Right of plot area
-                         .attr("y", mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom) // Below plot area bottom
-                         .attr("text-anchor", "end")
-                         .text(config.quadLabels.IV);
+                         // Append tspans for each line
+                         lines.forEach((line, i) => {
+                             textElement.append("tspan")
+                                 .attr("x", lbl.x) // Re-apply x for each tspan
+                                 .attr("dy", i === 0 ? "0" : "1.1em") // Vertical spacing
+                                 .text(line);
+                         });
+                     });
                  }
-                 // --- End NEW Quadrant Labels ---
+                 // --- END NEW Quadrant Labels (Main Plot) ---
 
 
                  // --- Draw Quadrant Overlays (for highlighting) ---
@@ -1497,3 +1551,4 @@
     </script>
     </body>
     </html>
+
