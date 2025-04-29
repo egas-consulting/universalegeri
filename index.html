@@ -1,323 +1,334 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Universul Românesc</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Universul Românesc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        *, *:before, *:after { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+            background-color: #000;
+            color: #fff; 
+        }
 
-  
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+        .headline-wrapper {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding-top: 8vh;
+            padding-bottom: 4vh;
+            color: white;
+        }
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+        .cosmic-supratitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.6em;
+            font-weight: 300;
+            color: white;
+            text-shadow: 0 0 6px #88b5ff, 0 0 10px #5573d6;
+            margin-bottom: 10px;
+        }
 
-  <style>
-    *, *:before, *:after { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Roboto', sans-serif;
-      overflow-x: hidden;
-      background-color: #000;
-    }
+        .cosmic-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8em;
+            font-weight: 400;
+            padding: 0 6vw;
+            line-height: 1.4;
+            color: white;
+            text-shadow: 0 0 6px #88b5ff, 0 0 12px #335bc4;
+        }
 
-    .headline-wrapper {
-      position: relative;
-      z-index: 3;
-      text-align: center;
-      padding-top: 8vh;
-      padding-bottom: 4vh;
-      color: white;
-    }
+        .text-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 5vw;
+            padding-top: 5vh;
+            color: #fff;
+        }
 
-    .cosmic-supratitle {
-      font-family: 'Roboto', sans-serif;
-      font-size: 1.6em;
-      font-weight: 300;
-      color: white;
-      text-shadow: 0 0 6px #88b5ff, 0 0 10px #5573d6;
-      margin-bottom: 10px;
-    }
+        p {
+            text-align: center;
+            font-size: 1em;
+            margin: 1em 0;
+        }
 
-    .cosmic-title {
-      font-family: 'Roboto', sans-serif;
-      font-size: 1.8em;
-      font-weight: 400;
-      padding: 0 6vw;
-      line-height: 1.4;
-      color: white;
-      text-shadow: 0 0 6px #88b5ff, 0 0 12px #335bc4;
-    }
+       
+        .chart-wrapper {
+            position: relative;
+            
+            height: 250vh; 
+            margin-bottom: 5vh;
+        }
 
-    .text-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0 5vw;
-      padding-top: 5vh;
-      color: #fff;
-    }
+        .chart-container {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(ellipse at center, #0b1f4c 0%, #000000 100%);
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease;
+        }
 
-    p {
-      text-align: center;
-      font-size: 1em;
-      margin: 1em 0;
-    }
+        
+        .svg-inner { 
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+        }
+        svg { 
+            width: 100%;
+            height: auto;
+            display: block;
+            background-color: transparent;
+        }
 
-    .chart-wrapper {
-      position: relative;
-      height: 200vh;
-    }
+       
+        .tooltip {
+            position: absolute;
+            background: rgba(255,255,255,0.95);
+            border: 1px solid #aaa;
+            padding: 0.85em 1em;
+            font-size: 0.9em;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10; /* Below search controls */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            max-width: 90vw;
+            min-width: 80px;
+            color: #333;
+            transition: opacity 0.2s ease;
+        }
 
-    .chart-container {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100vh;
-  background: radial-gradient(ellipse at center, #0b1f4c 0%, #000000 100%);
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+        .top-spacer { height: 15vh; }
 
+        
+        #search-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 11;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            max-width: 90vw;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+         #search-container.visible {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+         }
+        #search-input, #clear-search, #winner-filter {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            margin: 4px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: #eee;
+        }
+        #search-input::placeholder { color: #aaa; }
+        #clear-search {
+            padding: 8px 10px;
+            margin-left: 6px;
+            cursor: pointer;
+            background-color: #555;
+            border-color: #777;
+        }
+         #clear-search:hover { background-color: #666; }
+        #winner-filter {
+            cursor: pointer;
+            background-color: #333;
+             border-color: #555;
+             color: #eee;
+             flex-grow: 1;
+             min-width: 150px;
+        }
+        #search-container > div {
+             display: flex;
+             align-items: center;
+             gap: 5px;
+             flex-wrap: wrap;
+         }
+         #search-container > div:last-child { margin-top: 8px; }
+         #search-container label {
+             color: white;
+             margin-right: 6px;
+             font-size: 0.9em;
+             white-space: nowrap;
+         }
 
-  transition: top 0.6s ease, transform 0.6s ease;
-}
+        
+        #scatter-steps {
+            position: relative; 
+            z-index: 5;
+            
+             margin-top: 100vh; 
+             padding-top: 1vh; 
+             padding-bottom: 5vh; 
+        }
+        .step {
+            position: relative;
+            max-width: min(90vw, 340px);
+           
+            margin: 70vh auto; 
+            padding: 1.25em 1.5em;
+            background: rgba(255,255,255,0.92);
+            border-radius: 8px;
+            font-size: .95em;
+            line-height: 1.35;
+            box-shadow: 0 2px 10px rgba(0,0,0,.25);
+            color: #333;
+        }
+        
+         .step:first-child { margin-top: 40vh; } 
+         .step:last-child { margin-bottom: 50vh; } 
 
-.svg-inner {
-  width: 100%;
-  max-width: 1000px;
-  position: relative;
+        
+        #sphere-intro{
+            position:fixed; inset:0; z-index:6; display:flex;
+            flex-direction:column; justify-content:center; align-items:center;
+            text-align:center; gap:1.5rem; font-family:'Roboto',sans-serif;
+            background:rgba(0,0,0,0.88); color:#fff; opacity:1;
+            pointer-events:auto; transition:opacity .6s ease;
+        }
+        #sphere-intro h2{font-size:2rem; margin:0;}
+        #sphere-intro p {font-size:1rem; line-height:1.4; margin:0;}
+        #sphere-intro button{
+            padding:.6rem 1.4rem; font-size:1rem; border:none; border-radius:6px;
+            background:#88b5ff; color:#000; cursor:pointer;
+        }
+        #sphere-intro.hidden{ opacity:0; pointer-events:none; }
 
-  
-  transition: transform 0.6s ease, max-width 0.6s ease;
-}
+        
+        #flourish-block{
+            padding: 10vh 0 6vh;
+            background: #000;
+            text-align:center;
+            position:relative;
+            z-index:3;
+        }
+        .scatter-plot-container {
+            max-width: 950px;
+            width: 92%;
+            margin: 10vh auto;
+            background-color: rgba(11, 31, 76, 0.2);
+            border-radius: 8px;
+            padding: 25px 15px 15px 15px;
+            box-shadow: 0 0 15px rgba(136, 181, 255, 0.15);
+        }
+        .scatter-explainer {
+            font-size: 0.9em; color: #ccc; margin-top: 10px;
+            max-width: 850px; margin-left: auto; margin-right: auto;
+            padding: 0 15px; line-height: 1.4; text-align: center;
+        }
 
-@media (min-width: 800px) {
-  
-  .chart-container.small-sphere {
-    top: 20vh;                    
-    bottom: 0;
-    transform: scale(0.8);        
-    transform-origin: top center;
-  }
+        
+        .axis path, .axis line { stroke: #aaa; stroke-width: 0.5; shape-rendering: crispEdges; }
+        .axis text { fill: #ccc; font-weight: 300; font-size: 10px; }
+        .axis-label { fill: #ddd; font-size: 0.85em; text-anchor: middle; }
+        .plot-title { fill: #fff; font-size: 1.25em; font-weight: 600; text-anchor: middle; }
+        .map-title { fill: #fff; font-size: 1.3em; font-weight: 600; text-anchor: middle; }
+        .map-subtitle { fill: #ccc; font-size: 0.9em; text-anchor: middle; }
+        .quadrant-line { stroke: #ffffff; stroke-dasharray: 3 3; stroke-width: 1.5px; opacity: 0.8; }
+        .quadrant-label { fill: #ffffff; font-size: 0.8em; font-weight: 400; opacity: 0.9; }
+         .quadrant-overlay {
+             fill: #ffffff;
+             opacity: 0;
+             pointer-events: none;
+             transition: opacity 0.3s ease;
+         }
 
-  .svg-inner.small-sphere {
-    max-width: 900px;             
-    transform: scale(0.9);        
-    transform-origin: top center;
-  }
-}
+        
+        @media (max-width: 600px) {
+             #search-container {
+                 top: 10px; left: 50%; right: auto; transform: translateX(-50%);
+                 width: 90vw; max-width: 350px; padding: 8px 10px;
+             }
+             #search-container > div {
+                 flex-direction: column; align-items: stretch; width: 100%; gap: 6px;
+             }
+             #search-input, #clear-search, #winner-filter, #search-container label {
+                 font-size: 0.85em; width: 100%; margin: 0; box-sizing: border-box;
+             }
+             #search-input { padding: 7px 10px; }
+              #clear-search { padding: 7px 10px; margin-top: 4px; }
+             #search-container label { margin-bottom: 4px; text-align: center; margin-right: 0; }
+             #winner-filter { padding: 7px 10px; min-width: 0; }
+             #search-container > div:last-child { margin-top: 10px; }
 
-    .svg-inner {
-      width: 100%;
-      max-width: 1000px;
-      position: relative;
-    }
+            .scatter-plot-container {
+                width: 98%; padding: 10px 5px 5px 5px; margin: 5vh auto; box-shadow: none;
+            }
+            .scatter-explainer { padding: 0 5px; font-size: 0.8em; margin-top: 8px; line-height: 1.3; }
+             .plot-title { font-size: 1.1em; }
+             .axis-label { font-size: 0.75em; }
+             
+             .quadrant-label {
+                 font-size: 0.65em; 
+             }
+            
+             .axis text { font-size: 9.5px; }
 
-    svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
+            
+            .step { margin: 60vh auto; } 
+            .step:first-child { margin-top: 30vh; }
+            .step:last-child { margin-bottom: 40vh; }
 
-    .tooltip {
-      position: absolute;
-      background: rgba(255,255,255,0.95);
-      border: 1px solid #aaa;
-      padding: 0.85em 1em;
-      font-size: 0.9em;
-      pointer-events: none;
-      opacity: 0;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      border-radius: 4px;
-      max-width: 90vw;
-      min-width: 80px;
-    }
+            .map-title { font-size: 1.15em; }
+            .map-subtitle { font-size: 0.85em; }
+            .cosmic-title { font-size: 1.5em; }
+            .cosmic-supratitle { font-size: 1.3em; }
+        }
 
-    .top-spacer { height: 15vh; }
+       
+        body { min-height: 500vh; } 
+        html,body{ overscroll-behavior: none; }
 
-    #search-container {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 4;
-    display: none;      /* initially hidden */
-    background: rgba(0,0,0,0.5);
-    padding: 8px 12px;
-    border-radius: 6px;
-    }
-
-
-    #search-input, #clear-search, #winner-filter {
-    padding: 6px 12px;
-    font-size: 1em;
-    margin: 4px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    }
-
-    #clear-search {
-      padding: 6px 10px;
-      font-size: 1em;
-      margin-left: 6px;
-
-    }
-
-    
-    #scatter-steps {
-    position: relative;         
-    z-index: 5;                 
-    }
-
-    .step {
-    position: relative;
-    max-width: 340px;
-    margin: 60vh auto;          
-    padding: 1.25em 1.5em;
-    background: rgba(255,255,255,0.9);
-    border-radius: 8px;
-    font-size: .95em;
-    line-height: 1.35;
-    box-shadow: 0 2px 10px rgba(0,0,0,.25);
-    }
-
-    
-.step{
-  max-width: min(90vw, 340px);   
-  margin: 55vh auto;             
-}
-
-
-@media (max-width:600px){
-  #search-container{
-     top: 8px;                 
-     transform: translateX(-50%) scale(.9); 
-  }
-}
-
-
-html,body{ overscroll-behavior: contain; }
-
-@media (min-width: 800px){
-
-:root{
-  
-  --headline-gap: 8vh;
-}
-
-
-.chart-container{
-                            
-  top:   var(--headline-gap);
-  
-  bottom: calc(-1 * var(--headline-gap));
-}
-
-
-.chart-container.small-sphere{
-  top:    calc(var(--headline-gap) + 20vh);
-  bottom: calc(-1 * (var(--headline-gap) + 20vh));
-}
-}
-
-
-@media (min-width: 800px){
-#search-container{
-  
-  left:auto;          right:2rem;
-  transform:none;
-}
-}
-
-
-#sphere-intro{
-  position:fixed;
-  inset:0;                               
-  z-index:6;                             
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  gap:1.5rem;
-  font-family:'Roboto',sans-serif;
-  background:rgba(0,0,0,0.78);           
-  color:#fff;
-  opacity:1;
-  pointer-events:auto;                  
-  transition:opacity .6s ease;
-}
-#sphere-intro h2{font-size:2rem; margin:0;}
-#sphere-intro p {font-size:1rem; line-height:1.4; margin:0;}
-#sphere-intro button{
-  padding:.6rem 1.4rem;
-  font-size:1rem;
-  border:none;
-  border-radius:6px;
-  background:#88b5ff;
-  color:#000;
-  cursor:pointer;
-}
-#sphere-intro.hidden{
-  opacity:0;
-  pointer-events:none;
-}
-
-#flourish-block{
-  padding:10vh 0 6vh;
-  background: radial-gradient(ellipse at center, #0b1f4c 0%, #000000 100%);;
-  text-align:center;
-  position:relative;
-  z-index:3;         /*  ← higher than .chart-container (2) */
-}
-
-#flourish-block .flourish-embed{
-  max-width:1000px;
-  width:90%;
-  margin:10vh auto;
-}
-
-#chart-container { transition: opacity .5s ease; }
-    
-
-    
-  </style>
+    </style>
 </head>
-
 <body>
-  <div class="headline-wrapper">
-    <div class="cosmic-supratitle">Universul Românesc</div>
-    <h1 class="cosmic-title">
-      Cât de mult impactează statutul socio-economic al localităților rezultatele la prezidențiale
-    </h1>
-  </div>
+    <div class="headline-wrapper">
+        <div class="cosmic-supratitle">Universul Românesc</div>
+        <h1 class="cosmic-title">
+            Cât de mult impactează statutul socio-economic al localităților rezultatele la prezidențiale
+        </h1>
+    </div>
+    <div class="text-container">
+        <p>
+            Am corelat <strong>rezultatele obținute</strong> și <strong>prezența</strong> în alegerile prezidențiale din 2024.<br>
+            <strong>Scroll</strong> pentru a explora vizualizarea interactivă principală. Mai jos găsiți analize detaliate pe indicatori specifici.<br>
+            <i>Filtrele și căutarea (sus dreapta) se aplică tuturor graficelor.</i>
+        </p>
+    </div>
 
-  <div class="text-container">
-    <p>
-      Am corelat <strong>rezultatele obținute</strong> și <strong>prezența</strong> în alegerile prezidențiale din 2024.<br>
-      <strong>Scroll</strong> pentru a explora.
-    </p>
-  </div>
-
-  <div class="top-spacer"></div>
-
-  
-
-  <div class="chart-wrapper">
-    <div class="chart-container" id="chart-container">
-        <div id="search-container">
-            <div style="margin-bottom: 10px;">
-              <input id="search-input" type="text" placeholder="Caută localitate..." list="localitati-list">
-              <button id="clear-search">Reset</button>
-              <datalist id="localitati-list"></datalist>
-            </div>
-          
-            <div style="margin-top: 8px;">
-              <label for="winner-filter" style="color: white; margin-right: 6px;">Filtrează după câștigător:</label>
-              <select id="winner-filter">
+    <div id="search-container">
+        <div>
+            <input id="search-input" type="text" placeholder="Caută localitate..." list="localitati-list">
+            <button id="clear-search" title="Resetează căutarea">Reset</button>
+            <datalist id="localitati-list"></datalist>
+        </div>
+        <div >
+            <label for="winner-filter">Filtrează după câștigător:</label>
+            <select id="winner-filter">
                 <option value="all">Toți</option>
                 <option value="ION-MARCEL CIOLACU">ION-MARCEL CIOLACU</option>
                 <option value="NICOLAE-IONEL CIUCĂ">NICOLAE-IONEL CIUCĂ</option>
@@ -325,678 +336,795 @@ html,body{ overscroll-behavior: contain; }
                 <option value="GEORGE-NICOLAE SIMION">GEORGE-NICOLAE SIMION</option>
                 <option value="HUNOR KELEMEN">HUNOR KELEMEN</option>
                 <option value="CĂLIN GEORGESCU">CĂLIN GEORGESCU</option>
-              </select>
+            </select>
+        </div>
+    </div>
+
+    <div class="top-spacer"></div>
+
+    <div class="chart-wrapper">
+        <div class="chart-container" id="chart-container">
+            <div class="svg-inner">
+                <svg id="viz" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
             </div>
-          </div>
-      <div class="svg-inner">
-        <svg id="viz" viewBox="0 0 1000 700" preserveAspectRatio="xMinYMin meet"></svg>
-      </div>
+        </div>
     </div>
-  </div>
 
-  <div id="sphere-intro">
-    <h2>Bine ai venit!</h2>
-    <p>Am luat rezultatele din primul tur al alegerilor prezidențiale din 2024<br>
-       și le-am reprezentat corelându-le cu 8 indicatori economici și sociali relevanți<br>
-       pentru a înțelege în ce măsură aceștia înfluențează opțiunea electorală.<br>
-       Fiecare cerc este interactiv, click pe el pentru detalii.
-    </p>
-    <button id="intro-ok">Parcurge materialul</button>
-  </div>
-
- 
-<section id="scatter-steps">
-    <div class="step" data-quad="I">
-      <p><strong>I. Populație tânără și suprafață locuibilă mare</strong><br>
-        Graficul este împărțit în patru cadrane, plecând de la mediana datelor disponibile. Aglomerările din cadran arată o caracteristică a localităților. Primul cadran se referă la localități tinere, de regulă prospere sau suburbii aflate în creștere.</p>
+    <div id="sphere-intro">
+        <h2>Universul Românesc</h2>
+        <p>Am analizat rezultatele din primul tur al alegerilor prezidențiale din 2024<br>
+            și le-am corelat cu 8 indicatori economici și sociali relevanți, <br>
+            pentru a înțelege cum influențează aceștia opțiunile electorale.<br>
+            Fiecare cerc din grafic este interactiv. Scroll pentru a explora toate secțiunile.
+        </p>
+        <button id="intro-ok">Începe</button>
     </div>
-  
-    <div class="step" data-quad="II">
-      <p><strong>II. Populație îmbătrânită și suprafață locuibilă mare</strong><br>
-        Localități depopulate, unde rămân preponderent vârstnici care locuiesc singuri în case mari</p>
-    </div>
-  
-    <div class="step" data-quad="III">
-      <p><strong>III. Populație tânără, suprafață locuibilă mică</strong><br>Zone urbane dense, cu locuințe compacte</p>
-    </div>
-  
-    <div class="step" data-quad="IV">
-      <p><strong>IV. Populație îmbătrânită, suprafață locuibilă mică</strong><br>omunități îmbătrânite și sărace, cu condiții de locuire limitate</p>
-    </div>
-  
-    <div class="step" data-quad="all">
-      <p><strong>Acelasi principiu se aplică graficelor de mai jos. Explorează toate graficele interactive mai jos.</strong></p>
-    </div>
-  </section>
 
+    <section id="scatter-steps">
+        <div class="step" data-quad="I">
+            <p><strong>Cum este împărțit graficul</strong><br>
+                Fiecare grafic este împărțit în patru părți, folosind valorile mediane de pe fiecare axă pentru a identifica tipare clare între localități</p>
+        </div>
+        <div class="step" data-quad="II">
+            <p><strong>Cum interpretezi cadranele</strong><br>
+                Astfel, fiecare axă creează o linie de referință echitabilă, iar cele patru cadrane arată combinații diferite de situații (de exemplu: localități cu valori mari pe ambele axe, sau localități cu o valoare mare pe una și mică pe cealaltă).</p>
+        </div>
+        <div class="step" data-quad="III">
+            <p><strong>De ce sunt utile cadranele</strong><br>
+                În loc să analizăm fiecare indicator separat, vedem rapid cum se leagă între ele două variabile importante. Astfel, putem înțelege mai bine relația dintre factori economici, sociali sau politici și opțiunile electorale sau dezvoltarea locală.</p>
+        </div>
+        <div class="step" data-quad="IV">
+            <p><strong>Caută localitatea sau filtrează informația</strong><br>
+                Graficul este interactiv: poți plasa cursorul pe un cerc pentru a vedea detalii, căuta direct o localitate sau filtra localitățile după candidatul câștigător.</p>
+        </div>
+         <div class="step" data-quad="all"> <!-- This step helps reset when scrolling past the last specific quadrant step -->
+             <p><strong>Scroll în continuare pentru a explora graficele</strong></p>
+         </div>
+    </section>
 
-<section id="flourish-block">
-  <h2 class="cosmic-title">Analiza indicatorilor</h2>
+    <section id="flourish-block">
+        <h2 class="cosmic-title" style="margin-bottom: 5vh; padding-top: 5vh;">Analiza detaliată pe indicatori statici</h2>
+        <div id="scatter-container-1" class="scatter-plot-container">
+            <svg id="scatter-viz-1" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
+            <p class="scatter-explainer"><strong>Ce poate spune despre o comunitate combinația dintre vârsta medie a populației și suprafața locuibilă disponibilă pe persoană?</strong> <br> Prin această distribuție în scatter plot, observăm contraste clare între regiuni: localitățile din dreapta sus, cu vârstă medie ridicată și spațiu generos, sunt adesea foste orașe istorice sau zone de vacanță unde populația tânără a migrat. La polul opus, orașele mici sau cartierele vechi, unde populația îmbătrânită locuiește în spații modeste, se regăsesc în partea de jos a graficului. Același tipar apare și în zonele rurale sărace.
 
-  <div class="flourish-embed flourish-scatter" data-src="visualisation/22888981">
-      <noscript><img src="https://public.flourish.studio/visualisation/22888981/thumbnail"
-                     width="100%" alt="scatter visualization" /></noscript>
-  </div>
+                În stânga sus, găsim suburbii și localități periurbane prospere, unde familiile tinere locuiesc în case mari, în timp ce stânga jos reflectă orașele mari aglomerate, dominate de tineri care trăiesc în locuințe mai mici.
 
-  <div class="flourish-embed flourish-scatter" data-src="visualisation/22890584">
-      <noscript><img src="https://public.flourish.studio/visualisation/22890584/thumbnail"
-                     width="100%" alt="scatter visualization" /></noscript>
-  </div>
+                Această combinație de indicatori deschide o fereastră spre înțelegerea dinamicii sociale, economice și istorice a comunităților.</p>
+        </div>
+        <div id="scatter-container-2" class="scatter-plot-container">
+            <svg id="scatter-viz-2" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
+            <p class="scatter-explainer"><strong>Ce ne arată relația dintre plecările cu domiciliul și șomajul local?</strong><br>Plecările cu domiciliul raportate la populație sunt un indicator direct al mobilității și al nivelului de atractivitate al unei comunități. Ponderea șomerilor reflectă presiunea economică locală și oportunitățile de muncă disponibile.
 
-  <div class="flourish-embed flourish-scatter" data-src="visualisation/22891164">
-      <noscript><img src="https://public.flourish.studio/visualisation/22891164/thumbnail"
-                     width="100%" alt="scatter visualization" /></noscript>
-  </div>
+                Zonele cu rate mari de plecare și șomaj ridicat indică adesea o spirală a declinului: lipsă de oportunități, migrație economică, depopulare accelerată. În schimb, comunitățile unde plecările sunt reduse și șomajul scăzut demonstrează stabilitate și capacitatea de a-și păstra populația activă.
 
-  <div class="flourish-embed flourish-scatter" data-src="visualisation/22891173">
-      <noscript><img src="https://public.flourish.studio/visualisation/22891173/thumbnail"
-                     width="100%" alt="scatter visualization" /></noscript>
-  </div>
-</section>
+                Această combinație de indicatori ajută la identificarea zonelor vulnerabile, dar și a celor care reușesc să reziste presiunilor demografice și economice.</p>
+        </div>
+        <div id="scatter-container-3" class="scatter-plot-container">
+            <svg id="scatter-viz-3" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
+            <p class="scatter-explainer"><strong>Ce poate spune relația dintre numărul de salariați și veniturile fiscale locale?</strong><br>Numărul de salariați raportat la populație indică dinamismul economic al unei comunități: câți dintre locuitori contribuie activ la economie. Cota de impozit pe cap de locuitor arată cât de mult reușește administrația locală să colecteze din impozitele locale pe venituri și proprietăți.
 
-<!-- keep the loader ONCE, just before </body> -->
-<script src="https://public.flourish.studio/resources/embed.js"></script>
+                Zonele cu mulți salariați și cote fiscale mari per locuitor pot semnala comunități prospere, cu economie diversificată și administrație performantă. În schimb, zonele cu puțini salariați și venituri fiscale scăzute indică adesea probleme structurale – lipsa locurilor de muncă, migrație, economie informală sau o administrație slabă.
 
-  <div class="tooltip" id="tooltip"></div>
-  
+                Această combinație de indicatori surprinde echilibrul dintre forța de muncă activă și capacitatea reală a comunităților de a se susține financiar.</p>
+        </div>
+        <div id="scatter-container-4" class="scatter-plot-container">
+            <svg id="scatter-viz-4" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
+            <p class="scatter-explainer"><strong>Ce poate spune relația dintre fondurile europene atrase pe cap de locuitor și numărul de pacienți care revin unui medic?</strong><br>Această combinație de indicatori oferă o perspectivă asupra modului în care investițiile publice influențează accesul la servicii medicale. Fondurile europene atrase nu sunt direcționate exclusiv către sănătate, însă dezvoltarea infrastructurii în ansamblu — drumuri mai bune, servicii publice modernizate, condiții de trai mai atractive — poate contribui la stabilizarea sau atragerea de profesioniști, inclusiv în domeniul medical. Această combinație de indicatori oferă o perspectivă asupra modului în care investițiile publice influențează accesul la servicii medicale. Fondurile europene atrase nu sunt direcționate exclusiv către sănătate, însă dezvoltarea infrastructurii în ansamblu — drumuri mai bune, servicii publice modernizate, condiții de trai mai atractive — poate contribui la stabilizarea sau atragerea de profesioniști, inclusiv în domeniul medical.</p>
+        </div>
+    </section>
 
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-  <script>
-    let allDataGlobal;
-    const width = 1000, height = 700;
-    const margin = { top: 50, right: 60, bottom: 60, left: 80 };
-    const baseCircleDiameter =
-       window.innerWidth <= 400 ? 3 :        
-       window.innerWidth >  800 ? 6 : 4;     
+    <div class="tooltip" id="tooltip"></div>
 
-    const svg = d3.select("#viz");
-    const tooltip = d3.select("#tooltip");
+    <script>
+        
+        let allDataGlobal;
+        const mainWidth = 1000, mainHeight = 700;
+        const plotWidth = 900, plotHeight = 550;
+        const margin = { top: 60, right: 40, bottom: 50, left: 60 };
+        const marginMain = { top: 50, right: 60, bottom: 60, left: 80 };
 
- 
-function basicTooltip(d) {
-  return `
-    <strong>${d.jud}</strong><br/>
-    ${d.uat}<br/>
-    Câștigător: ${d.Castigator}<br/>
-    Procent: ${d["Procent castigator"]}%<br/>
-    Prezența: ${d.Prezenta}%
-  `;
-}
+        const baseCircleDiameter = window.innerWidth <= 600 ? 9 : window.innerWidth > 800 ? 4 : 3.5;
 
+        const svgMain = d3.select("#viz");
+        const tooltip = d3.select("#tooltip");
+        const chartMain = svgMain.append("g").attr("id", "chartGroup");
+        const searchEl = d3.select("#search-container");
 
-function scatterTooltip(d) {
-  return `
-    <strong>${d.jud}</strong><br/>
-    ${d.uat}<br/>
-    Vârsta medie (2023): ${d["Varsta medie a populatiei in 2023"]}<br/>
-    Suprafață locuibilă / cap locuitor (m², 2023): ${d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]}<br/>
-    Câștigător: ${d.Castigator}<br/>
-    Procent: ${d["Procent castigator"]}%<br/>
-    Prezența: ${d.Prezenta}%
-  `;
-}
-    const chart = svg.append("g").attr("id", "chartGroup");
-    
-    const searchEl   = d3.select("#search-container");
+        const winnerColors = {
+            "ION-MARCEL CIOLACU": "#FF2A1F", "NICOLAE-IONEL CIUCĂ": "#00B7FF",
+            "ELENA-VALERICA LASCONI": "#D066F2", "GEORGE-NICOLAE SIMION": "#FFB623",
+            "HUNOR KELEMEN": "#36FC00", "CĂLIN GEORGESCU": "#865750"
+        };
+        const colorScale = d3.scaleOrdinal(Object.keys(winnerColors), Object.values(winnerColors));
 
-    const winnerColors = {
-      "ION-MARCEL CIOLACU": "#FF2A1F",
-      "NICOLAE-IONEL CIUCĂ": "#00B7FF",
-      "ELENA-VALERICA LASCONI": "#D066F2",
-      "GEORGE-NICOLAE SIMION": "#FFB623",
-      "HUNOR KELEMEN": "#36FC00",
-      "CĂLIN GEORGESCU": "#865750"
-    };
-    const colorScale = d3.scaleOrdinal()
-      .domain(Object.keys(winnerColors))
-      .range(Object.values(winnerColors));
+        let currentView = "sphere"; 
+        let currentFilter = "all";
+        let mainCircles;
+        let staticCircles = [];
+        let staticConfigs = {};
+        let activeQuad = "all"; 
+        let mainScatterConfig = {}; 
+        let staticPlotsVisible = false;
+        let observerInitialized = false; 
 
-    let currentView = "sphere";
-    let currentFilter = "all";  
-    let circles;
+        
+        const normalize = str => (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
-    function createSpherePositions(data, radius = 250){
-      data.forEach((d,i) => {
-        const phi = Math.acos(1 - 2 * (i + 0.5) / data.length);
-        const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-        d.x = radius * Math.sin(phi) * Math.cos(theta);
-        d.y = radius * Math.sin(phi) * Math.sin(theta);
-        d.z = radius * Math.cos(phi);
-      });
-    }
-
-    let rotationAngle = 0;
-    function updateSphere() {
-  const f = 400,
-        cx = width / 2,
-        cy = height / 2;
-
-  circles
-    .attr("cx", d => {
-      const xRot = d.x * Math.cos(rotationAngle) - d.z * Math.sin(rotationAngle);
-      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
-      const s    = f / (f + zRot);
-      return cx + xRot * s;
-    })
-    .attr("cy", d => {
-      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
-      const s    = f / (f + zRot);
-      return cy + d.y * s;
-    })
-    .attr("r", d => {
-      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
-      const s    = f / (f + zRot);
-      return baseCircleDiameter * s;
-    })
-    .attr("opacity", d =>
-      currentFilter === "all" || d.Castigator === currentFilter ? 1 : 0.1
-    )
-    .attr("stroke-width", d =>
-      d.Castigator === currentFilter ? 2 : 0
-    )
-    .attr("stroke", d =>
-      d.Castigator === currentFilter ? "#000" : "none"
-    );
-}
-
-
-    d3.csv("scatter.csv", d3.autoType).then(data=>{
-      allDataGlobal = data;
-      createSpherePositions(data,250);
-
-      const xGeo = d3.scaleLinear()
-        .domain(d3.extent(data,d=>d.Long))
-        .range([margin.left, width-margin.right]);
-      const yGeo = d3.scaleLinear()
-        .domain(d3.extent(data,d=>d.Lat))
-        .range([height-margin.bottom, margin.top]);
-    const areaScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d["Procent castigator"]))
-        .range([
-            Math.PI * Math.pow(baseCircleDiameter, 1),              
-            Math.PI * Math.pow(baseCircleDiameter * 1, 2.1)          
-        ]);
-
-      circles = chart.selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("fill", d => colorScale(d.Castigator) || "#999")
-        .attr("opacity",1)
-        .on("mouseover", (e, d) => {
-  tooltip
-    .style("opacity", 1)
-    .html(basicTooltip(d)); (`
-      <strong>${d.jud}</strong><br/>
-      ${d.uat}<br/>
-      Vârsta medie (2023): ${d["Varsta medie a populatiei in 2023"]}<br/>
-      Suprafață locuibilă / cap locuitor (m², 2023):
-        ${d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]}<br/>
-      Câștigător: ${d.Castigator}<br/>
-      Procent: ${d["Procent castigator"]}%<br/>
-      Prezența: ${d.Prezenta}%`
-          );
-        })
-        .on("mousemove",e=>{
-          const t = tooltip.node().getBoundingClientRect();
-          let left = e.pageX + 6, top = e.pageY - 10;
-          if(left+t.width > window.innerWidth) left = e.pageX - t.width - 15;
-          if(top < 0) top = e.pageY + 15;
-          tooltip.style("left",left+"px").style("top",top+"px");
-        })
-        .on("mouseout",()=>tooltip.style("opacity",0));
-
-      updateSphere();
-
-      
-      anime({
-        targets: { angle: 0 },
-        angle:   2 * Math.PI,
-        duration: 20000,
-        easing: 'linear',
-        loop: true,
-        update: anim => {
-          rotationAngle = anim.animations[0].currentValue;
-          if (currentView === "sphere") updateSphere();
+        
+        function showSearchControls() { searchEl.classed("visible", true); }
+        function hideSearchControls() { searchEl.classed("visible", false); }
+        function updateSearchControlsVisibility() {
+            if ((currentView === 'map' || currentView === 'scatter') || staticPlotsVisible) {
+                showSearchControls();
+            } else {
+                hideSearchControls();
+            }
         }
-      });
 
-      
-  const datalist = document.getElementById("localitati-list");
+        
+        function basicTooltip(d) {
+            return `<strong>${d.jud}</strong><br/>${d.uat}<br/>Câștigător: ${d.Castigator}<br/>Procent: ${d["Procent castigator"]}%<br/>Prezența: ${d.Prezenta}%`;
+         }
+        function scatterTooltip(d, config) {
+            const xValue = d[config.xField] !== undefined && d[config.xField] !== null ? d[config.xField].toFixed(config.xDecimals ?? 2) : 'N/A';
+            const yValue = d[config.yField] !== undefined && d[config.yField] !== null ? d[config.yField].toFixed(config.yDecimals ?? 2) : 'N/A';
+            return `<strong>${d.jud}</strong><br/>${d.uat}<br/>${config.xLabel}: ${xValue}${config.xUnit ?? ''}<br/>${config.yLabel}: ${yValue}${config.yUnit ?? ''}<br/>Câștigător: ${d.Castigator}<br/>Procent: ${d["Procent castigator"]}%<br/>Prezența: ${d.Prezenta}%`;
+         }
+         function updateTooltipPosition(event) {
+            const tRect = tooltip.node().getBoundingClientRect();
+            let left = event.pageX + 10, top = event.pageY - 15;
+            const margin = 10;
+            if (left + tRect.width > window.innerWidth - margin) left = event.pageX - tRect.width - 10;
+            if (top + tRect.height > window.innerHeight - margin) top = event.pageY - tRect.height - 5;
+            if (top < margin) top = margin;
+            if (left < margin) left = margin;
+            tooltip.style("left", left + "px").style("top", top + "px");
+         }
 
-//  unique names, sorted alphabetically (Romanian collation)
-[...new Set(data.map(d => d.uat).filter(Boolean))]
-  .sort((a, b) => a.localeCompare(b, "ro-RO"))
-  .forEach(name => {
-    const opt = document.createElement("option");
-    opt.value = name;
-    datalist.appendChild(opt);
-  });
+        
+        function createSpherePositions(data, radius = 250){
+            data.forEach((d,i) => {
+                const phi = Math.acos(-1 + (2 * i) / data.length);
+                const theta = Math.sqrt(data.length * Math.PI) * phi;
+                d.sphere_x = radius * Math.sin(phi) * Math.cos(theta);
+                d.sphere_y = radius * Math.sin(phi) * Math.sin(theta);
+                d.sphere_z = radius * Math.cos(phi);
+            });
+        }
+        let rotationAngle = 0;
+        const sphereAnimation = anime({
+            targets: { angle: 0 }, angle: 2 * Math.PI, duration: 35000, easing: 'linear',
+            loop: true, autoplay: false,
+            update: anim => {
+                rotationAngle = anim.animations[0].currentValue;
+                if (currentView === "sphere") updateSphereVisuals();
+            }
+        });
+        function updateSphereVisuals() {
+            const f = 400, cx = mainWidth / 2, cy = mainHeight / 2;
+            if (!mainCircles) return;
+            mainCircles.each(function(d) {
+                const xRot = d.sphere_x * Math.cos(rotationAngle) - d.sphere_z * Math.sin(rotationAngle);
+                const zRot = d.sphere_x * Math.sin(rotationAngle) + d.sphere_z * Math.cos(rotationAngle);
+                const scale = f / (f + zRot + 1e-6);
+                d.display_x = cx + xRot * scale;
+                d.display_y = cy + d.sphere_y * scale;
+                d.base_sphere_r = Math.max(1, baseCircleDiameter * scale);
+                d.display_opacity_z = Math.max(0.1, Math.min(1, (f - zRot) / (f * 1.5)));
+            });
+            applyGlobalFilterAndSearch();
+        }
+
+        
+        function isPointInQuad(d, config, quad) {
+            if (!config || !config.xField || !config.yField || !allDataGlobal) return false;
+            const xMedian = config._xMedian ?? (config._xMedian = d3.median(allDataGlobal, dataPoint => dataPoint[config.xField]));
+            const yMedian = config._yMedian ?? (config._yMedian = d3.median(allDataGlobal, dataPoint => dataPoint[config.yField]));
+            if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return false;
+            const xVal = d[config.xField], yVal = d[config.yField];
+            if (xVal === undefined || yVal === undefined || xVal === null || yVal === null) return false;
+            let pointQuad = "";
+            if (xVal <= xMedian && yVal >= yMedian) pointQuad = "I";
+            else if (xVal > xMedian && yVal >= yMedian) pointQuad = "II";
+            else if (xVal <= xMedian && yVal < yMedian) pointQuad = "III";
+            else if (xVal > xMedian && yVal < yMedian) pointQuad = "IV";
+            return pointQuad === quad;
+         }
+
+        
+        function applyGlobalFilterAndSearch() {
+            const searchTerm = normalize(d3.select("#search-input").property("value"));
+            const isSearching = searchTerm.length > 0;
+            const selectedWinner = d3.select("#winner-filter").property("value");
+            currentFilter = selectedWinner;
+
+            let areaScale;
+            if (allDataGlobal) {
+                const extent = d3.extent(allDataGlobal, d => d["Procent castigator"]);
+                if (extent[0] !== undefined && extent[1] !== undefined) {
+                    areaScale = d3.scaleSqrt().domain(extent).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
+                }
+            }
+
+            d3.selectAll(".data-circle").each(function(d) {
+                if (isSearching && normalize(d.uat) === searchTerm) d3.select(this).raise();
+            });
+
+            d3.selectAll(".data-circle")
+                .transition("filterSearch").duration(350)
+                .attr("opacity", function(d) {
+                    const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
+                    const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
+                    const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
+                    if (!isWinnerMatch || !isSearchMatch) return 0.08;
+
+                    let baseOpacity = 1.0;
+                    const isMain = d3.select(this).classed('main-circle');
+                    const isStatic = d3.select(this).classed('static-circle');
+
+                    if (isStatic) { baseOpacity = 0.75; }
+                    else if (isMain) {
+                        if (currentView === 'sphere') { baseOpacity = d.display_opacity_z ?? 1.0; }
+                        else if (currentView === 'map') { baseOpacity = 0.8; }
+                        else if (currentView === 'scatter') {
+                            const isQuadActive = activeQuad !== 'all';
+                            const config = mainScatterConfig; // Use main config
+                            const inActiveQuad = isQuadActive && isPointInQuad(d, config, activeQuad);
+                            const xVal = d[config.xField], yVal = d[config.yField];
+                            const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
+                            // Dim if a quad is active, the point has data, BUT it's not in the active quad
+                            if (isQuadActive && hasValidScatterData && !inActiveQuad) baseOpacity = 0.05;
+                            else baseOpacity = 0.8; // Default scatter opacity
+                        }
+                    }
+                    if (isSearching && !exactSearchMatch && isWinnerMatch && isSearchMatch) baseOpacity *= 0.6;
+                    if (exactSearchMatch) baseOpacity = isStatic ? 0.9 : 1.0;
+                    return Math.max(0.08, baseOpacity);
+                })
+                .attr("stroke", function(d) {
+                    const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
+                    const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
+                    const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
+                    if (!isWinnerMatch || !isSearchMatch) return "none";
+                    if (exactSearchMatch) return "#FFFFFF";
+                    if (currentFilter !== "all" && isWinnerMatch) return "#FFFFFF";
+                    return "none";
+                })
+                .attr("stroke-width", function(d) {
+                     const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
+                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
+                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
+                     if (!isWinnerMatch || !isSearchMatch) return 0;
+                     const isMain = d3.select(this).classed('main-circle');
+                     if (exactSearchMatch) return isMain ? 3 : 2.5;
+                     if (currentFilter !== "all" && isWinnerMatch) return 1;
+                     return 0;
+                 })
+                 .attr("cx", function(d) {
+                    if (currentView === 'sphere' && d3.select(this).classed('main-circle')) return d.display_x;
+                    return d3.select(this).attr("cx");
+                 })
+                 .attr("cy", function(d) {
+                    if (currentView === 'sphere' && d3.select(this).classed('main-circle')) return d.display_y;
+                    return d3.select(this).attr("cy");
+                 })
+                 .attr("r", function(d) {
+                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
+                     const boostFactor = 1.8;
+                     const isMain = d3.select(this).classed('main-circle');
+                     let baseRadius = 0;
+                     if (isMain) {
+                         if (currentView === 'sphere') { baseRadius = d.base_sphere_r ?? 0; }
+                         else if (currentView === 'map' && areaScale) { baseRadius = (d.Lat && d.Long) ? areaScale(d["Procent castigator"]) : 0; }
+                         else if (currentView === 'scatter') {
+                             const config = mainScatterConfig;
+                             const xVal = d[config.xField], yVal = d[config.yField];
+                             baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 1.1 : 0;
+                         }
+                     } else {
+                          const parentSvgId = d3.select(this.ownerSVGElement).attr('id');
+                          const config = staticConfigs[parentSvgId];
+                          if (config) {
+                              const xVal = d[config.xField], yVal = d[config.yField];
+                              baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
+                          } else { baseRadius = 0; }
+                     }
+                     baseRadius = (typeof baseRadius === 'number' && !isNaN(baseRadius)) ? baseRadius : 0;
+                     return (exactSearchMatch && baseRadius > 0) ? baseRadius * boostFactor : baseRadius;
+                 });
+         }
+
+        
+        function createScatterPlot(containerSelector, data, config) {
+             const svg = d3.select(containerSelector);
+             const svgId = svg.attr('id');
+             staticConfigs[svgId] = config;
+             config._xMedian = d3.median(data, d => d[config.xField]);
+             config._yMedian = d3.median(data, d => d[config.yField]);
+             svg.selectAll("*").remove();
+             const plotGroup = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+             const innerWidth = plotWidth - margin.left - margin.right;
+             const innerHeight = plotHeight - margin.top - margin.bottom;
+             const xExtent = d3.extent(data, d => d[config.xField]);
+             const yExtent = d3.extent(data, d => d[config.yField]);
+             const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
+             const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
+             const x = d3.scaleLinear().domain(xDomain).nice().range([0, innerWidth]);
+             const y = d3.scaleLinear().domain(yDomain).nice().range([innerHeight, 0]);
+             const xMedian = config._xMedian, yMedian = config._yMedian;
+
+            plotGroup.append("g").attr("class", "x-axis axis").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(x).ticks(7).tickSizeOuter(0));
+            plotGroup.append("text").attr("class", "axis-label x-label").attr("x", innerWidth / 2).attr("y", innerHeight + margin.bottom - 10).text(config.xLabelFull || config.xLabel);
+            plotGroup.append("g").attr("class", "y-axis axis").call(d3.axisLeft(y).ticks(7).tickSizeOuter(0));
+            plotGroup.append("text").attr("class", "axis-label y-label").attr("transform", "rotate(-90)").attr("x", -innerHeight / 2).attr("y", -margin.left + 15).text(config.yLabelFull || config.yLabel);
+            plotGroup.append("text").attr("class", "plot-title").attr("x", innerWidth / 2).attr("y", -margin.top / 2).text(config.title);
+            if (xMedian !== undefined && xMedian !== null) plotGroup.append("line").attr("class", "quadrant-line").attr("x1", x(xMedian)).attr("x2", x(xMedian)).attr("y1", 0).attr("y2", innerHeight);
+            if (yMedian !== undefined && yMedian !== null) plotGroup.append("line").attr("class", "quadrant-line").attr("x1", 0).attr("x2", innerWidth).attr("y1", y(yMedian)).attr("y2", y(yMedian));
+
+            
+            const isMobile = window.innerWidth <= 600;
+            const labelPadding = isMobile ? 6 : 8; 
+            
+            const verticalLabelOffset = labelPadding * (isMobile ? 1.8 : 2); 
+            
+
+            if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
+                
+                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + labelPadding).attr("y", verticalLabelOffset).text(config.quadLabels.II).attr("text-anchor", "start");
+                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - labelPadding).attr("y", verticalLabelOffset).text(config.quadLabels.I).attr("text-anchor", "end");
+                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - labelPadding).attr("y", innerHeight - labelPadding).text(config.quadLabels.III).attr("text-anchor", "end"); // Bottom labels might need less vertical adjustment
+                 plotGroup.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + labelPadding).attr("y", innerHeight - labelPadding).text(config.quadLabels.IV).attr("text-anchor", "start"); // Bottom labels might need less vertical adjustment
+             }
+
+             const circles = plotGroup.selectAll(".data-circle")
+                .data(data, d => d.uat + d.jud)
+                .enter().append("circle")
+                .attr("class", "data-circle static-circle")
+                .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -10; })
+                .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -10; })
+                .attr("r", d => { const xVal = d[config.xField]; const yVal = d[config.yField]; return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0; })
+                .attr("fill", d => colorScale(d.Castigator) || "#999")
+                .attr("opacity", 0.75).attr("stroke", "none").attr("stroke-width", 0)
+                .style("pointer-events", d => { const xVal = d[config.xField]; const yVal = d[config.yField]; return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? 'auto' : 'none'; })
+                .on("mouseover", (event, d) => {
+                    const xVal = d[config.xField], yVal = d[config.yField];
+                    if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
+                    tooltip.style("opacity", 1).html(scatterTooltip(d, config));
+                    d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", 1.5);
+                })
+                .on("mousemove", updateTooltipPosition)
+                .on("mouseout", (event, d) => {
+                     const xVal = d[config.xField], yVal = d[config.yField];
+                     if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
+                     tooltip.style("opacity", 0);
+                     const searchTerm = normalize(d3.select("#search-input").property("value"));
+                     const isSearching = searchTerm.length > 0;
+                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
+                     const isHighlightedByFilter = currentFilter !== "all" && d.Castigator === currentFilter;
+                     let finalStroke = "none", finalStrokeWidth = 0;
+                     const isMain = d3.select(event.currentTarget).classed('main-circle');
+                     if (exactSearchMatch) { finalStroke = "#FFFFFF"; finalStrokeWidth = isMain ? 3 : 2.5; }
+                     else if (isHighlightedByFilter) { finalStroke = "#FFFFFF"; finalStrokeWidth = 1; }
+                     d3.select(event.currentTarget).attr("stroke", finalStroke).attr("stroke-width", finalStrokeWidth);
+                });
+             staticCircles.push(circles);
+             return circles;
+         }
+
+        
+        d3.csv("scatter.csv", d3.autoType).then(data => {
+            allDataGlobal = data.filter(d => d.Lat && d.Long && d.Castigator && d.uat && d["Procent castigator"]);
+
+            
+            const scatterConfig1 = { xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1, title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor", xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)", quadLabels: { I: "I. Suburbii sau localități periurbane prospere, spațiu mare", II: "II. Localități îmbătrânite cu case mari sau zone turistice rurale", III: "III. Orașe cu cartiere aglomerate, densitate mare", IV: "IV. Zone rurale sărace, cu case modeste și populație vârstnică" } };
+            const scatterConfig2 = { xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1, title: "Plecările din localitate și ponderea șomerilor", xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)", quadLabels: { I: "I. Neatractiv", II: "II. Probleme multiple", III: "III. Stabili", IV: "IV. Exod mascat" } };
+            const scatterConfig3 = { xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0, title: "Salariați vs. Venituri din Impozite", xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)", quadLabels: { I: "I. Turism/Rentă?", II: "II. Autonomi", III: "III. Vulnerabili", IV: "IV. Navetiști?" } };
+            const scatterConfig4 = { xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0, title: "Fonduri Europene vs. Acces la Medici", xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic", quadLabels: { I: "I. Zone fără fonduri europene semnificative și cu servicii medicale sub presiune", II: "II. Zone care atrag fonduri, dar fără impact încă asupra sistemului medical", III: "III. Zone tradițional stabile sau atipice", IV: "Investiții consistente" } };
+
+            
+            mainScatterConfig = scatterConfig1;
+            mainScatterConfig._xMedian = d3.median(allDataGlobal, d => d[mainScatterConfig.xField]);
+            mainScatterConfig._yMedian = d3.median(allDataGlobal, d => d[mainScatterConfig.yField]);
+
+            
+            const areaScale = d3.scaleSqrt().domain(d3.extent(allDataGlobal, d => d["Procent castigator"])).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
+            const xGeo = d3.scaleLinear().domain(d3.extent(allDataGlobal, d => d.Long)).range([marginMain.left, mainWidth - marginMain.right]);
+            const yGeo = d3.scaleLinear().domain(d3.extent(allDataGlobal, d => d.Lat)).range([mainHeight - marginMain.bottom, marginMain.top]);
+
+           
+            createSpherePositions(allDataGlobal, 250);
+            mainCircles = chartMain.selectAll("circle.main-circle")
+                .data(allDataGlobal, d => d.uat + d.jud)
+                .enter().append("circle")
+                .attr("class", "data-circle main-circle")
+                .attr("fill", d => colorScale(d.Castigator) || "#999")
+                .attr("opacity", 0).style("pointer-events", "auto")
+                .on("mouseover", (event, d) => {
+                     tooltip.style("opacity", 1);
+                     if (currentView === 'sphere' || currentView === 'map') tooltip.html(basicTooltip(d));
+                     else if (currentView === 'scatter') {
+                         const config = mainScatterConfig;
+                         const xVal = d[config.xField], yVal = d[config.yField];
+                         if (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) tooltip.html(scatterTooltip(d, config));
+                         else tooltip.html(basicTooltip(d));
+                     }
+                     d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", currentView === 'sphere' ? 2.5 : 2);
+                 })
+                .on("mousemove", updateTooltipPosition)
+                .on("mouseout", (event, d) => {
+                    tooltip.style("opacity", 0);
+                    const searchTerm = normalize(d3.select("#search-input").property("value"));
+                    const isSearching = searchTerm.length > 0;
+                    const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
+                    const isHighlightedByFilter = currentFilter !== "all" && d.Castigator === currentFilter;
+                    let finalStroke = "none", finalStrokeWidth = 0;
+                    const isMain = d3.select(event.currentTarget).classed('main-circle');
+                    if (exactSearchMatch) { finalStroke = "#FFFFFF"; finalStrokeWidth = isMain ? 3 : 2.5; }
+                    else if (isHighlightedByFilter) { finalStroke = "#FFFFFF"; finalStrokeWidth = 1; }
+                    d3.select(event.currentTarget).attr("stroke", finalStroke).attr("stroke-width", finalStrokeWidth);
+                });
+            updateSphereVisuals();
+            sphereAnimation.play();
+
+            
+            const datalist = document.getElementById("localitati-list");
+            [...new Set(allDataGlobal.map(d => d.uat).filter(Boolean))]
+                .sort((a, b) => a.localeCompare(b, "ro-RO"))
+                .forEach(name => { const opt = document.createElement("option"); opt.value = name; datalist.appendChild(opt); });
+
+            
+            d3.select("#search-input").on("input", applyGlobalFilterAndSearch);
+            d3.select("#clear-search").on("click", () => { d3.select("#search-input").property("value", ""); applyGlobalFilterAndSearch(); });
+            d3.select("#winner-filter").on("change", applyGlobalFilterAndSearch);
+
+            
+            staticCircles = []; staticConfigs = {};
+            createScatterPlot("#scatter-viz-1", allDataGlobal, scatterConfig1);
+            createScatterPlot("#scatter-viz-2", allDataGlobal, scatterConfig2);
+            createScatterPlot("#scatter-viz-3", allDataGlobal, scatterConfig3);
+            createScatterPlot("#scatter-viz-4", allDataGlobal, scatterConfig4);
+            applyGlobalFilterAndSearch(); 
+
+            
+            function toSphere() {
+                if (currentView === 'sphere') return;
+                console.log("Transitioning to Sphere");
+                currentView = "sphere";
+                window.IO?.disconnect(); // DEACTIVATE IO
+                activeQuad = 'all'; observerInitialized = false;
+                sphereAnimation.play();
+                updateSearchControlsVisibility();
+                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
+                updateSphereVisuals();
+            }
+
+            function toMap() {
+                if (currentView === 'map') return;
+                console.log("Transitioning to Map");
+                currentView = "map";
+                window.IO?.disconnect(); // DEACTIVATE IO
+                activeQuad = 'all'; observerInitialized = false;
+                sphereAnimation.pause();
+                updateSearchControlsVisibility();
+                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
+                svgMain.append("text").attr("class", "map-title").attr("x", mainWidth / 2).attr("y", marginMain.top / 2).text("Distribuția câștigătorilor pe localități");
+                svgMain.append("text").attr("class", "map-subtitle").attr("x", mainWidth / 2).attr("y", marginMain.top / 2 + 22).text("Dimensiunea cercurilor indică procentul obținut de câștigător. Click pe fiecare localitate sau folosește filtrele");
+                mainCircles.transition("mapPos").duration(1500).ease(d3.easeCubicInOut)
+                    .attr("cx", d => (d.Long && !isNaN(xGeo(d.Long))) ? xGeo(d.Long) : -10)
+                    .attr("cy", d => (d.Lat && !isNaN(yGeo(d.Lat))) ? yGeo(d.Lat) : -10)
+                    .attr("r", d => (d.Lat && d.Long && areaScale) ? areaScale(d["Procent castigator"]) : 0)
+                    .end().then(applyGlobalFilterAndSearch).catch(err => { console.error("Map transition error:", err); applyGlobalFilterAndSearch(); });
+                applyGlobalFilterAndSearch();
+            }
+
+            function toScatter() {
+                if (currentView === 'scatter') return;
+                console.log("Transitioning to Main Scatter");
+                currentView = "scatter";
+                sphereAnimation.pause();
+                updateSearchControlsVisibility();
+                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
+
+                const config = mainScatterConfig;
+                const innerWidth = mainWidth - marginMain.left - marginMain.right;
+                const innerHeight = mainHeight - marginMain.top - marginMain.bottom;
+                const xExtent = d3.extent(allDataGlobal, d => d[config.xField]);
+                const yExtent = d3.extent(allDataGlobal, d => d[config.yField]);
+                const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
+                const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
+                const x = d3.scaleLinear().domain(xDomain).nice().range([marginMain.left, mainWidth - marginMain.right]);
+                const y = d3.scaleLinear().domain(yDomain).nice().range([mainHeight - marginMain.bottom, marginMain.top]);
+                const xMedian = config._xMedian, yMedian = config._yMedian;
+
+                 svgMain.append("text").attr("class", "plot-title").attr("x", mainWidth / 2).attr("y", marginMain.top / 2 - 5).text(config.title);
+                 svgMain.append("g").attr("class", "x-axis axis").attr("transform", `translate(0,${mainHeight - marginMain.bottom})`).call(d3.axisBottom(x).ticks(7));
+                 svgMain.append("text").attr("class", "x-label axis-label").attr("x", mainWidth / 2).attr("y", mainHeight - 15).text(config.xLabelFull);
+                 svgMain.append("g").attr("class", "y-axis axis").attr("transform", `translate(${marginMain.left},0)`).call(d3.axisLeft(y).ticks(7));
+                 svgMain.append("text").attr("class", "y-label axis-label").attr("transform", "rotate(-90)").attr("x", -(marginMain.top + innerHeight / 2)).attr("y", marginMain.left - 50).text(config.yLabelFull);
+                 if (xMedian !== undefined && xMedian !== null) svgMain.append("line").attr("class", "quadrant-line").attr("x1", x(xMedian)).attr("x2", x(xMedian)).attr("y1", marginMain.top).attr("y2", mainHeight - marginMain.bottom);
+                 if (yMedian !== undefined && yMedian !== null) svgMain.append("line").attr("class", "quadrant-line").attr("x1", marginMain.left).attr("x2", mainWidth - marginMain.right).attr("y1", y(yMedian)).attr("y2", y(yMedian));
+
+                 
+                 const isMobile = window.innerWidth <= 600;
+                 const mainLabelPadding = isMobile ? 8 : 12; 
+                 
+                 const mainVerticalLabelOffset = mainLabelPadding * (isMobile ? 1.8 : 1.5); // Adjust multiplier as needed
+                 
+
+                 if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
+                     
+                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + mainLabelPadding).attr("y", marginMain.top + mainVerticalLabelOffset).text(config.quadLabels.II).attr("text-anchor", "start");
+                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - mainLabelPadding).attr("y", marginMain.top + mainVerticalLabelOffset).text(config.quadLabels.I).attr("text-anchor", "end");
+                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) - mainLabelPadding).attr("y", mainHeight - marginMain.bottom - mainLabelPadding).text(config.quadLabels.III).attr("text-anchor", "end"); // Bottom labels might need less vertical adjustment
+                      svgMain.append("text").attr("class", "quadrant-label").attr("x", x(xMedian) + mainLabelPadding).attr("y", mainHeight - marginMain.bottom - mainLabelPadding).text(config.quadLabels.IV).attr("text-anchor", "start"); // Bottom labels might need less vertical adjustment
+                  }
+
+                 const overlays = svgMain.selectAll(".quadrant-overlay").data(["I","II","III","IV"]);
+                 overlays.enter().append("rect").attr("class","quadrant-overlay").merge(overlays)
+                    .attr("opacity", 0).attr("pointer-events","none")
+                    .each(function(q){
+                        if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return;
+                        const isLeft = q==="I" || q==="III", isTop = q==="I" || q==="II";
+                        const xPos = isLeft ? marginMain.left : x(xMedian);
+                        const yPos = isTop ? marginMain.top : y(yMedian);
+                        const width = Math.max(0, isLeft ? x(xMedian)-marginMain.left : mainWidth-marginMain.right-x(xMedian));
+                        const height = Math.max(0, isTop ? y(yMedian)-marginMain.top : mainHeight-marginMain.bottom-y(yMedian));
+                        if (isFinite(xPos) && isFinite(yPos) && isFinite(width) && width >= 0 && isFinite(height) && height >= 0) {
+                            d3.select(this).attr("x", xPos).attr("y", yPos).attr("width", width).attr("height", height);
+                        } else { d3.select(this).attr("width", 0).attr("height", 0); }
+                 });
+
+                 mainCircles.transition("scatterPos").duration(1500).ease(d3.easeCubicInOut)
+                    .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -10; })
+                    .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -10; })
+                    .attr("r", d => { const xVal = d[config.xField], yVal = d[config.yField]; return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 1.1 : 0; })
+                    .end().then(() => {
+                         console.log("Scatter transition finished. Setting up IO.");
+                         applyGlobalFilterAndSearch();
+                         setupIntersectionObserver(config); 
+                    }).catch(err => {
+                         console.error("Scatter transition error:", err);
+                         applyGlobalFilterAndSearch();
+                         setupIntersectionObserver(config); 
+                    });
+                applyGlobalFilterAndSearch();
+            }
 
 
-const normalize = str =>
-  (str || "")
-    .toString()
-    .normalize("NFD")               
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
+            
+            const steps = document.querySelectorAll("#scatter-steps .step");
+
+            function setupIntersectionObserver(config) { // Expects mainScatterConfig
+                window.IO?.disconnect();
+                observerInitialized = false; // Reset flag
+                console.log("[IO] Setting up Intersection Observer (Revised Logic)");
+
+                window.IO = new IntersectionObserver(entries => {
+                    if (currentView !== 'scatter') return; 
+
+                    const minVisibilityThreshold = 0.05; 
+
+                    
+                    const visibleSteps = entries.filter(entry =>
+                        entry.isIntersecting && entry.intersectionRatio >= minVisibilityThreshold
+                    );
+
+                    let highestVisibleStep = null;
+                    if (visibleSteps.length > 0) {
+                        
+                        visibleSteps.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+                        
+                        highestVisibleStep = visibleSteps[0].target;
+                    }
+
+                    
+                    const nextActiveQuad = highestVisibleStep ? highestVisibleStep.dataset.quad : 'all';
+
+                   
+                    if (nextActiveQuad !== activeQuad) {
+                        console.log(`[IO Callback] *** Changing highlight: ${activeQuad} -> ${nextActiveQuad} *** (Highest visible: ${highestVisibleStep ? highestVisibleStep.dataset.quad : 'None'})`);
+                        activeQuad = nextActiveQuad;
+                        renderHighlight(activeQuad, config); // Pass config
+                    }
+                }, {
+                    
+                    threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) // Use multiple thresholds (0, 0.05, ..., 1.0)
+                });
+
+                steps.forEach(s => window.IO.observe(s));
+                console.log("[IO] Observer attached to steps.");
+
+                 
+                 if (!observerInitialized) {
+                      console.log("[IO Initial Check] Scheduling (Revised)...");
+                      setTimeout(() => {
+                         if (currentView !== 'scatter') { console.log("[IO Initial Check] Aborted, view changed."); return; }
+                         console.log("[IO Initial Check] Running (Revised)...");
+
+                         const minVisibilityThreshold = 0.05;
+                         const currentVisibleSteps = [];
+                         steps.forEach(step => {
+                            const rect = step.getBoundingClientRect();
+                            const isIntersecting = rect.top < window.innerHeight && rect.bottom > 0;
+                            if (isIntersecting) {
+                                const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+                                const ratio = Math.max(0, Math.min(1, visibleHeight / rect.height));
+                                if (ratio >= minVisibilityThreshold) {
+                                    currentVisibleSteps.push({ target: step, top: rect.top });
+                                }
+                            }
+                         });
+
+                         let initialHighestStep = null;
+                         if (currentVisibleSteps.length > 0) {
+                             currentVisibleSteps.sort((a, b) => a.top - b.top);
+                             initialHighestStep = currentVisibleSteps[0].target;
+                         }
+
+                         const initialActiveQuad = initialHighestStep ? initialHighestStep.dataset.quad : 'all';
+                         console.log(`[IO Initial Check] Determined initial quad: ${initialActiveQuad}.`);
+
+                         if (initialActiveQuad !== activeQuad) {
+                              console.log(`[IO Initial Check] *** Setting initial highlight: ${activeQuad} -> ${initialActiveQuad} ***`);
+                              activeQuad = initialActiveQuad;
+                         }
+                         renderHighlight(activeQuad, config); 
+                         observerInitialized = true;
+                     }, 350); 
+                 }
+             } 
+
+            function renderHighlight(quad, config) { // Expects mainScatterConfig
+                if (currentView !== 'scatter' || !svgMain || !svgMain.node()) { // GUARD
+                    console.warn(`[RenderHighlight] Aborting. View: ${currentView}, SVG exists: ${!!svgMain?.node()}`);
+                    if (currentView !== 'scatter') activeQuad = 'all';
+                    return;
+                }
+                console.log(`[RenderHighlight] Rendering for quad: ${quad}`);
+                svgMain.selectAll(".quadrant-overlay")
+                    .filter(qData => qData).transition("overlayHighlight").duration(300)
+                    .attr("opacity", qData => (quad === "all") ? 0 : (qData === quad ? 0.12 : 0));
+                
+                applyGlobalFilterAndSearch();
+            } 
 
 
-d3.select("#search-input").on("input", function () {
-  const v = normalize(this.value);
+            
+            const chartWrapper = document.querySelector('.chart-wrapper');
+            const scatterStepsSection = document.getElementById('scatter-steps');
 
-  circles
-    .attr("opacity", d =>
-      v && normalize(d.uat).includes(v) ? 1 : 0.1
-    )
-    .attr("stroke-width", d =>
-      v && normalize(d.uat) === v ? 3 : 0
-    )
-    .attr("stroke", d =>
-      v && normalize(d.uat) === v ? "#000" : "none"
-    );
-});
+            window.addEventListener("scroll", () => {
+                const y = window.scrollY;
+                const wh = window.innerHeight;
+                if (!chartWrapper || !scatterStepsSection) return;
 
-d3.select("#clear-search").on("click", () => {
-  d3.select("#search-input").property("value", "");
-  circles
-    .attr("opacity", 1)
-    .attr("stroke-width", 0)
-    .attr("stroke", "none");
-});
+                const wrapperRect = chartWrapper.getBoundingClientRect();
+                const stepsRect = scatterStepsSection.getBoundingClientRect();
+                const wrapperTop = wrapperRect.top + y;
+                const stepsTop = stepsRect.top + y;
+                const wrapperHeight = chartWrapper.offsetHeight;
+
+                
+                const mapStartPoint = wrapperTop + wrapperHeight * 0.33 - wh;
+                
+                const scatterStartPoint = stepsTop - wh * 0.6; 
+
+                let targetView;
+
+                if (y < mapStartPoint) {
+                    targetView = "sphere";
+                } else if (y >= mapStartPoint && y < scatterStartPoint) {
+                    targetView = "map";
+                } else { // y >= scatterStartPoint
+                    targetView = "scatter";
+                }
+
+                if (targetView !== currentView) {
+                    console.log(`Scroll Trigger: Changing view from ${currentView} to ${targetView} (y=${y.toFixed(0)}, mapStart=${mapStartPoint.toFixed(0)}, scatterStart=${scatterStartPoint.toFixed(0)})`);
+                    if (targetView === "sphere") toSphere();
+                    else if (targetView === "map") toMap();
+                    else if (targetView === "scatter") toScatter();
+                }
+
+                
+                updateSearchControlsVisibility();
+
+               
+                const intro = document.getElementById("sphere-intro");
+                if (intro) {
+                    if (y < 80 && currentView === 'sphere') intro.classList.remove("hidden");
+                    else intro.classList.add("hidden");
+                }
+
+            }, { passive: true });
 
 
+            
+            const chartContainer = document.getElementById("chart-container");
+            const staticPlotsSection = document.getElementById("flourish-block");
+
+             if (chartContainer && staticPlotsSection) {
+                new IntersectionObserver(
+                    entries => {
+                        const staticPlotsEntry = entries[0];
+                        const fadeStartRatio = 0.05, fadeEndRatio = 0.25;
+                        let opacity = 1;
+                        staticPlotsVisible = staticPlotsEntry.isIntersecting;
+                        if (staticPlotsEntry.isIntersecting) {
+                            const ratio = staticPlotsEntry.intersectionRatio;
+                            if (ratio >= fadeStartRatio) opacity = 1 - Math.min(1, Math.max(0, (ratio - fadeStartRatio) / (fadeEndRatio - fadeStartRatio)));
+                        } else if (staticPlotsEntry.boundingClientRect.top < 0) { opacity = 0; staticPlotsVisible = false; }
+                        else { opacity = 1; staticPlotsVisible = false; }
+                        chartContainer.style.opacity = opacity;
+                        chartContainer.style.pointerEvents = opacity < 0.5 ? "none" : "auto";
+                        updateSearchControlsVisibility();
+                        const intro = document.getElementById("sphere-intro");
+                        if (intro && opacity < 0.8) intro.classList.add("hidden");
+                        if (opacity < 0.5 && window.IO) { // Disconnect IO if chart hidden
+                             console.log("Disconnecting IO due to main chart fade");
+                             window.IO.disconnect();
+                             activeQuad = 'all'; observerInitialized = false;
+                        }
+                    }, { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) }
+                ).observe(staticPlotsSection);
+             }
+
+            
+            const intro = document.getElementById("sphere-intro");
+            const introOk = document.getElementById("intro-ok");
+            if (intro && introOk) {
+                function hideIntro() { intro.classList.add("hidden"); }
+                introOk.addEventListener("click", hideIntro);
+            }
+
+            
+            setTimeout(() => {
+                 const y = window.scrollY;
+                 const wh = window.innerHeight;
+                 if (!chartWrapper || !scatterStepsSection) {
+                     console.error("Initial view check failed: Elements not found.");
+                     toSphere(); applyGlobalFilterAndSearch(); updateSearchControlsVisibility(); return;
+                 }
+                 const wrapperRect = chartWrapper.getBoundingClientRect();
+                 const stepsRect = scatterStepsSection.getBoundingClientRect();
+                 const wrapperTop = wrapperRect.top + y;
+                 const stepsTop = stepsRect.top + y;
+                 const wrapperHeight = chartWrapper.offsetHeight;
+
+                 
+                 const mapStartPoint = wrapperTop + wrapperHeight * 0.33 - wh;
+                 const scatterStartPoint = stepsTop - wh * 0.6; // <<< ADJUSTED: Transition earlier
+
+                 let initialViewFunction = toSphere;
+
+                 if (y >= mapStartPoint && y < scatterStartPoint) {
+                     initialViewFunction = toMap;
+                 } else if (y >= scatterStartPoint) {
+                     initialViewFunction = toScatter;
+                 }
+
+                 console.log(`Setting initial view: ${initialViewFunction.name} (y=${y.toFixed(0)}, mapStart=${mapStartPoint.toFixed(0)}, scatterStart=${scatterStartPoint.toFixed(0)})`);
+                 initialViewFunction();
+
+                 
+                 setTimeout(updateSearchControlsVisibility, 200);
+
+                 
+                 const intro = document.getElementById("sphere-intro");
+                 if (intro) {
+                     if (y < 80 && currentView === 'sphere') intro.classList.remove("hidden");
+                     else intro.classList.add("hidden");
+                 }
+                 console.log("Initial view determined:", currentView);
+            }, 150); 
 
 
-
-      d3.select("#search-input").on("input",function(){
-        const v = this.value.trim().toLowerCase();
-        circles.transition().duration(300)
-          .attr("opacity",d => d.uat && d.uat.toLowerCase()===v ? 1 : 0.1)
-          .attr("stroke-width",d => d.uat && d.uat.toLowerCase()===v ? 3 : 0)
-          .attr("stroke",d => d.uat && d.uat.toLowerCase()===v ? "#000":"none");
-      });
-
-      d3.select("#clear-search").on("click",()=>{
-        d3.select("#search-input").property("value","");
-        circles.transition().duration(300)
-          .attr("opacity",1)
-          .attr("stroke-width",0)
-          .attr("stroke","none");
-      });
-      d3.select("#winner-filter").on("change", function() {
-        currentFilter = this.value;
-        if      (currentView === "scatter") toScatter();
-        else if (currentView === "map")     toMap();
-        else if (currentView === "sphere")  toSphere();
+        }).catch(error => {
+            console.error("Error loading or processing data:", error);
+            document.body.innerHTML = `<div style="color: red; padding: 50px; text-align: center; font-size: 1.2em;">A apărut o eroare la încărcarea datelor (${error.message}). Vă rugăm reîncărcați pagina.</div>`;
         });
 
-        function toSphere() {
-  currentView = "sphere";
-  searchEl.style("display", "none");
-
- 
-  svg.selectAll(
-    ".map-title, .map-subtitle, .scatter-title," +
-    " .x-axis, .y-axis, .x-label, .y-label," +
-    " .quadrant-line, .quadrant-label"
-  ).remove();
-
-  
-  circles
-    .on("mouseover", (e, d) => {
-      tooltip
-        .style("opacity", 1)
-        .html(basicTooltip(d));
-    })
-    .on("mousemove", (e) => {
-      const tRect = tooltip.node().getBoundingClientRect();
-      let left = e.pageX + 6, top = e.pageY - 10;
-      if (left + tRect.width > window.innerWidth) left = e.pageX - tRect.width - 15;
-      if (top < 0) top = e.pageY + 15;
-      tooltip.style("left", left + "px").style("top", top + "px");
-    })
-    .on("mouseout", () => {
-      tooltip.style("opacity", 0);
-    });
-
-  
-  circles.interrupt()
-    .transition().duration(1200).ease(d3.easeCubicInOut)
-    .attrTween("cx", d => t => {
-      const xRot = d.x * Math.cos(rotationAngle) - d.z * Math.sin(rotationAngle);
-      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
-      const s    = 400 / (400 + zRot);
-      return width / 2 + xRot * s;
-    })
-    .attrTween("cy", d => t => {
-      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
-      const s    = 400 / (400 + zRot);
-      return height / 2 + d.y * s;
-    })
-    .attrTween("r", d => t => {
-      const zRot = d.x * Math.sin(rotationAngle) + d.z * Math.cos(rotationAngle);
-      const s    = 400 / (400 + zRot);
-      return baseCircleDiameter * s;
-    });
-
-    if(window.IO) IO.disconnect();
-}
-
-    function toMap() {
-  currentView = "map";
-  searchEl.style("display", "block");
-
-  
-    svg.selectAll(
-    ".map-title, .map-subtitle, .scatter-title," +
-    " .x-axis, .y-axis, .x-label, .y-label," +
-    " .quadrant-line, .quadrant-label"
-    ).remove();
-
- 
-  svg.append("text")
-    .attr("class", "map-title")
-    .attr("x", width / 2)
-    .attr("y", margin.top / 2)
-    .attr("text-anchor", "middle")
-    .attr("fill", "#fff")
-    .style("font-size", "1.5em")
-    .style("font-weight", "600")
-    .text("Distribuția rezultatelor pe câștigători");
-
-  
-  svg.append("text")
-    .attr("class", "map-subtitle")
-    .attr("x", width / 2)
-    .attr("y", margin.top / 2 + 24)
-    .attr("text-anchor", "middle")
-    .attr("fill", "#ccc")
-    .style("font-size", "0.9em")
-    .text("dimensiunea cercurilor se referă la procentul câștigătorului");
-
- 
-  circles.transition().duration(1500)
-    .attr("cx", d => xGeo(d.Long))
-    .attr("cy", d => yGeo(d.Lat) + 60)
-    .attr("r", d => Math.sqrt(areaScale(d["Procent castigator"]) / Math.PI))
-    .attr("opacity",   d => currentFilter === "all" || d.Castigator === currentFilter ? 1 : 0.1)
-    .attr("stroke-width", d => d.Castigator === currentFilter ? 2 : 0)
-    .attr("stroke",      d => d.Castigator === currentFilter ? "#000" : "none");
-
-    if(window.IO) IO.disconnect();
-
-}
-circles
-  .on("mouseover", (e, d) => {
-     tooltip
-       .style("opacity", 1)
-       .html(basicTooltip(d));
-  })
-  .on("mousemove", (e) => {
-     const t = tooltip.node().getBoundingClientRect();
-     let left = e.pageX + 6, top = e.pageY - 10;
-     if (left + t.width > window.innerWidth) left = e.pageX - t.width - 15;
-     if (top < 0) top = e.pageY + 15;
-     tooltip.style("left", left + "px").style("top", top + "px");
-  })
-  .on("mouseout", () => tooltip.style("opacity", 0));
-
-
-function toScatter() {
-  currentView = "scatter";
-  searchEl.style("display", "block");
-
-
-svg.selectAll(
-".map-title, .map-subtitle, .scatter-title," +
-" .x-axis, .y-axis, .x-label, .y-label," +
-" .quadrant-line, .quadrant-label"
-).remove();
-
- 
-  svg.append("text")
-    .attr("class", "scatter-title")
-    .attr("x", width / 2)
-    .attr("y", margin.top / 2)
-    .attr("text-anchor", "middle")
-    .attr("fill", "#fff")
-    .style("font-size", "1.5em")
-    .style("font-weight", "600")
-    .text("Cu cine votează marile agromerări urbane sau localitățile îmbătrânite? ");
-
-  
-  const x = d3.scaleLinear()
-      .domain(d3.extent(allDataGlobal, d => d["Varsta medie a populatiei in 2023"]))
-      .nice()
-      .range([margin.left, width - margin.right]);
-
-  const y = d3.scaleLinear()
-      .domain(d3.extent(allDataGlobal, d => d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]))
-      .nice()
-      .range([height - margin.bottom, margin.top]);
-
-  const xMedian = d3.median(allDataGlobal, d => d["Varsta medie a populatiei in 2023"]);
-  const yMedian = d3.median(allDataGlobal, d => d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]);
-
-const overlays = svg.selectAll(".quadrant-overlay").data(["I","II","III","IV"]);
-overlays.enter().append("rect").attr("class","quadrant-overlay")
-  .merge(overlays)
-  .attr("fill", "#ffffff")
-  .attr("opacity", 0)     // start invisible
-  .attr("pointer-events","none")   // don’t capture the mouse
-  .each(function(q){          // position & size for each quadrant
-    const isLeft  = q==="I" || q==="III";
-    const isTop   = q==="I" || q==="II";
-    d3.select(this)
-      .attr("x", isLeft ? margin.left : x(xMedian))
-      .attr("y", isTop  ? margin.top  : y(yMedian))
-      .attr("width",  isLeft ? x(xMedian)-margin.left : width-margin.right-x(xMedian))
-      .attr("height", isTop  ? y(yMedian)-margin.top  : height-margin.bottom-y(yMedian));
-  });
-
-
-const steps = document.querySelectorAll("#scatter-steps .step");
-let activeQuad = "all";                         
-
-
-function renderHighlight(quad) {
-  svg.selectAll(".quadrant-overlay")
-     .transition().duration(300)
-     .attr("opacity", d => quad === "all" ? 0 : d === quad ? 0.18 : 0);
-
-  circles
-     .transition().duration(300)
-     .attr("opacity", d => {
-        if (quad === "all") return 1;
-
-       
-        const q = (d["Varsta medie a populatiei in 2023"] < xMedian ? "I" : "II")
-                  .replace("I",
-                     d["Suprafata locuibila/cap de locuitor (m patrati) 2023"] < yMedian ? "III" : "I")
-                  .replace("II",
-                     d["Suprafata locuibila/cap de locuitor (m patrati) 2023"] < yMedian ? "IV"  : "II");
-        return q === quad ? 1 : 0.05;
-     });
-}
-
-
-window.IO?.disconnect();
-
-window.IO = new IntersectionObserver(entries => {
-
-  
-  entries.forEach(e => {
-    e.target.__visible = e.intersectionRatio >= 0.5;
-  });
-
-  
-  const firstVisible = [...steps].find(s => s.__visible);
-
-  
-  const quad = firstVisible ? firstVisible.dataset.quad : "all";
-
-  if (quad !== activeQuad) {        
-    activeQuad = quad;
-    renderHighlight(activeQuad);
-  }
-
-}, { threshold: 0.5 });             
-
-steps.forEach(s => window.IO.observe(s));
-  // 4) Transition circles into position
-  circles.transition().duration(1500)
-    .attr("cx", d => x(d["Varsta medie a populatiei in 2023"]))
-    .attr("cy", d => y(d["Suprafata locuibila/cap de locuitor (m patrati) 2023"]))
-    .attr("r", baseCircleDiameter * 0.8)
-    .attr("opacity", d =>
-      currentFilter === "all" || d.Castigator === currentFilter ? 1 : 0.1
-    )
-    .attr("stroke-width", d => d.Castigator === currentFilter ? 2 : 0)
-    .attr("stroke",      d => d.Castigator === currentFilter ? "#000" : "none");
-
-  
-  circles
-    .on("mouseover", (e, d) => {
-      tooltip
-        .style("opacity", 1)
-        .html(scatterTooltip(d));
-    })
-    
-    .on("mousemove", (e) => {
-      const t = tooltip.node().getBoundingClientRect();
-      let left = e.pageX + 6, top = e.pageY - 10;
-      if (left + t.width > window.innerWidth) left = e.pageX - t.width - 15;
-      if (top < 0) top = e.pageY + 15;
-      tooltip.style("left", left + "px").style("top", top + "px");
-    })
-    .on("mouseout", () => tooltip.style("opacity", 0));
-
-  
-  svg.selectAll(".x-axis, .y-axis, .x-label, .y-label, .quadrant-line, .quadrant-label").remove();
-
-  
-  svg.append("g")
-    .attr("class", "x-axis")
-    .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x));
-  svg.append("text")
-    .attr("class", "x-label")
-    .attr("x", width - margin.right)
-    .attr("y", height - 10)
-    .attr("text-anchor", "end")
-    .attr("fill", "#fff")
-    .text("Vârsta medie a populației (2023)");
-
-  
-  svg.append("g")
-    .attr("class", "y-axis")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y));
-  svg.append("text")
-    .attr("class", "y-label")
-    .attr("transform", "rotate(-90)")
-    .attr("x", -margin.top)
-    .attr("y", 20)
-    .attr("text-anchor", "end")
-    .attr("fill", "#fff")
-    .text("Suprafață locuibilă / cap de locuitor (m²)");
-
-  svg.selectAll(".x-axis path, .x-axis line, .y-axis path, .y-axis line")
-    .attr("stroke", "#ffffff")
-    .attr("stroke-width", 0.5);
-  svg.selectAll(".x-axis text, .y-axis text")
-    .attr("fill", "#ffffff")
-    .style("font-weight", 300)
-    .style("font-size", "12px");
-
-  
-  svg.append("line")
-    .attr("class", "quadrant-line")
-    .attr("x1", x(xMedian)).attr("x2", x(xMedian))
-    .attr("y1", margin.top).attr("y2", height - margin.bottom)
-    .attr("stroke", "#ffffff").attr("stroke-dasharray", "4 4").attr("stroke-width", 1);
-  svg.append("line")
-    .attr("class", "quadrant-line")
-    .attr("x1", margin.left).attr("x2", width - margin.right)
-    .attr("y1", y(yMedian)).attr("y2", y(yMedian))
-    .attr("stroke", "#ffffff").attr("stroke-dasharray", "4 4").attr("stroke-width", 1);
-
-  
-  const quadrantLabels = [
-    { text: "II. Localitate îmbătrânită, dar cu locuințe spațioase", x: width - margin.right - 10, y: margin.top + 20, anchor: "end" },
-    { text: "I. Populație tânără și confortabilă",        x: margin.left + 10,      y: margin.top + 20, anchor: "start" },
-    { text: "III. Tineri în spații mici, densitate mare",  x: margin.left + 10,      y: height - margin.bottom - 20, anchor: "start" },
-    { text: "IV. Îmbătrânire în condiții de locuire modeste", x: width - margin.right - 10, y: height - margin.bottom - 20, anchor: "end" }
-  ];
-
-  svg.selectAll(".quadrant-label")
-    .data(quadrantLabels)
-    .enter()
-    .append("text")
-      .attr("class", "quadrant-label")
-      .attr("x", d => d.x)
-      .attr("y", d => d.y)
-      .attr("text-anchor", d => d.anchor)
-      .attr("fill", "#88b5ff")
-      .style("font-size", "0.9em")
-      .style("font-weight", "400")
-      .style("opacity", 0.9)
-      .text(d => d.text);
-}
-
-window.addEventListener("scroll", () => {
-  const y = window.scrollY;
-  const h = window.innerHeight;          // viewport height
-
-  if (y < 0.15 * h && currentView !== "sphere") {
-      toSphere();                        // ≈ top 15 % of screen
-  } else if (y >= 0.15 * h && y < 1.1 * h && currentView !== "map") {
-      toMap();                           // ≈ next one screen-height
-  } else if (y >= 1.1 * h && currentView !== "scatter") {
-      toScatter();                       // everything after that
-  }
-});
-/*  ▶▶  paste the new observer RIGHT HERE  ◀◀  */
-const chartBox   = document.getElementById("chart-container");
-  const flourishEl = document.getElementById("flourish-block");
-
-  new IntersectionObserver(
-    entries => {
-      const showFlourish = entries[0].isIntersecting;
-      chartBox.style.opacity        = showFlourish ? 0 : 1;   // fade
-      chartBox.style.pointerEvents  = showFlourish ? "none" : "auto";
-    },
-    { threshold: 0.05 }     // fire when ≥ 5 % of the section is visible
-  ).observe(flourishEl);
-
-
-const intro   = document.getElementById("sphere-intro");
-const introOk = document.getElementById("intro-ok");
-
-
-function hideIntro()  { intro.classList.add("hidden"); }
-function showIntro()  { intro.classList.remove("hidden"); }
-
-
-introOk.addEventListener("click", hideIntro);
-
-
-window.addEventListener(
-  "scroll",
-  () => {
-    if (window.scrollY < 80) showIntro();  
-    else                     hideIntro();  
-  },
-  { passive: true }
-);
-
-
-
-
-
-    });
-  </script>
-</body>
-</html>
+    </script>
+    </body>
+    </html>
