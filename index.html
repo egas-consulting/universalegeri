@@ -464,7 +464,12 @@
         // Main plot margins (might need slight adjustment with larger labels)
         const marginMain = { top: 60, right: 80, bottom: 70, left: 90 }; // Increased right/bottom slightly
 
-        const baseCircleDiameter = window.innerWidth <= 600 ? 9 : window.innerWidth > 800 ? 4 : 3.5;
+        const mobileDiameter = 3;    // Smaller size for mobile
+const desktopDiameterLarge = 4;  // Size for larger screens
+const desktopDiameterMedium = 3.5; // Size for medium screens
+
+// Set baseCircleDiameter based on screen width
+const baseCircleDiameter = window.innerWidth <= 600 ? mobileDiameter : window.innerWidth > 800 ? desktopDiameterLarge : desktopDiameterMedium;
 
         const svgMain = d3.select("#viz");
         const tooltip = d3.select("#tooltip");
