@@ -367,11 +367,11 @@
             <!-- *** UPDATED FILTER OPTIONS START *** -->
             <select id="winner-filter">
                 <option value="all">Toți</option>
-                <option value="GEORGE-NICOLAE SIMION">GEORGE-NICOLAE SIMION</option>
-                <option value="GEORGE-CRIN-LAURENȚIU ANTONESCU">GEORGE-CRIN-LAURENȚIU ANTONESCU</option>
-                <option value="NICUȘOR-DANIEL DAN">NICUȘOR-DANIEL DAN</option>
-                <option value="VICTOR-VIOREL PONTA">VICTOR-VIOREL PONTA</option>
-                <!-- Removed candidates not found in CSV: Ciolacu, Ciucă, Lasconi, Kelemen, C. Georgescu -->
+                <!-- Use full names from CSV in the 'value' attribute -->
+                <option value="GEORGE-NICOLAE SIMION">GEORGE SIMION</option>
+                <option value="GEORGE-CRIN-LAURENȚIU ANTONESCU">CRIN ANTONESCU</option>
+                <option value="NICUȘOR-DANIEL DAN">NICUȘOR DAN</option>
+                <option value="VICTOR-VIOREL PONTA">VICTOR PONTA</option>
             </select>
              <!-- *** UPDATED FILTER OPTIONS END *** -->
         </div>
@@ -465,11 +465,11 @@
         const marginMain = { top: 60, right: 80, bottom: 70, left: 90 }; // Increased right/bottom slightly
 
         const mobileDiameter = 3;    // Smaller size for mobile
-const desktopDiameterLarge = 4;  // Size for larger screens
-const desktopDiameterMedium = 3.5; // Size for medium screens
+        const desktopDiameterLarge = 4;  // Size for larger screens
+        const desktopDiameterMedium = 3.5; // Size for medium screens
 
-// Set baseCircleDiameter based on screen width
-const baseCircleDiameter = window.innerWidth <= 600 ? mobileDiameter : window.innerWidth > 800 ? desktopDiameterLarge : desktopDiameterMedium;
+        // Set baseCircleDiameter based on screen width
+        const baseCircleDiameter = window.innerWidth <= 600 ? mobileDiameter : window.innerWidth > 800 ? desktopDiameterLarge : desktopDiameterMedium;
 
         const svgMain = d3.select("#viz");
         const tooltip = d3.select("#tooltip");
@@ -478,12 +478,12 @@ const baseCircleDiameter = window.innerWidth <= 600 ? mobileDiameter : window.in
 
         // *** UPDATED WINNER COLORS START ***
         const winnerColors = {
-            "GEORGE-NICOLAE SIMION": "#FFB623", // Kept original color
-            "GEORGE-CRIN-LAURENȚIU ANTONESCU": "#00B7FF", // Reassigned color
-            "NICUȘOR-DANIEL DAN": "#4DD400", // Reassigned color
-            "VICTOR-VIOREL PONTA": "#FF2A1F" // Reassigned color
-            // Removed: ION-MARCEL CIOLACU, NICOLAE-IONEL CIUCĂ, ELENA-VALERICA LASCONI, HUNOR KELEMEN, CĂLIN GEORGESCU
-        };
+    // Use full names from CSV as keys
+    "GEORGE-NICOLAE SIMION": "#FFB623",
+    "GEORGE-CRIN-LAURENȚIU ANTONESCU": "#00B7FF",
+    "NICUȘOR-DANIEL DAN": "#4DD400",
+    "VICTOR-VIOREL PONTA": "#FF2A1F"
+};
          // *** UPDATED WINNER COLORS END ***
 
         const colorScale = d3.scaleOrdinal(Object.keys(winnerColors), Object.values(winnerColors));
@@ -603,7 +603,6 @@ const baseCircleDiameter = window.innerWidth <= 600 ? mobileDiameter : window.in
 
             return pointQuad === quad;
          }
-
 
         function applyGlobalFilterAndSearch() {
             const searchTerm = normalize(d3.select("#search-input").property("value"));
@@ -792,12 +791,24 @@ const baseCircleDiameter = window.innerWidth <= 600 ? mobileDiameter : window.in
 
                      return (exactSearchMatch && baseRadius > 0) ? baseRadius * boostFactor : baseRadius;
                  })
-
                  .style("pointer-events", function(d) {
-                     const opacity = parseFloat(d3.select(this).attr("opacity"));
-                     const radius = parseFloat(d3.select(this).attr("r"));
-                     // Allow events only if reasonably visible and has size
-                     return (opacity > 0.05 && radius > 0.1) ? 'auto' : 'none';
+                    // Check if the circle matches the current winner filter
+                    const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
+                    // Check if the circle matches the current search term (if any)
+                    // searchTerm and isSearching are available from the outer scope of applyGlobalFilterAndSearch
+                    const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
+                    
+                    // Get the current radius of the circle (as it might have been changed in this transition)
+                    const radius = parseFloat(d3.select(this).attr("r")); // Get the potentially just-updated radius
+
+                    // A circle is interactive IF:
+                    // 1. It matches the winner filter criteria
+                    // 2. It matches the search term criteria (if a search is active)
+                    // 3. It has a radius greater than a very small value (meaning it's actually visible/drawn)
+                    if (isWinnerMatch && isSearchMatch && radius > 0.1) {
+                        return 'auto'; // Make it interactive
+                    }
+                    return 'none'; // Make it non-interactive
                  });
          }
 
