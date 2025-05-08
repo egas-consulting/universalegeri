@@ -241,7 +241,7 @@
             padding: 0 15px; line-height: 1.4; text-align: center;
             margin-top: 50px;
 
-            
+
         }
 
 
@@ -311,14 +311,14 @@
              .plot-title { font-size: 2em; }
              .axis-label { font-size: 1em; }
 
-             /* Mobile Quadrant Label Adjustments */
+
              .quadrant-label {
-                 font-size: 3em; /* Adjust base size for mobile if needed */
+                 font-size: 3em;
              }
              .quadrant-label-outer {
-                  /* Adjust mobile font size */
+
                   font-size: 1.4em;
-                  /* Mobile text shadow might be less necessary or smaller */
+
                   text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
              }
 
@@ -364,15 +364,16 @@
         </div>
         <div >
             <label for="winner-filter">Filtrează după câștigător:</label>
+            <!-- *** UPDATED FILTER OPTIONS START *** -->
             <select id="winner-filter">
                 <option value="all">Toți</option>
-                <option value="ION-MARCEL CIOLACU">ION-MARCEL CIOLACU</option>
-                <option value="NICOLAE-IONEL CIUCĂ">NICOLAE-IONEL CIUCĂ</option>
-                <option value="ELENA-VALERICA LASCONI">ELENA-VALERICA LASCONI</option>
                 <option value="GEORGE-NICOLAE SIMION">GEORGE-NICOLAE SIMION</option>
-                <option value="HUNOR KELEMEN">HUNOR KELEMEN</option>
-                <option value="CĂLIN GEORGESCU">CĂLIN GEORGESCU</option>
+                <option value="GEORGE-CRIN-LAURENȚIU ANTONESCU">GEORGE-CRIN-LAURENȚIU ANTONESCU</option>
+                <option value="NICUȘOR-DANIEL DAN">NICUȘOR-DANIEL DAN</option>
+                <option value="VICTOR-VIOREL PONTA">VICTOR-VIOREL PONTA</option>
+                <!-- Removed candidates not found in CSV: Ciolacu, Ciucă, Lasconi, Kelemen, C. Georgescu -->
             </select>
+             <!-- *** UPDATED FILTER OPTIONS END *** -->
         </div>
     </div>
 
@@ -470,11 +471,16 @@
         const chartMain = svgMain.append("g").attr("id", "chartGroup");
         const searchEl = d3.select("#search-container");
 
+        // *** UPDATED WINNER COLORS START ***
         const winnerColors = {
-            "ION-MARCEL CIOLACU": "#FF2A1F", "NICOLAE-IONEL CIUCĂ": "#00B7FF",
-            "ELENA-VALERICA LASCONI": "#D066F2", "GEORGE-NICOLAE SIMION": "#FFB623",
-            "HUNOR KELEMEN": "#36FC00", "CĂLIN GEORGESCU": "#865750"
+            "GEORGE-NICOLAE SIMION": "#FFB623", // Kept original color
+            "GEORGE-CRIN-LAURENȚIU ANTONESCU": "#00B7FF", // Reassigned color
+            "NICUȘOR-DANIEL DAN": "#4DD400", // Reassigned color
+            "VICTOR-VIOREL PONTA": "#FF2A1F" // Reassigned color
+            // Removed: ION-MARCEL CIOLACU, NICOLAE-IONEL CIUCĂ, ELENA-VALERICA LASCONI, HUNOR KELEMEN, CĂLIN GEORGESCU
         };
+         // *** UPDATED WINNER COLORS END ***
+
         const colorScale = d3.scaleOrdinal(Object.keys(winnerColors), Object.values(winnerColors));
 
         let currentView = "sphere";
@@ -503,12 +509,27 @@
 
 
         function basicTooltip(d) {
-            return `<strong>${d.jud}</strong><br/>${d.uat}<br/>Câștigător: ${d.Castigator}<br/>Procent: ${d["Procent castigator"]}%<br/>Prezența: ${d.Prezenta}%`;
-         }
+            // Safely access properties, providing a default or fallback if needed
+            const jud = d.jud || 'N/A';
+            const uat = d.uat || 'N/A';
+            const castigator = d.Castigator || 'N/A';
+            const procentCastigator = d["Procent castigator"] != null ? d["Procent castigator"].toFixed(2) + '%' : 'N/A'; // Format percentage
+            const prezenta = d.Prezenta != null ? d.Prezenta.toFixed(2) + '%' : 'N/A'; // Format percentage
+
+            return `<strong>${jud}</strong><br/>${uat}<br/>Câștigător: ${castigator}<br/>Procent: ${procentCastigator}<br/>Prezența: ${prezenta}`;
+        }
+
         function scatterTooltip(d, config) {
             const xValue = d[config.xField] !== undefined && d[config.xField] !== null ? d[config.xField].toFixed(config.xDecimals ?? 2) : 'N/A';
             const yValue = d[config.yField] !== undefined && d[config.yField] !== null ? d[config.yField].toFixed(config.yDecimals ?? 2) : 'N/A';
-            return `<strong>${d.jud}</strong><br/>${d.uat}<br/>${config.xLabel}: ${xValue}${config.xUnit ?? ''}<br/>${config.yLabel}: ${yValue}${config.yUnit ?? ''}<br/>Câștigător: ${d.Castigator}<br/>Procent: ${d["Procent castigator"]}%<br/>Prezența: ${d.Prezenta}%`;
+            // Safely access properties for the base info
+            const jud = d.jud || 'N/A';
+            const uat = d.uat || 'N/A';
+            const castigator = d.Castigator || 'N/A';
+            const procentCastigator = d["Procent castigator"] != null ? d["Procent castigator"].toFixed(2) + '%' : 'N/A';
+            const prezenta = d.Prezenta != null ? d.Prezenta.toFixed(2) + '%' : 'N/A';
+
+            return `<strong>${jud}</strong><br/>${uat}<br/>${config.xLabel}: ${xValue}${config.xUnit ?? ''}<br/>${config.yLabel}: ${yValue}${config.yUnit ?? ''}<br/>Câștigător: ${castigator}<br/>Procent: ${procentCastigator}<br/>Prezența: ${prezenta}`;
          }
          function updateTooltipPosition(event) {
             const tRect = tooltip.node().getBoundingClientRect();
@@ -545,14 +566,17 @@
             if (!mainCircles) return;
             mainCircles.each(function(d) {
                 const xRot = d.sphere_x * Math.cos(rotationAngle) - d.sphere_z * Math.sin(rotationAngle);
+                // *** CORRECTED LINE BELOW ***
                 const zRot = d.sphere_x * Math.sin(rotationAngle) + d.sphere_z * Math.cos(rotationAngle);
-                const scale = f / (f + zRot + 1e-6);
+                const scale = f / (f + zRot + 1e-6); // Add small epsilon to prevent division by zero if f+zRot is exactly 0
                 d.display_x = cx + xRot * scale;
                 d.display_y = cy + d.sphere_y * scale;
-                d.base_sphere_r = Math.max(1, baseCircleDiameter * scale);
+                // Ensure scale is non-negative before calculating radius
+                d.base_sphere_r = Math.max(1, baseCircleDiameter * (scale > 0 ? scale : 0));
+                 // Calculate opacity based on z-coordinate for depth effect
                 d.display_opacity_z = Math.max(0.1, Math.min(1, (f - zRot) / (f * 1.5)));
             });
-            applyGlobalFilterAndSearch();
+            applyGlobalFilterAndSearch(); // Apply filters which will use the calculated opacity and radius
         }
 
 
@@ -584,9 +608,16 @@
 
             let areaScale;
             if (allDataGlobal) {
-                const extent = d3.extent(allDataGlobal, d => d["Procent castigator"]);
-                if (extent[0] !== undefined && extent[1] !== undefined) {
-                    areaScale = d3.scaleSqrt().domain(extent).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
+                // Ensure Procent castigator exists and is numeric before calculating extent
+                const validPercentages = allDataGlobal
+                    .map(d => d["Procent castigator"])
+                    .filter(p => p != null && !isNaN(p)); // Filter out null/undefined/NaN
+
+                if (validPercentages.length > 0) {
+                    const extent = d3.extent(validPercentages);
+                     if (extent[0] !== undefined && extent[1] !== undefined) {
+                        areaScale = d3.scaleSqrt().domain(extent).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
+                     }
                 }
             }
 
@@ -614,7 +645,7 @@
                          const parentSvgId = d3.select(this.ownerSVGElement).attr('id');
                          const config = staticConfigs[parentSvgId];
                          // Dim static circles if their data is invalid for the plot axes
-                         if(config && (d[config.xField] === null || d[config.yField] === null)) {
+                         if(config && (d[config.xField] === null || d[config.yField] === null || d[config.xField] === undefined || d[config.yField] === undefined )) {
                              baseOpacity = 0.05;
                          } else {
                              baseOpacity = 0.75;
@@ -627,6 +658,9 @@
                             baseOpacity = (d.Lat && d.Long) ? 0.8 : 0;
                         } else if (currentView === 'scatter') {
                             const config = mainScatterConfig;
+                             // Check if config and required fields exist before accessing them
+                             if (!config || !config.xField || !config.yField) return 0; // Or a default low opacity
+
                             const xVal = d[config.xField], yVal = d[config.yField];
                             const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
 
@@ -666,6 +700,8 @@
                     const isMain = d3.select(this).classed('main-circle');
                     if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
                          const config = mainScatterConfig;
+                          // Add checks for config and fields
+                          if (!config || !config.xField || !config.yField) return "none";
                          const xVal = d[config.xField], yVal = d[config.yField];
                          const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
                          if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
@@ -691,6 +727,8 @@
 
                      if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
                           const config = mainScatterConfig;
+                           // Add checks for config and fields
+                           if (!config || !config.xField || !config.yField) return 0;
                           const xVal = d[config.xField], yVal = d[config.yField];
                           const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
                           if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
@@ -716,15 +754,18 @@
                      const boostFactor = 1.8;
                      const isMain = d3.select(this).classed('main-circle');
                      let baseRadius = 0;
+                     const procent = d["Procent castigator"]; // Ensure procent value exists and is valid
 
                      if (isMain) {
 
                          if (currentView === 'sphere') {
                              baseRadius = d.base_sphere_r ?? 0;
-                         } else if (currentView === 'map' && areaScale) {
-                             baseRadius = (d.Lat && d.Long) ? areaScale(d["Procent castigator"]) : 0;
+                         } else if (currentView === 'map' && areaScale && procent != null && !isNaN(procent)) {
+                             baseRadius = (d.Lat && d.Long) ? areaScale(procent) : 0;
                          } else if (currentView === 'scatter') {
                              const config = mainScatterConfig;
+                              // Add checks for config and fields
+                              if (!config || !config.xField || !config.yField) return 0;
                              const xVal = d[config.xField], yVal = d[config.yField];
                              baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 1.1 : 0;
                          }
@@ -733,7 +774,7 @@
                           const config = staticConfigs[parentSvgId];
                           if (config) {
                               const xVal = d[config.xField], yVal = d[config.yField];
-
+                              // Check for valid data before setting radius
                               baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
                           } else {
                               baseRadius = 0;
@@ -760,8 +801,15 @@
              const svg = d3.select(containerSelector);
              const svgId = svg.attr('id');
              staticConfigs[svgId] = config;
-             config._xMedian = d3.median(data, d => d[config.xField]);
-             config._yMedian = d3.median(data, d => d[config.yField]);
+             // Ensure data exists before calculating medians
+             if (data && data.length > 0) {
+                config._xMedian = d3.median(data, d => (d[config.xField] != null && !isNaN(d[config.xField])) ? d[config.xField] : undefined);
+                config._yMedian = d3.median(data, d => (d[config.yField] != null && !isNaN(d[config.yField])) ? d[config.yField] : undefined);
+             } else {
+                 config._xMedian = undefined;
+                 config._yMedian = undefined;
+             }
+
 
              svg.selectAll("*").remove();
 
@@ -772,9 +820,15 @@
              const innerWidth = plotWidth - margin.left - margin.right;
              const innerHeight = plotHeight - margin.top - margin.bottom;
 
+             // Filter data for valid points for extent calculation
+             const validData = data.filter(d =>
+                d[config.xField] != null && !isNaN(d[config.xField]) &&
+                d[config.yField] != null && !isNaN(d[config.yField])
+             );
+
              // Determine data extents and setup scales
-             const xExtent = d3.extent(data, d => d[config.xField]);
-             const yExtent = d3.extent(data, d => d[config.yField]);
+             const xExtent = d3.extent(validData, d => d[config.xField]);
+             const yExtent = d3.extent(validData, d => d[config.yField]);
              // Handle cases where extent might be undefined (e.g., no valid data)
              const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
              const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
@@ -801,17 +855,17 @@
                 .attr("y", -margin.left + 20) // Adjusted y slightly
                 .text(config.yLabelFull || config.yLabel);
             plotGroup.append("text").attr("class", "plot-title")
-                .attr("x", innerWidth / 2)
-                .attr("y", -margin.top / 2 - 40) // Adjusted y slightly
-                .text(config.title);
+                 .attr("x", innerWidth / 2)
+                 .attr("y", -margin.top * 1.75) // Adjusted y slightly upwards
+                 .text(config.title);
 
 
-            if (xMedian !== undefined && xMedian !== null) {
+            if (xMedian !== undefined && xMedian !== null && isFinite(x(xMedian))) {
                 plotGroup.append("line").attr("class", "quadrant-line")
                     .attr("x1", x(xMedian)).attr("x2", x(xMedian))
                     .attr("y1", 0).attr("y2", innerHeight);
             }
-            if (yMedian !== undefined && yMedian !== null) {
+            if (yMedian !== undefined && yMedian !== null && isFinite(y(yMedian))) {
                 plotGroup.append("line").attr("class", "quadrant-line")
                     .attr("x1", 0).attr("x2", innerWidth)
                     .attr("y1", y(yMedian)).attr("y2", y(yMedian));
@@ -861,42 +915,44 @@
                 .enter().append("circle")
                 .attr("class", "data-circle static-circle")
 
-                .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -100; })
-                .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -100; })
+                .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(val) && isFinite(x(val))) ? x(val) : -100; })
+                .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(val) && isFinite(y(val))) ? y(val) : -100; })
+
 
                 .attr("r", d => {
                     const xVal = d[config.xField];
                     const yVal = d[config.yField];
                     return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
                 })
-                .attr("fill", d => colorScale(d.Castigator) || "#999")
-                .attr("opacity", 0.75)
-                .attr("stroke", "none")
-                .attr("stroke-width", 0)
+                .attr("fill", d => colorScale(d.Castigator) || "#999") // Use colorScale, default to grey
+                .attr("opacity", 0.75) // Default opacity
+                .attr("stroke", "none") // No default stroke
+                .attr("stroke-width", 0) // No default stroke width
 
                 .style("pointer-events", d => {
                     const xVal = d[config.xField];
                     const yVal = d[config.yField];
+                     // Allow events only if data is valid
                     return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? 'auto' : 'none';
                 })
 
                 .on("mouseover", (event, d) => {
-
+                     // Ensure data is valid before showing tooltip or highlighting
                     const xVal = d[config.xField], yVal = d[config.yField];
                     if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
 
                     tooltip.style("opacity", 1).html(scatterTooltip(d, config)); // Show tooltip
                     d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", 1.5); // Highlight
                 })
-                .on("mousemove", updateTooltipPosition)
+                .on("mousemove", updateTooltipPosition) // Update position on move
                 .on("mouseout", (event, d) => {
-
+                    // Ensure data is valid before modifying style
                      const xVal = d[config.xField], yVal = d[config.yField];
                      if (xVal === undefined || xVal === null || yVal === undefined || yVal === null) return;
 
                      tooltip.style("opacity", 0); // Hide tooltip
 
-
+                    // Check persistent highlight states (search/filter)
                      const searchTerm = normalize(d3.select("#search-input").property("value"));
                      const isSearching = searchTerm.length > 0;
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
@@ -921,8 +977,16 @@
 
 
         d3.csv("scatter.csv", d3.autoType).then(data => {
-            // Filter data: ensure essential fields exist
-            allDataGlobal = data.filter(d => d.Lat && d.Long && d.Castigator && d.uat && d["Procent castigator"] != null);
+            // Filter data: ensure essential fields exist and are valid numbers where needed
+            allDataGlobal = data.filter(d =>
+                d.Lat != null && !isNaN(d.Lat) &&
+                d.Long != null && !isNaN(d.Long) &&
+                d.Castigator &&
+                d.uat &&
+                d["Procent castigator"] != null && !isNaN(d["Procent castigator"]) &&
+                d.Prezenta != null && !isNaN(d.Prezenta)
+                // Add checks for other fields as they are used
+            );
 
 
             allDataGlobal.forEach(d => {
@@ -930,6 +994,29 @@
                 if (d["Pacienti la un medic 2023"] === "#DIV/0!") {
                     d["Pacienti la un medic 2023"] = null;
                 }
+                // Convert other fields expected to be numeric but might be strings
+                // Example: ensure Varsta medie is a number or null
+                if (typeof d["Varsta medie a populatiei in 2023"] === 'string') {
+                    d["Varsta medie a populatiei in 2023"] = parseFloat(d["Varsta medie a populatiei in 2023"].replace(",", ".")) || null;
+                 }
+                 // Add similar conversions for ALL other numeric fields used in plots/scales if necessary
+                 const numericFields = [
+                     "Suprafata locuibila/cap de locuitor (m patrati) 2023",
+                     "Procent plecari din populatie (2023)",
+                     "Ponderea somerilor in 2023",
+                     "Numarul de salariati raportat la populatie (% din populatie) 2023",
+                     "Cote de impozit raportat la populatie (2022)",
+                     "Fonduri pe cap de locuitor (2022)",
+                     "Pacienti la un medic 2023" // Already handled above, but good practice to list
+                 ];
+                 numericFields.forEach(field => {
+                     if (d[field] != null && typeof d[field] === 'string') {
+                         const cleanedValue = parseFloat(d[field].replace(",", "."));
+                         d[field] = isNaN(cleanedValue) ? null : cleanedValue;
+                     } else if (d[field] == null || isNaN(d[field])) {
+                         d[field] = null; // Ensure it's null if missing or NaN
+                     }
+                 });
 
             });
 
@@ -939,8 +1026,8 @@
                 title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor",
                 xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)",
                 quadLabels: {
-                    I: "I. Suburbii sau localități \nperiurbane prospere, spațiu mare", II: "II. Localități îmbătrânite\n sau zone turistice rurale",
-                    III: "III. Orașe cu cartiere \naglomerate/densitate mare", IV: "IV. Zone rurale sărace \ncu care modeste și vârstnici"
+                    I: "I. Suburbii sau localități \nperiurbane prospere, \nspațiu mare", II: "II. Localități îmbătrânite\n sau zone turistice rurale",
+                    III: "III. Orașe cu cartiere \naglomerate/densitate mare", IV: "IV. Zone rurale sărace \ncu pop. vârstnică"
                 }
             };
             const scatterConfig2 = {
@@ -948,7 +1035,7 @@
                 title: "Plecările din localitate și ponderea șomerilor",
                 xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)",
                 quadLabels: {
-                    I: "I. Zone unde populația rămâne \ndin lipsă de alternative", II: "II. Zone aflate \nîn declin economic sever",
+                    I: "I. Zone unde populația \nrămâne din lipsă \nde alternative", II: "II. Zone aflate \nîn declin economic sever",
                     III: "III. Zone stabile economic", IV: "IV. Zone dinamice, \ndar tranzitorii"
                 }
             };
@@ -958,7 +1045,7 @@
                 xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)",
                 quadLabels: {
                     I: "I. Comunități mici/turistice \nsau cu venituri speciale", II: "II. Economie solidă, \ncolectare fiscală eficientă",
-                    III: "III. Zone sărace, \nfără activitate economică", IV: "IV. Zone industriale sau muncitorești \ncu salarii mici"
+                    III: "III. Zone sărace, \nfără activitate economică", IV: "IV. Zone industriale \nsau muncitorești \ncu salarii mici"
                 }
             };
             const scatterConfig4 = {
@@ -975,15 +1062,33 @@
 
             // Set the first config as the one for the main interactive scatter
             mainScatterConfig = scatterConfig1;
-            // Pre-calculate medians for the main scatter config
-            mainScatterConfig._xMedian = d3.median(allDataGlobal, d => d[mainScatterConfig.xField]);
-            mainScatterConfig._yMedian = d3.median(allDataGlobal, d => d[mainScatterConfig.yField]);
+            // Pre-calculate medians for the main scatter config, ensuring data validity
+             if (allDataGlobal && allDataGlobal.length > 0) {
+                mainScatterConfig._xMedian = d3.median(allDataGlobal, d => (d[mainScatterConfig.xField] != null && !isNaN(d[mainScatterConfig.xField])) ? d[mainScatterConfig.xField] : undefined);
+                mainScatterConfig._yMedian = d3.median(allDataGlobal, d => (d[mainScatterConfig.yField] != null && !isNaN(d[mainScatterConfig.yField])) ? d[mainScatterConfig.yField] : undefined);
+             } else {
+                 mainScatterConfig._xMedian = undefined;
+                 mainScatterConfig._yMedian = undefined;
+             }
 
             // Setup scales for map view and circle size
-            const areaScale = d3.scaleSqrt().domain(d3.extent(allDataGlobal, d => d["Procent castigator"])).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
-            const xGeo = d3.scaleLinear().domain(d3.extent(allDataGlobal, d => d.Long)).range([marginMain.left, mainWidth - marginMain.right]);
-            const yGeo = d3.scaleLinear().domain(d3.extent(allDataGlobal, d => d.Lat)).range([mainHeight - marginMain.bottom, marginMain.top]);
+            // Ensure valid data for extents
+             const validPercentagesMap = allDataGlobal.map(d => d["Procent castigator"]).filter(p => p != null && !isNaN(p));
+             let areaScale;
+             if (validPercentagesMap.length > 0) {
+                 const extent = d3.extent(validPercentagesMap);
+                 if (extent[0] !== undefined && extent[1] !== undefined) {
+                     areaScale = d3.scaleSqrt().domain(extent).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
+                 }
+             }
 
+             const validLongs = allDataGlobal.map(d => d.Long).filter(l => l != null && !isNaN(l));
+             const validLats = allDataGlobal.map(d => d.Lat).filter(l => l != null && !isNaN(l));
+             let xGeo, yGeo;
+             if (validLongs.length > 0 && validLats.length > 0) {
+                 xGeo = d3.scaleLinear().domain(d3.extent(validLongs)).range([marginMain.left, mainWidth - marginMain.right]);
+                 yGeo = d3.scaleLinear().domain(d3.extent(validLats)).range([mainHeight - marginMain.bottom, marginMain.top]);
+             }
 
 
             createSpherePositions(allDataGlobal, 250); // Calculate sphere positions
@@ -993,7 +1098,7 @@
                 .data(allDataGlobal, d => d.uat + d.jud) // Key for object constancy
                 .enter().append("circle")
                 .attr("class", "data-circle main-circle") // Add main class
-                .attr("fill", d => colorScale(d.Castigator) || "#999")
+                .attr("fill", d => colorScale(d.Castigator) || "#999") // Use colorScale, default grey
                 .attr("opacity", 0) // Start invisible
                 .style("pointer-events", "auto") // Allow interactions
                 .on("mouseover", (event, d) => {
@@ -1003,6 +1108,11 @@
                          tooltip.html(basicTooltip(d));
                      } else if (currentView === 'scatter') {
                          const config = mainScatterConfig;
+                          // Ensure config and fields are valid
+                          if (!config || !config.xField || !config.yField) {
+                              tooltip.html(basicTooltip(d)); // Fallback
+                              return;
+                          }
                          const xVal = d[config.xField], yVal = d[config.yField];
                          // Show scatter tooltip only if data is valid, else basic
                          if (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) {
@@ -1025,11 +1135,14 @@
                     let inActiveQuadHighlight = false;
                      if (currentView === 'scatter' && activeQuad !== 'all') {
                          const config = mainScatterConfig;
-                         const xVal = d[config.xField], yVal = d[config.yField];
-                         const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
-                         if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
-                             inActiveQuadHighlight = true;
-                         }
+                          // Add checks for config and fields
+                          if (config && config.xField && config.yField) {
+                            const xVal = d[config.xField], yVal = d[config.yField];
+                            const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
+                            if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
+                                inActiveQuadHighlight = true;
+                            }
+                          }
                      }
 
                     let finalStroke = "none", finalStrokeWidth = 0;
@@ -1092,7 +1205,7 @@
             }
 
             function toMap() {
-                if (currentView === 'map') return; // Avoid redundant transitions
+                if (currentView === 'map' || !xGeo || !yGeo) return; // Avoid redundant transitions or if scales aren't set
                 console.log("Transitioning to Map");
                 currentView = "map";
                 window.IO?.disconnect(); // DEACTIVATE Intersection Observer
@@ -1112,9 +1225,9 @@
 
                 // Transition main circles to map positions
                 mainCircles.transition("mapPos").duration(1500).ease(d3.easeCubicInOut)
-                    .attr("cx", d => (d.Long && !isNaN(xGeo(d.Long))) ? xGeo(d.Long) : -100) // Use geo coords or hide
-                    .attr("cy", d => (d.Lat && !isNaN(yGeo(d.Lat))) ? yGeo(d.Lat) : -100) // Use geo coords or hide
-                    .attr("r", d => (d.Lat && d.Long && areaScale) ? areaScale(d["Procent castigator"]) : 0) // Use area scale or hide
+                    .attr("cx", d => (d.Long != null && !isNaN(d.Long) && isFinite(xGeo(d.Long))) ? xGeo(d.Long) : -100) // Use geo coords or hide
+                    .attr("cy", d => (d.Lat != null && !isNaN(d.Lat) && isFinite(yGeo(d.Lat))) ? yGeo(d.Lat) : -100) // Use geo coords or hide
+                    .attr("r", d => (d.Lat != null && d.Long != null && areaScale && d["Procent castigator"] != null && !isNaN(d["Procent castigator"])) ? areaScale(d["Procent castigator"]) : 0) // Use area scale or hide
                     .end().then(applyGlobalFilterAndSearch).catch(err => { // Apply filters after transition
                         console.error("Map transition error:", err);
                         applyGlobalFilterAndSearch(); // Ensure filters applied even on error
@@ -1132,13 +1245,31 @@
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
 
                 const config = mainScatterConfig; // Use the pre-defined main config
+                 // Check config validity
+                 if (!config || !config.xField || !config.yField) {
+                     console.error("Main scatter config invalid for transition.");
+                     return; // Abort transition if config is bad
+                 }
                 // Define inner dimensions using main margins
                 const innerWidth = mainWidth - marginMain.left - marginMain.right;
                 const innerHeight = mainHeight - marginMain.top - marginMain.bottom;
 
+                // Filter data for valid points for extent calculation
+                 const validScatterData = allDataGlobal.filter(d =>
+                     d[config.xField] != null && !isNaN(d[config.xField]) &&
+                     d[config.yField] != null && !isNaN(d[config.yField])
+                 );
+
+                 if (validScatterData.length === 0) {
+                     console.warn("No valid data points for the main scatter plot.");
+                     // Optionally display a message on the SVG
+                     svgMain.append("text").attr("x", mainWidth/2).attr("y", mainHeight/2).attr("text-anchor", "middle").text("Date insuficiente pentru acest grafic.");
+                     return; // Abort if no data
+                 }
+
                 // Setup scales using main scatter config and dimensions
-                const xExtent = d3.extent(allDataGlobal, d => d[config.xField]);
-                const yExtent = d3.extent(allDataGlobal, d => d[config.yField]);
+                const xExtent = d3.extent(validScatterData, d => d[config.xField]);
+                const yExtent = d3.extent(validScatterData, d => d[config.yField]);
                 const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
                 const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
                 // Scales map data to SVG coordinates within the main margins
@@ -1150,14 +1281,14 @@
 
                  // --- Draw Axes, Titles, Median Lines for main plot ---
                  svgMain.append("text").attr("class", "plot-title")
-                     .attr("x", mainWidth / 2).attr("y", marginMain.top / 2 - 10) // Adjusted Y slightly
+                     .attr("x", mainWidth / 2) .attr("y", -margin.top * 0.35) // Adjusted Y slightly
                      .text(config.title);
                  svgMain.append("g").attr("class", "x-axis axis")
                      .attr("transform", `translate(0,${mainHeight - marginMain.bottom})`) // Positioned at bottom
                      .call(d3.axisBottom(x).ticks(7));
                  svgMain.append("text").attr("class", "x-label axis-label")
                      .attr("x", mainWidth / 2).attr("y", mainHeight - 20) // Adjusted Y slightly
-                     .text(config.xLabelFull);
+                     .text(config.xLabelFull || config.xLabel); // Use full label if available
                  svgMain.append("g").attr("class", "y-axis axis")
                      .attr("transform", `translate(${marginMain.left},0)`) // Positioned at left
                      .call(d3.axisLeft(y).ticks(7));
@@ -1165,14 +1296,14 @@
                      .attr("transform", "rotate(-90)") // Rotated for y-axis
                      .attr("x", -(marginMain.top + innerHeight / 2)) // Centered along y-axis height
                      .attr("y", marginMain.left - 60) // Adjusted Y slightly
-                     .text(config.yLabelFull);
+                     .text(config.yLabelFull || config.yLabel); // Use full label if available
                  // Draw median lines if valid
-                 if (xMedian !== undefined && xMedian !== null) {
+                 if (xMedian !== undefined && xMedian !== null && isFinite(x(xMedian))) {
                      svgMain.append("line").attr("class", "quadrant-line")
                          .attr("x1", x(xMedian)).attr("x2", x(xMedian))
                          .attr("y1", marginMain.top).attr("y2", mainHeight - marginMain.bottom); // Vertical line
                  }
-                 if (yMedian !== undefined && yMedian !== null) {
+                 if (yMedian !== undefined && yMedian !== null && isFinite(y(yMedian))) {
                      svgMain.append("line").attr("class", "quadrant-line")
                          .attr("x1", marginMain.left).attr("x2", mainWidth - marginMain.right)
                          .attr("y1", y(yMedian)).attr("y2", y(yMedian)); // Horizontal line
@@ -1225,7 +1356,7 @@
                     .attr("opacity", 0) // Start hidden
                     .attr("pointer-events","none") // Not interactive
                     .each(function(q){ // Calculate position and size for each quadrant overlay
-                        if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return; // Skip if medians invalid
+                        if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null || !isFinite(x(xMedian)) || !isFinite(y(yMedian))) return; // Skip if medians/scales invalid
                         const isLeft = q==="I" || q==="III";
                         const isTop = q==="I" || q==="II";
                         // Calculate position based on margins and median lines
@@ -1246,8 +1377,8 @@
                  // --- Transition Main Circles to Scatter Positions ---
                  mainCircles.transition("scatterPos").duration(1500).ease(d3.easeCubicInOut)
                     // Position circles using scatter scales, hide if data invalid
-                    .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(x(val))) ? x(val) : -100; })
-                    .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(y(val))) ? y(val) : -100; })
+                    .attr("cx", d => { const val = d[config.xField]; return (val !== undefined && val !== null && !isNaN(val) && isFinite(x(val))) ? x(val) : -100; })
+                    .attr("cy", d => { const val = d[config.yField]; return (val !== undefined && val !== null && !isNaN(val) && isFinite(y(val))) ? y(val) : -100; })
                     // Set radius, hide if data invalid
                     .attr("r", d => { const xVal = d[config.xField], yVal = d[config.yField]; return (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 1.1 : 0; })
                     .end().then(() => {
@@ -1271,6 +1402,11 @@
             function setupIntersectionObserver(config) { // Expects mainScatterConfig
                 window.IO?.disconnect(); // Disconnect previous observer if exists
                 observerInitialized = false; // Reset flag
+                 // Check if config is valid before setting up
+                 if (!config || !config.xField || !config.yField) {
+                     console.error("[IO Setup] Aborting: Invalid config provided.");
+                     return;
+                 }
                 console.log("[IO] Setting up Intersection Observer");
 
                 window.IO = new IntersectionObserver(entries => {
@@ -1315,8 +1451,11 @@
                       console.log("[IO Initial Check] Scheduling...");
                       // Use setTimeout to allow layout settling after transition
                       setTimeout(() => {
-                         // Abort if view changed during timeout
-                         if (currentView !== 'scatter') { console.log("[IO Initial Check] Aborted, view changed."); return; }
+                         // Abort if view changed or config became invalid during timeout
+                         if (currentView !== 'scatter' || !config || !config.xField || !config.yField) {
+                            console.log("[IO Initial Check] Aborted, view/config changed.");
+                            return;
+                         }
                          console.log("[IO Initial Check] Running...");
 
                          const minVisibilityThreshold = 0.05;
@@ -1360,9 +1499,9 @@
              }
 
             function renderHighlight(quad, config) { // Expects mainScatterConfig
-                // Guard against rendering if not in scatter view or SVG is gone
-                if (currentView !== 'scatter' || !svgMain || !svgMain.node()) {
-                    console.warn(`[RenderHighlight] Aborting. View: ${currentView}, SVG exists: ${!!svgMain?.node()}`);
+                // Guard against rendering if not in scatter view or SVG/config is gone
+                if (currentView !== 'scatter' || !svgMain || !svgMain.node() || !config || !config.xField || !config.yField) {
+                    console.warn(`[RenderHighlight] Aborting. View: ${currentView}, SVG exists: ${!!svgMain?.node()}, Config valid: ${!!(config && config.xField && config.yField)}`);
                     if (currentView !== 'scatter') activeQuad = 'all'; // Reset if view changed
                     return;
                 }
@@ -1555,4 +1694,3 @@
     </script>
     </body>
     </html>
-
