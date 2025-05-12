@@ -104,7 +104,7 @@
             font-size: 0.9em;
             pointer-events: none;
             opacity: 0;
-            z-index: 10;
+            z-index: 10; /* Lower than search */
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border-radius: 4px;
             max-width: 90vw;
@@ -120,7 +120,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 11;
+            z-index: 11; /* Above tooltip, below popup */
             background: rgba(0, 0, 0, 0.8);
             padding: 10px 15px;
             border-radius: 8px;
@@ -226,7 +226,7 @@
             position:relative;
             z-index:3;
         }
-        .scatter-plot-container {
+        .scatter-plot-container { /* Used for static plots */
             max-width: 950px;
             width: 92%;
             margin: 10vh auto;
@@ -286,6 +286,107 @@
              transition: opacity 0.3s ease;
          }
 
+        /* --- START: Candidate Summary Pop-up Styles --- */
+        #candidate-summary-popup {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(40, 40, 60, 0.95); /* Slightly different background */
+            border: 1px solid #777;
+            border-radius: 8px;
+            padding: 15px 20px;
+            max-width: 320px; /* Adjust as needed */
+            z-index: 12; /* Above search, below tooltip */
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            color: #eee;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        #candidate-summary-popup.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        #summary-text p {
+            margin: 0 0 10px 0;
+            text-align: left; /* Align text left in popup */
+             font-size: inherit; /* Inherit font size */
+             color: inherit; /* Inherit color */
+        }
+         #summary-text strong {
+             color: #fff; /* Make candidate name stand out */
+         }
+         #summary-text i { /* Style for axis labels in text */
+             color: #bbb;
+             font-style: normal; /* Make italics normal for axis labels */
+             font-weight: 500; /* Slightly bolder */
+         }
+
+        #mini-chart-container {
+            margin-top: 10px;
+            height: 60px; /* Fixed height for mini chart area */
+            width: 100%;
+        }
+
+        #mini-chart-svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+         /* Style for mini-chart elements (adjust as needed) */
+        .mini-axis path, .mini-axis line {
+            stroke: #888;
+            stroke-width: 0.5;
+            shape-rendering: crispEdges;
+        }
+        .mini-axis .tick text {
+             fill: #ccc;
+             font-size: 9px;
+        }
+        .mini-axis-label {
+            fill: #ccc;
+            font-size: 9px;
+            text-anchor: middle;
+        }
+        .mini-bar { /* (Not used currently, but kept for potential future use) */
+            fill: #88b5ff;
+            stroke: #fff;
+            stroke-width: 0.5;
+        }
+        .mini-median-line {
+            stroke: #ffcc00; /* Highlight median */
+            stroke-width: 1.5;
+            stroke-dasharray: 2 2;
+        }
+         .mini-median-label {
+             fill: #ffcc00;
+             font-size: 10px;
+             font-weight: bold;
+         }
+
+        #close-summary-popup {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.8em;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+        #close-summary-popup:hover {
+            color: #fff;
+        }
+        /* --- END: Candidate Summary Pop-up Styles --- */
+
 
         @media (max-width: 600px) {
              #search-container {
@@ -308,21 +409,19 @@
                 width: 98%; padding: 10px 5px 5px 5px; margin: 5vh auto; box-shadow: none;
             }
             .scatter-explainer { padding: 0 5px; font-size: 0.9em; margin-top: 30px; line-height: 1.3; }
-             .plot-title { font-size: 2em; }
-             .axis-label { font-size: 1em; }
+             .plot-title { font-size: 1.1em; } /* Adjusted static plot title */
+             .axis-label { font-size: 0.8em; } /* Adjusted static plot axis labels */
 
 
              .quadrant-label {
-                 font-size: 3em;
+                 font-size: 1.1em; /* Adjusted static quadrant labels */
              }
              .quadrant-label-outer {
-
-                  font-size: 1.4em;
-
+                  font-size: 1.1em; /* Adjusted static quadrant labels */
                   text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
              }
 
-             .axis text { font-size: 9.5px; }
+             .axis text { font-size: 8px; } /* Adjusted static axis text */
 
 
             .step { margin: 60vh auto; }
@@ -333,6 +432,28 @@
             .map-subtitle { font-size: 0.85em; }
             .cosmic-title { font-size: 1.5em; }
             .cosmic-supratitle { font-size: 1.3em; }
+
+             /* Responsive adjustments for popup */
+            #candidate-summary-popup {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                max-width: none; /* Take full width minus padding */
+                width: auto;
+                padding: 12px 15px;
+                font-size: 0.8em;
+            }
+            #close-summary-popup {
+                top: 3px;
+                right: 5px;
+                 font-size: 1.6em;
+            }
+             #mini-chart-container {
+                 height: 50px; /* Slightly smaller on mobile */
+             }
+             .mini-axis-label { font-size: 8px; } /* Slightly smaller axis labels */
+             .mini-median-label { font-size: 9px; } /* Slightly smaller median labels */
+             .mini-axis .tick text { font-size: 8px; } /* Slightly smaller tick labels */
         }
 
 
@@ -422,7 +543,8 @@
 
     <section id="flourish-block">
         <h2 class="cosmic-title" style="margin-bottom: 5vh; padding-top: 5vh;">Analiza detaliată pe indicatori statici</h2>
-        <div id="scatter-container-1" class="scatter-plot-container">
+        <!-- Added data-chart-id attribute matching the SVG ID -->
+        <div id="scatter-container-1" class="scatter-plot-container" data-chart-id="scatter-viz-1">
             <svg id="scatter-viz-1" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce poate spune despre o comunitate combinația dintre vârsta medie a populației și suprafața locuibilă disponibilă pe persoană?</strong> <br> Prin această distribuție în scatter plot, observăm contraste clare între regiuni: localitățile din dreapta sus, cu vârstă medie ridicată și spațiu generos, sunt adesea foste orașe istorice sau zone de vacanță unde populația tânără a migrat. La polul opus, orașele mici sau cartierele vechi, unde populația îmbătrânită locuiește în spații modeste, se regăsesc în partea de jos a graficului. Același tipar apare și în zonele rurale sărace.
 
@@ -430,7 +552,8 @@
 
                 Această combinație de indicatori deschide o fereastră spre înțelegerea dinamicii sociale, economice și istorice a comunităților.</p>
         </div>
-        <div id="scatter-container-2" class="scatter-plot-container">
+        <!-- Added data-chart-id attribute matching the SVG ID -->
+        <div id="scatter-container-2" class="scatter-plot-container" data-chart-id="scatter-viz-2">
             <svg id="scatter-viz-2" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce ne arată relația dintre plecările cu domiciliul și șomajul local?</strong><br>Plecările cu domiciliul raportate la populație sunt un indicator direct al mobilității și al nivelului de atractivitate al unei comunități. Ponderea șomerilor reflectă presiunea economică locală și oportunitățile de muncă disponibile.
 
@@ -438,7 +561,8 @@
 
                 Această combinație de indicatori ajută la identificarea zonelor vulnerabile, dar și a celor care reușesc să reziste presiunilor demografice și economice.</p>
         </div>
-        <div id="scatter-container-3" class="scatter-plot-container">
+         <!-- Added data-chart-id attribute matching the SVG ID -->
+        <div id="scatter-container-3" class="scatter-plot-container" data-chart-id="scatter-viz-3">
             <svg id="scatter-viz-3" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce poate spune relația dintre numărul de salariați și veniturile fiscale locale?</strong><br>Numărul de salariați raportat la populație indică dinamismul economic al unei comunități: câți dintre locuitori contribuie activ la economie. Cota de impozit pe cap de locuitor arată cât de mult reușește administrația locală să colecteze din impozitele locale pe venituri și proprietăți.
 
@@ -446,13 +570,25 @@
 
                 Această combinație de indicatori surprinde echilibrul dintre forța de muncă activă și capacitatea reală a comunităților de a se susține financiar.</p>
         </div>
-        <div id="scatter-container-4" class="scatter-plot-container">
+         <!-- Added data-chart-id attribute matching the SVG ID -->
+        <div id="scatter-container-4" class="scatter-plot-container" data-chart-id="scatter-viz-4">
             <svg id="scatter-viz-4" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce poate spune relația dintre fondurile europene atrase pe cap de locuitor și numărul de pacienți care revin unui medic?</strong><br>Această combinație de indicatori oferă o perspectivă asupra modului în care investițiile publice influențează accesul la servicii medicale. Fondurile europene atrase nu sunt direcționate exclusiv către sănătate, însă dezvoltarea infrastructurii în ansamblu — drumuri mai bune, servicii publice modernizate, condiții de trai mai atractive — poate contribui la stabilizarea sau atragerea de profesioniști, inclusiv în domeniul medical. Această combinație de indicatori oferă o perspectivă asupra modului în care investițiile publice influențează accesul la servicii medicale. Fondurile europene atrase nu sunt direcționate exclusiv către sănătate, însă dezvoltarea infrastructurii în ansamblu — drumuri mai bune, servicii publice modernizate, condiții de trai mai atractive — poate contribui la stabilizarea sau atragerea de profesioniști, inclusiv în domeniul medical.</p>
         </div>
     </section>
 
     <div class="tooltip" id="tooltip"></div>
+
+    <!-- START: Candidate Summary Pop-up HTML -->
+    <div id="candidate-summary-popup">
+        <div id="summary-text"></div>
+        <div id="mini-chart-container">
+            <svg id="mini-chart-svg"></svg>
+        </div>
+        <button id="close-summary-popup" title="Închide">&times;</button>
+    </div>
+    <!-- END: Candidate Summary Pop-up HTML -->
+
 
     <script>
 
@@ -476,6 +612,13 @@
         const chartMain = svgMain.append("g").attr("id", "chartGroup");
         const searchEl = d3.select("#search-container");
 
+        // START: Pop-up element variables
+        const summaryPopup = d3.select("#candidate-summary-popup");
+        const summaryTextEl = d3.select("#summary-text");
+        const miniChartSvg = d3.select("#mini-chart-svg");
+        const closeSummaryButton = d3.select("#close-summary-popup");
+        // END: Pop-up element variables
+
         // *** UPDATED WINNER COLORS START ***
         const winnerColors = {
             // Use full names from CSV as keys
@@ -492,11 +635,12 @@
         let currentFilter = "all";
         let mainCircles;
         let staticCircles = [];
-        let staticConfigs = {};
+        let staticConfigs = {}; // Stores config keyed by static SVG ID (e.g., "scatter-viz-1")
         let activeQuad = "all";
         let mainScatterConfig = {};
-        let staticPlotsVisible = false;
+        let staticPlotsVisible = false; // Is the #flourish-block intersecting?
         let observerInitialized = false;
+        let activeStaticPlotConfig = null; // Stores the config of the most visible static plot
 
 
         const normalize = str => (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -505,6 +649,7 @@
         function showSearchControls() { searchEl.classed("visible", true); }
         function hideSearchControls() { searchEl.classed("visible", false); }
         function updateSearchControlsVisibility() {
+            // Show controls if main map/scatter is active OR if static plots are visible (even if main chart faded)
             if ((currentView === 'map' || currentView === 'scatter') || staticPlotsVisible) {
                 showSearchControls();
             } else {
@@ -571,7 +716,6 @@
             if (!mainCircles) return;
             mainCircles.each(function(d) {
                 const xRot = d.sphere_x * Math.cos(rotationAngle) - d.sphere_z * Math.sin(rotationAngle);
-                // *** CORRECTED LINE BELOW ***
                 const zRot = d.sphere_x * Math.sin(rotationAngle) + d.sphere_z * Math.cos(rotationAngle);
                 const scale = f / (f + zRot + 1e-6); // Add small epsilon to prevent division by zero if f+zRot is exactly 0
                 d.display_x = cx + xRot * scale;
@@ -604,12 +748,222 @@
             return pointQuad === quad;
          }
 
+        // START: Candidate Summary Pop-up Functions
+        function hideSummaryPopup() {
+            summaryPopup.classed("visible", false);
+            // Optional: Clear the mini-chart when hiding
+            miniChartSvg.selectAll("*").remove();
+        }
+
+        function showSummaryPopup(candidateName, candidateData, config) {
+            // Check if config is valid before proceeding
+            if (!config || !config.xField || !config.yField) {
+                console.warn("showSummaryPopup called with invalid config:", config);
+                hideSummaryPopup();
+                return;
+            }
+            if (!candidateData || candidateData.length === 0) {
+                hideSummaryPopup();
+                return;
+            }
+
+
+            // Filter for valid numeric data points *for this candidate* on the current axes
+            const validCandidateData = candidateData.filter(d =>
+                d[config.xField] != null && !isNaN(d[config.xField]) && typeof d[config.xField] === 'number' &&
+                d[config.yField] != null && !isNaN(d[config.yField]) && typeof d[config.yField] === 'number'
+            );
+
+            if (validCandidateData.length === 0) {
+                 // Show a message if candidate won localities, but none have valid data for these axes
+                 summaryTextEl.html(`<p><strong>${candidateName.replace(/-/g, ' ')}</strong> a câștigat ${candidateData.length} localități, dar nu există date valide pentru axele curente (<i>${config.xLabel}</i> / <i>${config.yLabel}</i>) în aceste localități.</p>`);
+                 miniChartSvg.selectAll("*").remove(); // Clear chart
+                 summaryPopup.classed("visible", true);
+                 return; // Exit without chart/median calculation
+            }
+
+
+            // Calculate MEDIANS for the valid data
+            const medianX = d3.median(validCandidateData, d => d[config.xField]);
+            const medianY = d3.median(validCandidateData, d => d[config.yField]);
+
+            // Format the text - use median values
+            const count = candidateData.length; // Total localities won
+            const xValStr = medianX !== undefined ? medianX.toFixed(config.xDecimals ?? 1) + (config.xUnit ?? '') : 'N/A';
+            const yValStr = medianY !== undefined ? medianY.toFixed(config.yDecimals ?? 1) + (config.yUnit ?? '') : 'N/A';
+
+
+            // --- UPDATED TEXT ---
+            summaryTextEl.html(`<p><strong>${candidateName.replace(/-/g, ' ')}</strong> a câștigat ${count} localități.
+               Mediane în localitățile câștigate:
+                <br> • <i>${config.xLabel}</i>: ${xValStr}
+                <br> • <i>${config.yLabel}</i>: ${yValStr}</p>`);
+            // --- END UPDATED TEXT ---
+
+            // Draw the mini chart using the current config's context
+            drawMiniChart(validCandidateData, config, medianX, medianY);
+
+            summaryPopup.classed("visible", true);
+        }
+
+        function drawMiniChart(data, config, medianX, medianY) {
+            miniChartSvg.selectAll("*").remove(); // Clear previous chart
+
+            const miniMargin = { top: 5, right: 20, bottom: 20, left: 45 }; // Adjusted left margin for labels
+            const containerWidth = parseInt(miniChartSvg.style("width"));
+             const containerHeight = parseInt(miniChartSvg.style("height"));
+
+             if (!containerWidth || !containerHeight || containerWidth <= 0 || containerHeight <= 0) {
+                 console.warn("Mini chart container has no valid dimensions.");
+                 return; // Don't draw if container isn't sized correctly
+             }
+
+            const miniWidth = containerWidth - miniMargin.left - miniMargin.right;
+            const miniHeight = containerHeight - miniMargin.top - miniMargin.bottom;
+
+
+            if (miniWidth <= 0 || miniHeight <= 0) {
+                 console.warn("Mini chart calculated dimensions are invalid.");
+                 return; // Don't draw if calculated dimensions are invalid
+            }
+
+            const chartGroup = miniChartSvg.append("g")
+                .attr("transform", `translate(${miniMargin.left},${miniMargin.top})`);
+
+            // Get overall scales for context, based on the PROVIDED config (main or static)
+            let contextXScale, contextYScale;
+
+             // We need the overall data range for the specific axes defined in 'config'
+             // Filter ALL data for valid points on these specific axes
+             const validDataForExtentContext = allDataGlobal.filter(d =>
+                 d[config.xField] != null && !isNaN(d[config.xField]) && typeof d[config.xField] === 'number' &&
+                 d[config.yField] != null && !isNaN(d[config.yField]) && typeof d[config.yField] === 'number'
+             );
+
+             if (validDataForExtentContext.length > 0) {
+                 const xExtentContext = d3.extent(validDataForExtentContext, d => d[config.xField]);
+                 const yExtentContext = d3.extent(validDataForExtentContext, d => d[config.yField]);
+                 const xDomainContext = (xExtentContext[0] === undefined || xExtentContext[1] === undefined) ? [0, 1] : xExtentContext;
+                 const yDomainContext = (yExtentContext[0] === undefined || yExtentContext[1] === undefined) ? [0, 1] : yExtentContext;
+
+                 // Scales representing the full range of the *current* axes across all data
+                 contextXScale = d3.scaleLinear().domain(xDomainContext).nice();
+                 contextYScale = d3.scaleLinear().domain(yDomainContext).nice();
+             }
+
+
+            if (!contextXScale || !contextYScale) {
+                 console.warn("Mini chart cannot be drawn without context scales for config:", config);
+                  chartGroup.append("text").attr("x", miniWidth / 2).attr("y", miniHeight / 2).attr("text-anchor", "middle").attr("font-size", "10px").attr("fill", "#aaa").text("Eroare scală");
+                 return; // Cannot draw without context scales
+            }
+
+             // --- Mini X-Axis (Bottom) --- Use context scale for domain
+            const miniX = d3.scaleLinear().domain(contextXScale.domain()).range([0, miniWidth]);
+            chartGroup.append("g")
+                .attr("class", "mini-axis")
+                .attr("transform", `translate(0, ${miniHeight})`)
+                .call(d3.axisBottom(miniX).ticks(3).tickSize(3).tickPadding(2)); // Fewer ticks
+
+            // Add X Axis Label (from config)
+            chartGroup.append("text")
+                 .attr("class", "mini-axis-label")
+                 .attr("x", miniWidth / 2)
+                 .attr("y", miniHeight + miniMargin.bottom - 5) // Position below axis
+                 .text(config.xLabel); // Use short label from config
+
+            // Draw Median X Line and Label (candidate's median)
+            if (medianX !== undefined && isFinite(miniX(medianX))) {
+                chartGroup.append("line")
+                    .attr("class", "mini-median-line")
+                    .attr("x1", miniX(medianX))
+                    .attr("x2", miniX(medianX))
+                    .attr("y1", 0)
+                    .attr("y2", miniHeight);
+                chartGroup.append("text")
+                     .attr("class", "mini-median-label")
+                     .attr("x", miniX(medianX))
+                     .attr("y", -2) // Position above the top
+                     .attr("text-anchor", "middle")
+                     .text(medianX.toFixed(config.xDecimals ?? 1));
+            }
+
+
+             // --- Mini Y-Axis (Left) --- Use context scale for domain
+             const miniY = d3.scaleLinear().domain(contextYScale.domain()).range([miniHeight, 0]); // Y is inverted
+             chartGroup.append("g")
+                 .attr("class", "mini-axis")
+                 .call(d3.axisLeft(miniY).ticks(3).tickSize(3).tickPadding(2)); // Fewer ticks
+
+            // Add Y Axis Label (from config)
+             chartGroup.append("text")
+                 .attr("class", "mini-axis-label")
+                 .attr("transform", "rotate(-90)")
+                 .attr("x", -miniHeight / 2)
+                 .attr("y", -miniMargin.left + 12) // Position left of axis, adjusted
+                 .text(config.yLabel); // Use short label from config
+
+             // Draw Median Y Line and Label (candidate's median)
+             if (medianY !== undefined && isFinite(miniY(medianY))) {
+                 chartGroup.append("line")
+                     .attr("class", "mini-median-line")
+                     .attr("x1", 0)
+                     .attr("x2", miniWidth)
+                     .attr("y1", miniY(medianY))
+                     .attr("y2", miniY(medianY));
+                 chartGroup.append("text")
+                      .attr("class", "mini-median-label")
+                      .attr("x", -3) // Position left of axis line
+                      .attr("y", miniY(medianY))
+                      .attr("text-anchor", "end")
+                      .attr("alignment-baseline", "middle")
+                      .text(medianY.toFixed(config.yDecimals ?? 1));
+             }
+        }
+        // END: Candidate Summary Pop-up Functions
+
+
         function applyGlobalFilterAndSearch() {
             const searchTerm = normalize(d3.select("#search-input").property("value"));
             const isSearching = searchTerm.length > 0;
             const selectedWinner = d3.select("#winner-filter").property("value");
-            currentFilter = selectedWinner;
+            currentFilter = selectedWinner; // Update currentFilter
 
+             // --- START Updated Pop-up Logic ---
+             let showPopup = false;
+             let configForPopup = null;
+
+             // Condition 1: Filter active and search inactive
+             if (selectedWinner !== 'all' && !isSearching) {
+                 // Condition 2: Determine relevant config
+                 const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
+
+                 // Prioritize static plot config if main chart is significantly faded AND a static plot is active
+                 if (mainChartOpacity < 0.5 && staticPlotsVisible && activeStaticPlotConfig) {
+                     configForPopup = activeStaticPlotConfig;
+                     showPopup = true;
+                     console.log("Pop-up using ACTIVE STATIC config:", activeStaticPlotConfig.title);
+                 }
+                 // Otherwise, use main scatter config if the view is scatter (even if fading)
+                 else if (currentView === 'scatter') {
+                     configForPopup = mainScatterConfig;
+                     showPopup = true;
+                      console.log("Pop-up using MAIN config:", mainScatterConfig.title);
+                 }
+             }
+
+             // Show or hide the popup based on the decision
+             if (showPopup && configForPopup) {
+                 const candidateSpecificData = allDataGlobal.filter(d => d.Castigator === selectedWinner);
+                 showSummaryPopup(selectedWinner, candidateSpecificData, configForPopup);
+             } else {
+                 hideSummaryPopup();
+                  console.log("Hiding pop-up.");
+             }
+             // --- END Updated Pop-up Logic ---
+
+
+             // --- Existing Filter/Highlight Logic ---
             let areaScale;
             if (allDataGlobal) {
                 // Ensure Procent castigator exists and is numeric before calculating extent
@@ -746,12 +1100,14 @@
                  .attr("cx", function(d) {
                     if (currentView === 'sphere' && d3.select(this).classed('main-circle')) return d.display_x;
                     // Keep existing calculated cx for map/scatter if transitioning
-                    return d3.select(this).attr("cx");
+                    const currentCx = d3.select(this).attr("cx");
+                    return isFinite(currentCx) ? currentCx : -100; // Ensure it's a number
                  })
                  .attr("cy", function(d) {
                     if (currentView === 'sphere' && d3.select(this).classed('main-circle')) return d.display_y;
                     // Keep existing calculated cy for map/scatter if transitioning
-                    return d3.select(this).attr("cy");
+                    const currentCy = d3.select(this).attr("cy");
+                    return isFinite(currentCy) ? currentCy : -100; // Ensure it's a number
                  })
                  .attr("r", function(d) {
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
@@ -796,15 +1152,17 @@
                     const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                     // Check if the circle matches the current search term (if any)
                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
-                    
-                    // Get the current radius of the circle (as it might have been changed in this transition)
-                    const radius = parseFloat(d3.select(this).attr("r")); // Get the potentially just-updated radius
+
+                    // Get the current opacity and radius of the circle (after potential updates in this transition)
+                    const opacity = parseFloat(d3.select(this).attr("opacity"));
+                    const radius = parseFloat(d3.select(this).attr("r"));
 
                     // A circle is interactive IF:
                     // 1. It matches the winner filter criteria
                     // 2. It matches the search term criteria (if a search is active)
-                    // 3. It has a radius greater than a very small value (meaning it's actually visible/drawn)
-                    if (isWinnerMatch && isSearchMatch && radius > 0.1) {
+                    // 3. It has a radius greater than a very small value (visible)
+                    // 4. It has an opacity greater than a threshold (not completely faded out by quadrant/filter logic)
+                    if (isWinnerMatch && isSearchMatch && radius > 0.1 && opacity > 0.06) { // Added opacity check
                         return 'auto'; // Make it interactive
                     }
                     return 'none'; // Make it non-interactive
@@ -815,11 +1173,11 @@
         function createScatterPlot(containerSelector, data, config) {
              const svg = d3.select(containerSelector);
              const svgId = svg.attr('id');
-             staticConfigs[svgId] = config;
+             staticConfigs[svgId] = config; // Store config keyed by SVG ID
              // Ensure data exists before calculating medians - Use ALL data for consistent medians
              if (allDataGlobal && allDataGlobal.length > 0) {
-                config._xMedian = d3.median(allDataGlobal, d => (d[config.xField] != null && !isNaN(d[config.xField])) ? d[config.xField] : undefined);
-                config._yMedian = d3.median(allDataGlobal, d => (d[config.yField] != null && !isNaN(d[config.yField])) ? d[config.yField] : undefined);
+                config._xMedian = d3.median(allDataGlobal, d => (d[config.xField] != null && !isNaN(d[config.xField]) && typeof d[config.xField] === 'number') ? d[config.xField] : undefined);
+                config._yMedian = d3.median(allDataGlobal, d => (d[config.yField] != null && !isNaN(d[config.yField]) && typeof d[config.yField] === 'number') ? d[config.yField] : undefined);
              } else {
                  config._xMedian = undefined;
                  config._yMedian = undefined;
@@ -876,9 +1234,10 @@
                 .attr("x", -innerHeight / 2)
                 .attr("y", -margin.left + 20) // Adjusted y slightly
                 .text(config.yLabelFull || config.yLabel);
-            plotGroup.append("text").attr("class", "plot-title")
-                 .attr("x", innerWidth / 2)
-                 .attr("y", -margin.top * 1.75) // Adjusted y slightly upwards
+             // Adjusted plot title Y position
+             svg.append("text").attr("class", "plot-title")
+                 .attr("x", margin.left + innerWidth / 2)
+                 .attr("y", margin.top / 2) // Position above the plot area
                  .text(config.title);
 
 
@@ -897,38 +1256,40 @@
             // --- Draw Quadrant Labels OUTSIDE the plot area using TSPAN for wrapping ---
             const isMobile = window.innerWidth <= 600;
             // Adjusted padding values for larger/multi-line labels
-            const outerLabelPadding = isMobile ? 20 : 25; // Increased padding from plot edge
-            const outerLabelYOffset = isMobile ? -18 : -25; // Increased negative offset for top labels
-            const outerLabelYOffsetBottom = isMobile ? 25 : 45; // Increased positive offset for bottom labels
+            const outerLabelPadding = isMobile ? 10 : 15; // Reduced padding slightly
+            const outerLabelYOffset = isMobile ? -12 : -18; // Reduced negative offset for top labels
+            const outerLabelYOffsetBottom = isMobile ? 18 : 25; // Reduced positive offset for bottom labels
 
-            if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
-                const labelData = [
-                     { quad: 'II', anchor: 'end', x: innerWidth + outerLabelPadding, y: outerLabelYOffset },
-                     { quad: 'I', anchor: 'start', x: -outerLabelPadding, y: outerLabelYOffset },
-                     { quad: 'III', anchor: 'start', x: -outerLabelPadding, y: innerHeight + outerLabelYOffsetBottom },
-                     { quad: 'IV', anchor: 'end', x: innerWidth + outerLabelPadding, y: innerHeight + outerLabelYOffsetBottom }
-                ];
 
-                labelData.forEach(lbl => {
+            if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null && isFinite(x(xMedian)) && isFinite(y(yMedian))) {
+                 const labelData = [
+                     { quad: 'II', anchor: 'end', xPos: innerWidth + outerLabelPadding, yPos: outerLabelYOffset }, // Top Right
+                     { quad: 'I', anchor: 'start', xPos: -outerLabelPadding, yPos: outerLabelYOffset }, // Top Left
+                     { quad: 'III', anchor: 'start', xPos: -outerLabelPadding, yPos: innerHeight + outerLabelYOffsetBottom }, // Bottom Left
+                     { quad: 'IV', anchor: 'end', xPos: innerWidth + outerLabelPadding, yPos: innerHeight + outerLabelYOffsetBottom } // Bottom Right
+                 ];
+
+
+                 labelData.forEach(lbl => {
                      const labelText = config.quadLabels[lbl.quad];
                      if (!labelText) return; // Skip if label text is missing
 
                      const lines = labelText.split('\n'); // Split by newline character
-                     const textElement = plotGroup.append("text")
-                         .attr("class", "quadrant-label quadrant-label-outer") // Use updated class
-                         .attr("x", lbl.x)
-                         .attr("y", lbl.y) // Base y position for the first line
+                     const textElement = plotGroup.append("text") // Append to plotGroup
+                         .attr("class", "quadrant-label quadrant-label-outer")
+                         .attr("x", lbl.xPos) // Use calculated position
+                         .attr("y", lbl.yPos) // Base y position for the first line
                          .attr("text-anchor", lbl.anchor);
 
                      // Append tspans for each line
                      lines.forEach((line, i) => {
                          textElement.append("tspan")
-                             .attr("x", lbl.x) // Re-apply x for each tspan for correct anchor alignment
+                             .attr("x", lbl.xPos) // Re-apply x for each tspan for correct anchor alignment
                              .attr("dy", i === 0 ? "0" : "1.1em") // Add vertical spacing (dy) for subsequent lines
                              .text(line);
                      });
                  });
-            }
+             }
              // --- END NEW Quadrant Labels ---
 
 
@@ -1033,6 +1394,7 @@
 
             // --- Scatter Plot Configurations with newline characters (\n) in quadLabels ---
             const scatterConfig1 = {
+                id: "scatter-viz-1", // Added ID for lookup
                 xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1,
                 title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor",
                 xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)",
@@ -1042,6 +1404,7 @@
                 }
             };
             const scatterConfig2 = {
+                id: "scatter-viz-2", // Added ID for lookup
                 xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1,
                 title: "Plecările din localitate și ponderea șomerilor",
                 xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)",
@@ -1051,6 +1414,7 @@
                 }
             };
             const scatterConfig3 = {
+                 id: "scatter-viz-3", // Added ID for lookup
                 xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0,
                 title: "Salariați vs. Venituri din Impozite",
                 xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)",
@@ -1060,6 +1424,7 @@
                 }
             };
             const scatterConfig4 = {
+                 id: "scatter-viz-4", // Added ID for lookup
                 xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0,
                 title: "Fonduri Europene vs. Acces la Medici",
                 xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic",
@@ -1117,20 +1482,23 @@
                 .style("pointer-events", "auto") // Allow interactions
                 .on("mouseover", (event, d) => {
                      tooltip.style("opacity", 1);
-                     // Show tooltip based on current view
-                     if (currentView === 'sphere' || currentView === 'map') {
+                     let configForTooltip = mainScatterConfig; // Default to main
+                      // Determine relevant config based on view/scroll for tooltip
+                      const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
+                      if (mainChartOpacity < 0.5 && staticPlotsVisible && activeStaticPlotConfig) {
+                          configForTooltip = activeStaticPlotConfig;
+                      } else if (currentView !== 'scatter'){
+                          configForTooltip = null; // Use basic tooltip if not scatter relevant
+                      }
+
+                     // Show tooltip based on current view/config
+                     if (currentView === 'sphere' || currentView === 'map' || !configForTooltip) {
                          tooltip.html(basicTooltip(d));
-                     } else if (currentView === 'scatter') {
-                         const config = mainScatterConfig;
-                          // Ensure config and fields are valid
-                          if (!config || !config.xField || !config.yField) {
-                              tooltip.html(basicTooltip(d)); // Fallback
-                              return;
-                          }
-                         const xVal = d[config.xField], yVal = d[config.yField];
-                         // Show scatter tooltip only if data is valid, else basic
+                     } else { // Scatter view or static plot relevant
+                         const xVal = d[configForTooltip.xField], yVal = d[configForTooltip.yField];
+                         // Show scatter tooltip only if data is valid for the *relevant* config, else basic
                          if (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) {
-                             tooltip.html(scatterTooltip(d, config));
+                             tooltip.html(scatterTooltip(d, configForTooltip));
                          } else {
                              tooltip.html(basicTooltip(d)); // Fallback
                          }
@@ -1148,7 +1516,7 @@
                     const isHighlightedByFilter = currentFilter !== "all" && d.Castigator === currentFilter;
                     let inActiveQuadHighlight = false;
                      if (currentView === 'scatter' && activeQuad !== 'all') {
-                         const config = mainScatterConfig;
+                         const config = mainScatterConfig; // Quadrant highlight is only for main scatter
                           // Add checks for config and fields
                           if (config && config.xField && config.yField) {
                             const xVal = d[config.xField], yVal = d[config.yField];
@@ -1192,10 +1560,13 @@
                 applyGlobalFilterAndSearch(); // Re-apply filters
             });
             d3.select("#winner-filter").on("change", applyGlobalFilterAndSearch);
+            // Add event listener for the popup close button
+            closeSummaryButton.on("click", hideSummaryPopup);
+
 
             // --- Create Static Scatter Plots ---
             staticCircles = []; // Reset array holding static circle selections
-            staticConfigs = {}; // Reset object holding static configs
+            staticConfigs = {}; // Reset object holding static configs (keyed by SVG ID)
             createScatterPlot("#scatter-viz-1", allDataGlobal, scatterConfig1);
             createScatterPlot("#scatter-viz-2", allDataGlobal, scatterConfig2);
             createScatterPlot("#scatter-viz-3", allDataGlobal, scatterConfig3);
@@ -1206,9 +1577,11 @@
             // --- View Transition Functions ---
             function toSphere() {
                 if (currentView === 'sphere') return; // Avoid redundant transitions
+                hideSummaryPopup(); // Hide popup when changing view
+                activeStaticPlotConfig = null; // Reset active static plot
                 console.log("Transitioning to Sphere");
                 currentView = "sphere";
-                window.IO?.disconnect(); // DEACTIVATE Intersection Observer
+                window.IO?.disconnect(); // DEACTIVATE Intersection Observer for steps
                 activeQuad = 'all'; // Reset quadrant highlighting
                 observerInitialized = false; // Reset IO flag
                 sphereAnimation.play(); // Resume sphere rotation
@@ -1220,9 +1593,11 @@
 
             function toMap() {
                 if (currentView === 'map' || !xGeo || !yGeo) return; // Avoid redundant transitions or if scales aren't set
+                hideSummaryPopup(); // Hide popup when changing view
+                 activeStaticPlotConfig = null; // Reset active static plot
                 console.log("Transitioning to Map");
                 currentView = "map";
-                window.IO?.disconnect(); // DEACTIVATE Intersection Observer
+                window.IO?.disconnect(); // DEACTIVATE Intersection Observer for steps
                 activeQuad = 'all'; // Reset quadrant highlighting
                 observerInitialized = false; // Reset IO flag
                 sphereAnimation.pause(); // Pause sphere rotation
@@ -1251,6 +1626,9 @@
 
             function toScatter() {
                 if (currentView === 'scatter') return; // Avoid redundant transitions
+                // Hide initially, applyGlobalFilterAndSearch will show if needed based on main config
+                hideSummaryPopup();
+                 activeStaticPlotConfig = null; // Reset active static plot
                 console.log("Transitioning to Main Scatter");
                 currentView = "scatter";
                 sphereAnimation.pause(); // Pause sphere rotation
@@ -1277,7 +1655,7 @@
                  if (validScatterData.length === 0) {
                      console.warn("No valid data points for the main scatter plot.");
                      // Optionally display a message on the SVG
-                     svgMain.append("text").attr("x", mainWidth/2).attr("y", mainHeight/2).attr("text-anchor", "middle").text("Date insuficiente pentru acest grafic.");
+                     svgMain.append("text").attr("x", mainWidth/2).attr("y", mainHeight/2).attr("text-anchor", "middle").attr("fill", "#ccc").text("Date insuficiente pentru acest grafic.");
                      return; // Abort if no data
                  }
 
@@ -1294,8 +1672,9 @@
                 const yMedian = config._yMedian; // Use cached median from allDataGlobal
 
                  // --- Draw Axes, Titles, Median Lines for main plot ---
-                 svgMain.append("text").attr("class", "plot-title")
-                     .attr("x", mainWidth / 2) .attr("y", -margin.top * 0.35) // Adjusted Y slightly
+                 svgMain.append("text").attr("class", "plot-title") // Use svgMain for main title
+                     .attr("x", mainWidth / 2)
+                     .attr("y", marginMain.top / 2) // Position above plot
                      .text(config.title);
                  svgMain.append("g").attr("class", "x-axis axis")
                      .attr("transform", `translate(0,${mainHeight - marginMain.bottom})`) // Positioned at bottom
@@ -1324,20 +1703,21 @@
                  }
 
                  // --- Draw Quadrant Labels OUTSIDE the plot area using TSPAN for wrapping ---
-                 const isMobile = window.innerWidth <= 600;
+                 const isMobileMain = window.innerWidth <= 600;
                  // Adjusted padding values for larger/multi-line labels in main plot
-                 const mainOuterLabelPadding = isMobile ? 12 : 18; // Increased padding from plot edge
-                 const mainOuterLabelYOffset = isMobile ? -15 : -22; // Increased negative offset for top labels
-                 const mainOuterLabelYOffsetBottom = isMobile ? 20 : 30; // Increased positive offset for bottom labels
+                 const mainOuterLabelPadding = isMobileMain ? 12 : 18; // Increased padding from plot edge
+                 const mainOuterLabelYOffset = isMobileMain ? -15 : -22; // Increased negative offset for top labels
+                 const mainOuterLabelYOffsetBottom = isMobileMain ? 20 : 30; // Increased positive offset for bottom labels
 
 
-                 if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null) {
+                 if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null && isFinite(x(xMedian)) && isFinite(y(yMedian))) {
                      const mainLabelData = [
-                         { quad: 'II', anchor: 'end', x: mainWidth - marginMain.right + mainOuterLabelPadding, y: marginMain.top + mainOuterLabelYOffset },
-                         { quad: 'I', anchor: 'start', x: marginMain.left - mainOuterLabelPadding, y: marginMain.top + mainOuterLabelYOffset },
-                         { quad: 'III', anchor: 'start', x: marginMain.left - mainOuterLabelPadding, y: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom },
-                         { quad: 'IV', anchor: 'end', x: mainWidth - marginMain.right + mainOuterLabelPadding, y: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom }
+                         { quad: 'II', anchor: 'end', xPos: mainWidth - marginMain.right + mainOuterLabelPadding, yPos: marginMain.top + mainOuterLabelYOffset }, // Top Right
+                         { quad: 'I', anchor: 'start', xPos: marginMain.left - mainOuterLabelPadding, yPos: marginMain.top + mainOuterLabelYOffset },   // Top Left
+                         { quad: 'III', anchor: 'start', xPos: marginMain.left - mainOuterLabelPadding, yPos: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom }, // Bottom Left
+                         { quad: 'IV', anchor: 'end', xPos: mainWidth - marginMain.right + mainOuterLabelPadding, yPos: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom } // Bottom Right
                      ];
+
 
                      mainLabelData.forEach(lbl => {
                          const labelText = config.quadLabels[lbl.quad];
@@ -1346,14 +1726,14 @@
                          const lines = labelText.split('\n'); // Split by newline
                          const textElement = svgMain.append("text") // Append directly to svgMain
                              .attr("class", "quadrant-label quadrant-label-outer") // Use updated class
-                             .attr("x", lbl.x)
-                             .attr("y", lbl.y) // Base y position
+                             .attr("x", lbl.xPos)
+                             .attr("y", lbl.yPos) // Base y position
                              .attr("text-anchor", lbl.anchor);
 
                          // Append tspans for each line
                          lines.forEach((line, i) => {
                              textElement.append("tspan")
-                                 .attr("x", lbl.x) // Re-apply x for each tspan
+                                 .attr("x", lbl.xPos) // Re-apply x for each tspan
                                  .attr("dy", i === 0 ? "0" : "1.1em") // Vertical spacing
                                  .text(line);
                          });
@@ -1410,19 +1790,19 @@
                     .end().then(() => {
                          // After transition: apply filters and setup Intersection Observer
                          console.log("Scatter transition finished. Setting up IO.");
-                         applyGlobalFilterAndSearch(); // Apply filters which will hide non-relevant points
+                         applyGlobalFilterAndSearch(); // Apply filters which will hide non-relevant points and potentially show popup
                          setupIntersectionObserver(config); // Pass the correct config
                     }).catch(err => {
                          // Handle transition errors
                          console.error("Scatter transition error:", err);
-                         applyGlobalFilterAndSearch(); // Ensure filters are applied
+                         applyGlobalFilterAndSearch(); // Ensure filters are applied (and popup logic runs)
                          setupIntersectionObserver(config); // Still try to setup IO
                     });
-                applyGlobalFilterAndSearch(); // Apply filters immediately for responsiveness
+                applyGlobalFilterAndSearch(); // Apply filters immediately for responsiveness (and popup logic)
             }
 
 
-            // --- Intersection Observer for Scroll Steps ---
+            // --- Intersection Observer for Scroll Steps (Main Scatter Quadrants) ---
             const steps = document.querySelectorAll("#scatter-steps .step");
 
             function setupIntersectionObserver(config) { // Expects mainScatterConfig
@@ -1433,11 +1813,13 @@
                      console.error("[IO Setup] Aborting: Invalid config provided.");
                      return;
                  }
-                console.log("[IO] Setting up Intersection Observer");
+                console.log("[IO] Setting up Intersection Observer for Steps");
 
                 window.IO = new IntersectionObserver(entries => {
-                    // Ignore callbacks if not in scatter view
-                    if (currentView !== 'scatter') return;
+                    // Ignore callbacks if not in scatter view OR if main chart is faded out
+                    const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
+                    if (currentView !== 'scatter' || mainChartOpacity < 0.1) return;
+
 
                     const minVisibilityThreshold = 0.05; // Minimum ratio to be considered "visible"
 
@@ -1459,7 +1841,7 @@
 
                     // Only update if the active quadrant changes
                     if (nextActiveQuad !== activeQuad) {
-                        console.log(`[IO Callback] *** Changing highlight: ${activeQuad} -> ${nextActiveQuad} *** (Highest visible: ${highestVisibleStep ? highestVisibleStep.dataset.quad : 'None'})`);
+                        console.log(`[IO Callback Steps] *** Changing highlight: ${activeQuad} -> ${nextActiveQuad} *** (Highest visible: ${highestVisibleStep ? highestVisibleStep.dataset.quad : 'None'})`);
                         activeQuad = nextActiveQuad; // Update the global state
                         renderHighlight(activeQuad, config); // Render the highlight effect
                     }
@@ -1474,15 +1856,16 @@
 
                  // Initial check in case a step is already visible on load/transition
                  if (!observerInitialized) {
-                      console.log("[IO Initial Check] Scheduling...");
+                      console.log("[IO Initial Check Steps] Scheduling...");
                       // Use setTimeout to allow layout settling after transition
                       setTimeout(() => {
                          // Abort if view changed or config became invalid during timeout
-                         if (currentView !== 'scatter' || !config || !config.xField || !config.yField) {
-                            console.log("[IO Initial Check] Aborted, view/config changed.");
+                           const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
+                         if (currentView !== 'scatter' || !config || !config.xField || !config.yField || mainChartOpacity < 0.1) {
+                            console.log("[IO Initial Check Steps] Aborted, view/config/opacity changed.");
                             return;
                          }
-                         console.log("[IO Initial Check] Running...");
+                         console.log("[IO Initial Check Steps] Running...");
 
                          const minVisibilityThreshold = 0.05;
                          const currentVisibleSteps = [];
@@ -1511,11 +1894,11 @@
 
                          // Determine the initial quadrant based on the highest visible step
                          const initialActiveQuad = initialHighestStep ? initialHighestStep.dataset.quad : 'all';
-                         console.log(`[IO Initial Check] Determined initial quad: ${initialActiveQuad}.`);
+                         console.log(`[IO Initial Check Steps] Determined initial quad: ${initialActiveQuad}.`);
 
                          // Update state and render highlight only if different from default
                          if (initialActiveQuad !== activeQuad) {
-                              console.log(`[IO Initial Check] *** Setting initial highlight: ${activeQuad} -> ${initialActiveQuad} ***`);
+                              console.log(`[IO Initial Check Steps] *** Setting initial highlight: ${activeQuad} -> ${initialActiveQuad} ***`);
                               activeQuad = initialActiveQuad;
                          }
                          renderHighlight(activeQuad, config); // Render initial highlight state
@@ -1531,6 +1914,16 @@
                     if (currentView !== 'scatter') activeQuad = 'all'; // Reset if view changed
                     return;
                 }
+                 // Also abort if main chart is faded out (static plots are primary)
+                 const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
+                 if (mainChartOpacity < 0.1) {
+                     console.log("[RenderHighlight] Aborting, main chart faded.");
+                      activeQuad = 'all'; // Reset quadrant if main chart not visible
+                      // Ensure overlays are hidden if chart fades while quad is active
+                      svgMain.selectAll(".quadrant-overlay").transition("overlayFadeOut").duration(100).attr("opacity", 0);
+                     return;
+                 }
+
                 console.log(`[RenderHighlight] Rendering for quad: ${quad}`);
                 // Transition the opacity of the quadrant overlays
                 svgMain.selectAll(".quadrant-overlay")
@@ -1610,6 +2003,7 @@
                         const fadeEndRatio = 0.25; // Fully faded when 25% visible
                         let opacity = 1; // Default opacity
 
+                         const oldStaticPlotsVisible = staticPlotsVisible; // Store previous state
                         staticPlotsVisible = staticPlotsEntry.isIntersecting; // Update visibility flag
 
                         if (staticPlotsEntry.isIntersecting) {
@@ -1621,7 +2015,7 @@
                         } else if (staticPlotsEntry.boundingClientRect.top < 0) {
                             // If scrolled past (top is negative), force opacity to 0
                             opacity = 0;
-                            staticPlotsVisible = false;
+                            staticPlotsVisible = true; // Still consider static plots potentially active
                         } else {
                             // If not intersecting and above the viewport, opacity is 1
                             opacity = 1;
@@ -1638,17 +2032,84 @@
                         const intro = document.getElementById("sphere-intro");
                         if (intro && opacity < 0.8) intro.classList.add("hidden");
 
+                         // If static plots just became visible or invisible, potentially trigger popup update
+                         if (staticPlotsVisible !== oldStaticPlotsVisible) {
+                             applyGlobalFilterAndSearch();
+                         }
+
                         // Disconnect Intersection Observer for steps if main chart is mostly hidden
-                        if (opacity < 0.5 && window.IO) {
-                             console.log("Disconnecting IO due to main chart fade");
+                        // And reset quad highlight
+                        if (opacity < 0.1 && window.IO) {
+                             console.log("Disconnecting Step IO due to main chart fade");
                              window.IO.disconnect();
                              activeQuad = 'all'; // Reset active quadrant
                              observerInitialized = false; // Reset IO flag
+                             renderHighlight('all', mainScatterConfig); // Ensure highlight is off
+                        } else if (opacity >= 0.1 && currentView === 'scatter' && !observerInitialized && window.IO) {
+                             // Re-setup step observer if chart becomes visible again in scatter view
+                             console.log("Re-enabling Step IO as main chart became visible");
+                              setupIntersectionObserver(mainScatterConfig);
                         }
                     },
                     { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) } // Multiple thresholds for smooth fade calculation
                 ).observe(staticPlotsSection); // Observe the static plots section
              }
+
+
+            // --- START: Intersection Observer for Static Plot Containers ---
+            const staticPlotContainers = document.querySelectorAll('.scatter-plot-container');
+            if (staticPlotContainers.length > 0 && staticConfigs) {
+                const staticPlotObserver = new IntersectionObserver(entries => {
+                    // Only act if the static plots section is generally visible (main chart faded)
+                    if (!staticPlotsVisible) {
+                         // If static plots are no longer the primary focus, reset active config
+                         if (activeStaticPlotConfig !== null) {
+                             console.log("Static plots no longer primary, resetting activeStaticPlotConfig");
+                             activeStaticPlotConfig = null;
+                              applyGlobalFilterAndSearch(); // Update popup state
+                         }
+                        return;
+                    }
+
+                    let mostVisibleStaticPlot = null;
+                    let maxRatio = -1;
+
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                            maxRatio = entry.intersectionRatio;
+                            mostVisibleStaticPlot = entry.target;
+                        }
+                        // Basic visibility check: consider entry visible if any part intersects
+                         // console.log(`Static plot ${entry.target.id} intersecting: ${entry.isIntersecting}, Ratio: ${entry.intersectionRatio.toFixed(2)}`);
+                    });
+
+                    let newActiveConfig = null;
+                    if (mostVisibleStaticPlot) {
+                        const chartId = mostVisibleStaticPlot.dataset.chartId; // Use data-chart-id
+                        if (chartId && staticConfigs[chartId]) {
+                            newActiveConfig = staticConfigs[chartId];
+                             // console.log(`Most visible static plot: ${chartId}`);
+                        }
+                    }
+
+                    // Update state and trigger popup redraw ONLY if the active config changes
+                    if (newActiveConfig?.id !== activeStaticPlotConfig?.id) { // Compare based on unique ID
+                         console.log(`[Static IO] Changing active static config: ${activeStaticPlotConfig?.id} -> ${newActiveConfig?.id}`);
+                        activeStaticPlotConfig = newActiveConfig;
+                        // Re-run filter/popup logic to update the popup content
+                        applyGlobalFilterAndSearch();
+                    }
+
+                }, {
+                    threshold: Array.from({ length: 11 }, (_, i) => i * 0.1), // Check at 10% intervals
+                    rootMargin: "-10% 0px -30% 0px" // Prioritize plots in the middle-ish of the viewport
+                });
+
+                staticPlotContainers.forEach(container => staticPlotObserver.observe(container));
+                 console.log("[Static IO] Observer attached to static plot containers.");
+            }
+            // --- END: Intersection Observer for Static Plot Containers ---
+
 
             // --- Intro Button ---
             const intro = document.getElementById("sphere-intro");
@@ -1696,6 +2157,8 @@
 
                  // Update search visibility after a short delay to ensure view is set
                  setTimeout(updateSearchControlsVisibility, 200);
+                 // Run filter/popup logic after initial view setup
+                 setTimeout(applyGlobalFilterAndSearch, 250);
 
                  // Handle initial intro visibility
                  const introElem = document.getElementById("sphere-intro");
@@ -1720,3 +2183,4 @@
     </script>
     </body>
     </html>
+
