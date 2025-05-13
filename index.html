@@ -64,7 +64,7 @@
 
         .chart-wrapper {
             position: relative;
-            height: 250vh;
+            height: 170vh;
             margin-bottom: 5vh;
         }
 
@@ -104,7 +104,7 @@
             font-size: 0.9em;
             pointer-events: none;
             opacity: 0;
-            z-index: 10; /* Lower than search */
+            z-index: 10; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border-radius: 4px;
             max-width: 90vw;
@@ -120,7 +120,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 11; /* Above tooltip, below popup */
+            z-index: 11; 
             background: rgba(0, 0, 0, 0.8);
             padding: 10px 15px;
             border-radius: 8px;
@@ -210,8 +210,20 @@
             background:rgba(0,0,0,0.88); color:#fff; opacity:1;
             pointer-events:auto; transition:opacity .6s ease;
         }
-        #sphere-intro h2{font-size:1.7rem; margin:0;}
-        #sphere-intro p {font-size:1rem; line-height:1.4; margin:0;}
+        #sphere-intro h2{font-size:1.4rem; margin:0;}
+        #sphere-intro p {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0; 
+    max-width: 600px;   
+    width: 90%;         
+                        
+    padding-left: 15px; 
+    padding-right: 15px;
+    box-sizing: border-box; 
+    
+    /* The <p> block itself will be centered by #sphere-intro's align-items: center */
+}
         #sphere-intro button{
             padding:.6rem 1.4rem; font-size:1rem; border:none; border-radius:6px;
             background:rgb(0, 140, 255); color:#ffffff; cursor:pointer;
@@ -226,7 +238,7 @@
             position:relative;
             z-index:3;
         }
-        .scatter-plot-container { /* Used for static plots */
+        .scatter-plot-container { 
             max-width: 950px;
             width: 92%;
             margin: 10vh auto;
@@ -254,30 +266,29 @@
         .map-subtitle { fill: #ccc; font-size: 0.9em; text-anchor: middle; }
         .quadrant-line { stroke: #ffffff; stroke-dasharray: 3 3; stroke-width: 1.5px; opacity: 0.8; }
 
-        /* --- START: Updated Quadrant Label Styles --- */
-        .quadrant-label { /* Base style for all quadrant labels - applied to <text> */
+       
+        .quadrant-label { 
             fill: #ffffff;
-            font-size: 1em; /* Base size - inherited by outer */
+            font-size: 1em; 
             font-weight: 400;
             opacity: 0.9;
          }
-         .quadrant-label-outer { /* Style for labels outside the plot */
-             /* Increased font size */
-             font-size: 1.4em; /* Larger base size */
-             /* Improved contrast/visibility */
-             fill: #e0e0e0; /* Lighter grey */
-             font-weight: 500; /* Slightly bolder */
-             opacity: 0.95; /* Ensure high opacity */
-             /* Add subtle shadow for definition */
+         .quadrant-label-outer { 
+             
+             font-size: 1.4em; 
+             
+             fill: #e0e0e0; 
+             font-weight: 500; 
+             opacity: 0.95; 
+             
              text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
-             pointer-events: none; /* Ensure labels don't block mouse events */
-             /* Line height is controlled by 'dy' on tspans in JS */
+             pointer-events: none; 
          }
-         /* Optional: Style for the tspan lines if needed */
+         
          .quadrant-label-outer tspan {
-             /* Specific styles for tspans if required */
+            
          }
-         /* --- END: Updated Quadrant Label Styles --- */
+        
 
          .quadrant-overlay {
              fill: #ffffff;
@@ -286,25 +297,25 @@
              transition: opacity 0.3s ease;
          }
 
-        /* --- START: Candidate Summary Pop-up Styles --- */
+        
         #candidate-summary-popup {
             position: fixed;
             bottom: 20px;
             left: 20px;
-            background: rgba(40, 40, 60, 0.95); /* Slightly different background */
+            background: rgba(40, 40, 60, 0.95); 
             border: 1px solid #777;
             border-radius: 8px;
-            padding: 15px 20px;
-            max-width: 320px; /* Adjust as needed */
-            z-index: 12; /* Above search, below tooltip */
+            padding: 18px 25px;
+            max-width: 400px; 
+            z-index: 12; 
             opacity: 0;
             pointer-events: none;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease;
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             color: #eee;
-            font-size: 0.85em;
-            line-height: 1.4;
+            font-size: 0.9em;
+            line-height: 1.45;
         }
 
         #candidate-summary-popup.visible {
@@ -315,22 +326,22 @@
 
         #summary-text p {
             margin: 0 0 10px 0;
-            text-align: left; /* Align text left in popup */
-             font-size: inherit; /* Inherit font size */
-             color: inherit; /* Inherit color */
+            text-align: left; 
+             font-size: inherit; 
+             color: inherit; 
         }
          #summary-text strong {
-             color: #fff; /* Make candidate name stand out */
+             color: #fff; 
          }
-         #summary-text i { /* Style for axis labels in text */
+         #summary-text i { 
              color: #bbb;
-             font-style: normal; /* Make italics normal for axis labels */
-             font-weight: 500; /* Slightly bolder */
+             font-style: normal; 
+             font-weight: 500; 
          }
 
         #mini-chart-container {
             margin-top: 10px;
-            height: 60px; /* Fixed height for mini chart area */
+            height: 60px;
             width: 100%;
         }
 
@@ -339,7 +350,7 @@
             width: 100%;
             height: 100%;
         }
-         /* Style for mini-chart elements (adjust as needed) */
+        
         .mini-axis path, .mini-axis line {
             stroke: #888;
             stroke-width: 0.5;
@@ -354,18 +365,18 @@
             font-size: 9px;
             text-anchor: middle;
         }
-        .mini-bar { /* (Not used currently, but kept for potential future use) */
+        .mini-bar { 
             fill: #88b5ff;
             stroke: #fff;
             stroke-width: 0.5;
         }
         .mini-median-line {
-            /* stroke: #ffcc00; /* MODIFIED: Color will be set dynamically */
+            
             stroke-width: 1.5;
             stroke-dasharray: 2 2;
         }
          .mini-median-label {
-             /* fill: #ffcc00; /* MODIFIED: Color will be set dynamically */
+            
              font-size: 10px;
              font-weight: bold;
          }
@@ -385,7 +396,7 @@
         #close-summary-popup:hover {
             color: #fff;
         }
-        /* --- END: Candidate Summary Pop-up Styles --- */
+       
 
 
         @media (max-width: 600px) {
@@ -409,19 +420,19 @@
                 width: 98%; padding: 10px 5px 5px 5px; margin: 5vh auto; box-shadow: none;
             }
             .scatter-explainer { padding: 0 5px; font-size: 0.9em; margin-top: 30px; line-height: 1.3; }
-             .plot-title { font-size: 1.1em; } /* Adjusted static plot title on mobile */
-             .axis-label { font-size: 0.8em; } /* Adjusted static plot axis labels on mobile */
+             .plot-title { font-size: 1.1em; } 
+             .axis-label { font-size: 0.8em; } 
 
 
              .quadrant-label {
-                 font-size: 1.1em; /* Adjusted static quadrant labels */
+                 font-size: 1.1em; 
              }
              .quadrant-label-outer {
-                  font-size: 1.1em; /* Adjusted static quadrant labels */
+                  font-size: 1.1em; 
                   text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
              }
 
-             .axis text { font-size: 8px; } /* Adjusted static axis text */
+             .axis text { font-size: 8px; } 
 
 
             .step { margin: 60vh auto; }
@@ -433,15 +444,15 @@
             .cosmic-title { font-size: 1.5em; }
             .cosmic-supratitle { font-size: 1.3em; }
 
-             /* Responsive adjustments for popup */
+           
             #candidate-summary-popup {
                 left: 10px;
                 right: 10px;
                 bottom: 10px;
-                max-width: none; /* Take full width minus padding */
+                max-width: none;
                 width: auto;
-                padding: 12px 15px;
-                font-size: 0.8em;
+                padding: 16px 20px;    
+                font-size: 0.85em;     
             }
             #close-summary-popup {
                 top: 3px;
@@ -449,11 +460,15 @@
                  font-size: 1.6em;
             }
              #mini-chart-container {
-                 height: 50px; /* Slightly smaller on mobile */
+                 height: 50px; 
              }
-             .mini-axis-label { font-size: 8px; } /* Slightly smaller axis labels */
-             .mini-median-label { font-size: 9px; } /* Slightly smaller median labels */
-             .mini-axis .tick text { font-size: 8px; } /* Slightly smaller tick labels */
+             .mini-axis-label { font-size: 8px; } 
+             .mini-median-label { font-size: 9px; }
+             .mini-axis .tick text { font-size: 8px; } 
+
+             .scatter-plot-container svg .static-circle {
+                 r: 5; 
+             }
         }
 
 
@@ -474,6 +489,8 @@
   a:hover {
     color: rgb(255, 217, 0);
   }
+
+  
 
     </style>
 </head>
@@ -527,18 +544,15 @@
     <div id="sphere-intro">
         <h2>INTERACTIV | Voturile din turul I, explicate altfel</h2>
         <p>
-        <a href="https://www.hotnews.ro" target="_blank" rel="noopener noreferrer">HotNews.ro</a> a analizat
-        <span class="highlight">rezultatele primului tur</span> al alegerilor prezidențiale din 2025<br>
-        și le-a corelat cu <span class="highlight">8 indicatori socio-economici</span> de la INS într-o serie de grafice<br>
+        <a href="https://www.hotnews.ro" target="_blank" rel="noopener noreferrer">HotNews.ro</a> a analizat <span class="highlight">rezultatele primului tur</span> al alegerilor prezidențiale din 2025
+        și le-a corelat cu <span class="highlight">8 indicatori socio-economici</span> de la INS într-o serie de grafice 
         interactive care ne arată cum influențează aceștia opțiunile electorale.<br> <br>
-        Scopul a fost să observăm cum votează românii din diferite zone ale țării,<br>
-         de specificul economic și social al acestora.<br><br>
-        Întregul material este <span class="highlight">interactiv.</span><br>
-        <span class="highlight">Click</span>pe cercuri, grafice și filtre pentru a-l explora.<br>
-        <span class="highlight">Filtrează graficele</span> în funcție de câștigător pentru a vedea <br>
-        statistica medie  a candidatului pe fiecare grafic. <br><br>
-        Materialul este împărțit în secțiuni care <br>
-        se activează pe măsură ce derulezi pagina în jos.<br>
+        Scopul a fost să observăm cum votează românii din diferite zone ale țării, de specificul economic și social al acestora.<br><br>
+        Întregul material este <span class="highlight">interactiv.</span> <span class="highlight">Click</span>pe cercuri, grafice și filtre pentru a-l explora.
+        <span class="highlight">Filtrează graficele</span> în funcție de câștigător pentru a vedea
+        statistica medie a candidatului pe fiecare grafic. <br><br>
+        Materialul este împărțit în secțiuni care
+        se activează pe măsură ce derulezi pagina în jos.
         <span class="highlight">Scroll</span> pentru a explora toate secțiunile.
     </p>
         <button id="intro-ok">Începe</button>
@@ -616,7 +630,7 @@ de vârstă și din toate mediile. Pe grafic însă se poate vedea o concentraț
 
             </p>
         </div>
-        <!-- Added data-chart-id attribute matching the SVG ID -->
+        
         <div id="scatter-container-2" class="scatter-plot-container" data-chart-id="scatter-viz-2">
             <svg id="scatter-viz-2" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce ne arată relația dintre plecările cu domiciliul și șomajul local?</strong><br>
@@ -644,7 +658,7 @@ adjudecate de Nicușor Dan au o medie mică de șomeri: 0,3%.
 
 
         </div>
-<!-- Added data-chart-id attribute matching the SVG ID -->
+
         <div id="scatter-container-3" class="scatter-plot-container" data-chart-id="scatter-viz-3">
             <svg id="scatter-viz-3" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce ne arată relația dintre numărul de salariați și veniturile fiscale locale?</strong><br>
@@ -672,7 +686,7 @@ de 188 de lei. <br><br>
 În același timp din grafic reies o serie de localități unde și Simion și Antonescu au câștigat ce au caracteristicile unor zone sărace sau zone unde, în ciuda numărului mai mici de angajați, există un grad mare de impozitare (cadranul I din grafic).
 
         </div>
-<!-- Added data-chart-id attribute matching the SVG ID -->
+
         <div id="scatter-container-4" class="scatter-plot-container" data-chart-id="scatter-viz-4">
             <svg id="scatter-viz-4" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce ne arată relația dintre fondurile europene atrase pe cap de locuitor și numărul de pacienți care revin unui medic?</strong><br>
@@ -694,17 +708,17 @@ de 188 de lei. <br><br>
 <li><strong>Stânga jos:</strong> localități cu fonduri reduse și mai puțini pacienți per medic sunt posibile excepții, unde rețeaua medicală funcționează în ciuda lipsei de investiții majore.</li>
             </ul>
 <strong>Mai mulți bani europeni atrași de localitățile câștigate de Dan și Antonescu, decât cele adjudecate de Simion</strong><br><br>
-În această reprezentare grafică apar, în dreptul localităților câștigate la vot de 
-George Simion, o polarizare a zonelor unde investițiile europene sunt minime 
-sau chiar zero, iar în cazul multor localități și numărul de pacienți pe 
+În această reprezentare grafică apar, în dreptul localităților câștigate la vot de
+George Simion, o polarizare a zonelor unde investițiile europene sunt minime
+sau chiar zero, iar în cazul multor localități și numărul de pacienți pe
 medic este foarte ridicat. <br><br>
-În medie, în dreptul localităților adjudecate de Simon vorbim de 1.931 
-de pacienți per medic, cu o investiție medie de fonduri europene per cap de 
-locuitor de doar 18 lei. În cazul localităților adjudecate de Nicușor Dan acestea 
-sunt poziționate în partea de jos a graficului, cu investiții europene 
-mai mari pe cap de locuitor (43 de lei), dar cu acces mult mai bun la medici 
+În medie, în dreptul localităților adjudecate de Simon vorbim de 1.931
+de pacienți per medic, cu o investiție medie de fonduri europene per cap de
+locuitor de doar 18 lei. În cazul localităților adjudecate de Nicușor Dan acestea
+sunt poziționate în partea de jos a graficului, cu investiții europene
+mai mari pe cap de locuitor (43 de lei), dar cu acces mult mai bun la medici
 (725 de pacienți per medic). <br><br>
-Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echilibrată, cu multe zone unde sunt contabilizate și investiții din fonduri europene (25 de lei/loc), dar și zone unde numărul de pacienți per medic este ridicat (media de 1.722 pacienți/medic). 
+Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echilibrată, cu multe zone unde sunt contabilizate și investiții din fonduri europene (25 de lei/loc), dar și zone unde numărul de pacienți per medic este ridicat (media de 1.722 pacienți/medic).
 
 
         </div>
@@ -720,26 +734,43 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         </div>
         <button id="close-summary-popup" title="Închide">&times;</button>
     </div>
-    <!-- END: Candidate Summary Pop-up HTML -->
+    
 
 
     <script>
-        // DEBUG: Flag to control debug messages
-        const DEBUG_MODE = true; // Set to false to disable logs
+        
+        const DEBUG_MODE = true; 
+
+        
+        function throttle(func, limit) {
+            let lastFunc;
+            let lastRan;
+            return function(...args) {
+                const context = this;
+                if (!lastRan) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                } else {
+                    clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function() {
+                        if ((Date.now() - lastRan) >= limit) {
+                            func.apply(context, args);
+                            lastRan = Date.now();
+                        }
+                    }, limit - (Date.now() - lastRan));
+                }
+            }
+        }
 
         let allDataGlobal;
         const mainWidth = 1000, mainHeight = 700;
         const plotWidth = 900, plotHeight = 550;
-        // Static plot margins (might need slight adjustment with larger labels)
-        const margin = { top: 60, right: 60, bottom: 60, left: 80 }; // Increased right/bottom slightly
-        // Main plot margins (might need slight adjustment with larger labels)
-        const marginMain = { top: 60, right: 80, bottom: 70, left: 90 }; // Increased right/bottom slightly
+        const margin = { top: 60, right: 60, bottom: 60, left: 80 };
+        const marginMain = { top: 60, right: 80, bottom: 70, left: 90 };
 
-        const mobileDiameter = 3;    // Smaller size for mobile
-        const desktopDiameterLarge = 4;  // Size for larger screens
-        const desktopDiameterMedium = 3.5; // Size for medium screens
-
-        // Set baseCircleDiameter based on screen width
+        const mobileDiameter = 3;
+        const desktopDiameterLarge = 4.2;
+        const desktopDiameterMedium = 4;
         const baseCircleDiameter = window.innerWidth <= 600 ? mobileDiameter : window.innerWidth > 800 ? desktopDiameterLarge : desktopDiameterMedium;
 
         const svgMain = d3.select("#viz");
@@ -747,35 +778,32 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         const chartMain = svgMain.append("g").attr("id", "chartGroup");
         const searchEl = d3.select("#search-container");
 
-        // START: Pop-up element variables
         const summaryPopup = d3.select("#candidate-summary-popup");
         const summaryTextEl = d3.select("#summary-text");
         const miniChartSvg = d3.select("#mini-chart-svg");
         const closeSummaryButton = d3.select("#close-summary-popup");
-        // END: Pop-up element variables
 
-        // *** UPDATED WINNER COLORS START ***
         const winnerColors = {
-            // Use full names from CSV as keys
             "GEORGE-NICOLAE SIMION": "#FFB623",
             "GEORGE-CRIN-LAURENȚIU ANTONESCU": "#00B7FF",
             "NICUȘOR-DANIEL DAN": "#4DD400",
             "VICTOR-VIOREL PONTA": "#FF2A1F"
         };
-         // *** UPDATED WINNER COLORS END ***
-
         const colorScale = d3.scaleOrdinal(Object.keys(winnerColors), Object.values(winnerColors));
 
         let currentView = "sphere";
         let currentFilter = "all";
         let mainCircles;
         let staticCircles = [];
-        let staticConfigs = {}; // Stores config keyed by static SVG ID (e.g., "scatter-viz-1")
+        let staticConfigs = {};
         let activeQuad = "all";
         let mainScatterConfig = {};
-        let staticPlotsVisible = false; // Is the #flourish-block intersecting?
+        let staticPlotsVisible = false;
         let observerInitialized = false;
-        let activeStaticPlotConfig = null; // Stores the config of the most visible static plot
+        let activeStaticPlotConfig = null;
+
+        let isViewTransitioning = false; 
+        const SCROLL_THROTTLE_LIMIT = 150; 
 
 
         const normalize = str => (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -784,7 +812,6 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         function showSearchControls() { searchEl.classed("visible", true); }
         function hideSearchControls() { searchEl.classed("visible", false); }
         function updateSearchControlsVisibility() {
-            // Show controls if main map/scatter is active OR if static plots are visible (even if main chart faded)
             if ((currentView === 'map' || currentView === 'scatter') || staticPlotsVisible) {
                 showSearchControls();
             } else {
@@ -794,32 +821,28 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
 
 
         function basicTooltip(d) {
-            // Safely access properties, providing a default or fallback if needed
             const jud = d.jud || 'N/A';
             const uat = d.uat || 'N/A';
             const castigator = d.Castigator || 'N/A';
-            const procentCastigator = d["Procent castigator"] != null ? d["Procent castigator"].toFixed(2) + '%' : 'N/A'; // Format percentage
-            const prezenta = d.Prezenta != null ? d.Prezenta.toFixed(2) + '%' : 'N/A'; // Format percentage
-
+            const procentCastigator = d["Procent castigator"] != null ? d["Procent castigator"].toFixed(2) + '%' : 'N/A';
+            const prezenta = d.Prezenta != null ? d.Prezenta.toFixed(2) + '%' : 'N/A';
             return `<strong>${jud}</strong><br/>${uat}<br/>Câștigător: ${castigator}<br/>Procent: ${procentCastigator}<br/>Prezența: ${prezenta}`;
         }
 
         function scatterTooltip(d, config) {
             const xValue = d[config.xField] !== undefined && d[config.xField] !== null ? d[config.xField].toFixed(config.xDecimals ?? 2) : 'N/A';
             const yValue = d[config.yField] !== undefined && d[config.yField] !== null ? d[config.yField].toFixed(config.yDecimals ?? 2) : 'N/A';
-            // Safely access properties for the base info
             const jud = d.jud || 'N/A';
             const uat = d.uat || 'N/A';
             const castigator = d.Castigator || 'N/A';
             const procentCastigator = d["Procent castigator"] != null ? d["Procent castigator"].toFixed(2) + '%' : 'N/A';
             const prezenta = d.Prezenta != null ? d.Prezenta.toFixed(2) + '%' : 'N/A';
-
             return `<strong>${jud}</strong><br/>${uat}<br/>${config.xLabel}: ${xValue}${config.xUnit ?? ''}<br/>${config.yLabel}: ${yValue}${config.yUnit ?? ''}<br/>Câștigător: ${castigator}<br/>Procent: ${procentCastigator}<br/>Prezența: ${prezenta}`;
          }
          function updateTooltipPosition(event) {
             const tRect = tooltip.node().getBoundingClientRect();
             let left = event.pageX + 10, top = event.pageY - 15;
-            const marginTT = 10; // Tooltip margin
+            const marginTT = 10;
             if (left + tRect.width > window.innerWidth - marginTT) left = event.pageX - tRect.width - 10;
             if (top + tRect.height > window.innerHeight - marginTT) top = event.pageY - tRect.height - 5;
             if (top < marginTT) top = marginTT;
@@ -852,79 +875,64 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             mainCircles.each(function(d) {
                 const xRot = d.sphere_x * Math.cos(rotationAngle) - d.sphere_z * Math.sin(rotationAngle);
                 const zRot = d.sphere_x * Math.sin(rotationAngle) + d.sphere_z * Math.cos(rotationAngle);
-                const scale = f / (f + zRot + 1e-6); // Add small epsilon to prevent division by zero if f+zRot is exactly 0
+                const scale = f / (f + zRot + 1e-6);
                 d.display_x = cx + xRot * scale;
                 d.display_y = cy + d.sphere_y * scale;
-                // Ensure scale is non-negative before calculating radius
                 d.base_sphere_r = Math.max(1, baseCircleDiameter * (scale > 0 ? scale : 0));
-                 // Calculate opacity based on z-coordinate for depth effect
                 d.display_opacity_z = Math.max(0.1, Math.min(1, (f - zRot) / (f * 1.5)));
             });
-            applyGlobalFilterAndSearch(); // Apply filters which will use the calculated opacity and radius
+            applyGlobalFilterAndSearch();
         }
 
 
         function isPointInQuad(d, config, quad) {
             if (!config || !config.xField || !config.yField || !allDataGlobal) return false;
-            // Use cached medians if available
             const xMedian = config._xMedian ?? (config._xMedian = d3.median(allDataGlobal, dataPoint => dataPoint[config.xField]));
             const yMedian = config._yMedian ?? (config._yMedian = d3.median(allDataGlobal, dataPoint => dataPoint[config.yField]));
-            if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return false; // Medians invalid
+            if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null) return false;
             const xVal = d[config.xField], yVal = d[config.yField];
-            if (xVal === undefined || yVal === undefined || xVal === null || yVal === null) return false; // Data point invalid
+            if (xVal === undefined || yVal === undefined || xVal === null || yVal === null) return false;
 
             let pointQuad = "";
-            // Quadrant Definition: I=TopLeft, II=TopRight, III=BottomLeft, IV=BottomRight
             if (xVal <= xMedian && yVal >= yMedian) pointQuad = "I";
             else if (xVal > xMedian && yVal >= yMedian) pointQuad = "II";
             else if (xVal <= xMedian && yVal < yMedian) pointQuad = "III";
             else if (xVal > xMedian && yVal < yMedian) pointQuad = "IV";
-
             return pointQuad === quad;
          }
 
-        // START: Candidate Summary Pop-up Functions
         function hideSummaryPopup() {
             summaryPopup.classed("visible", false);
-            // Optional: Clear the mini-chart when hiding
             miniChartSvg.selectAll("*").remove();
         }
 
         function showSummaryPopup(candidateName, candidateData, config) {
-            // DEBUG: Log when this function is called and with which config
             if (DEBUG_MODE) console.log("[showSummaryPopup] Called. Candidate:", candidateName, "Config ID:", config ? config.id : "N/A", "Config Title:", config ? config.title : "N/A");
-
-            // Check if config is valid before proceeding
             if (!config || !config.xField || !config.yField) {
                 if (DEBUG_MODE) console.warn("[showSummaryPopup] Invalid config provided:", config);
                 hideSummaryPopup();
                 return;
             }
-            if (!candidateData) { // Allow candidateData to be an empty array
+            if (!candidateData) {
                 hideSummaryPopup();
                 return;
             }
 
-            // Filter for valid numeric data points *for this candidate* on the current axes
             const validCandidateData = candidateData.filter(d =>
                 d[config.xField] != null && !isNaN(d[config.xField]) && typeof d[config.xField] === 'number' &&
                 d[config.yField] != null && !isNaN(d[config.yField]) && typeof d[config.yField] === 'number'
             );
 
             if (validCandidateData.length === 0) {
-                 // Show a message if candidate won localities, but none have valid data for these axes
                  summaryTextEl.html(`<p><strong>${candidateName.replace(/-/g, ' ')}</strong> a câștigat ${candidateData.length} localități, dar nu există date valide pentru axele curente (<i>${config.xLabel}</i> / <i>${config.yLabel}</i>) în aceste localități.</p>`);
-                 miniChartSvg.selectAll("*").remove(); // Clear chart
+                 miniChartSvg.selectAll("*").remove();
                  summaryPopup.classed("visible", true);
-                 return; // Exit without chart/median calculation
+                 return;
             }
 
-            // Calculate MEDIANS for the valid data
             const medianX = d3.median(validCandidateData, d => d[config.xField]);
             const medianY = d3.median(validCandidateData, d => d[config.yField]);
-
-            // Format the text - use median values
-            const count = candidateData.length; // Total localities won
+            const count = candidateData.length;
             const xValStr = medianX !== undefined ? medianX.toFixed(config.xDecimals ?? 1) + (config.xUnit ?? '') : 'N/A';
             const yValStr = medianY !== undefined ? medianY.toFixed(config.yDecimals ?? 1) + (config.yUnit ?? '') : 'N/A';
 
@@ -932,19 +940,13 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                Mediane în localitățile câștigate:
                 <br> • <i>${config.xLabel}</i>: ${xValStr}
                 <br> • <i>${config.yLabel}</i>: ${yValStr}</p>`);
-
-            // Draw the mini chart using the current config's context AND pass candidateName
             drawMiniChart(validCandidateData, config, medianX, medianY, candidateName);
-
             summaryPopup.classed("visible", true);
         }
 
-        function drawMiniChart(data, config, medianX, medianY, candidateName) { // Added candidateName
-            miniChartSvg.selectAll("*").remove(); // Clear previous chart
-
-            // Determine candidate color, default to a fallback if not found
-            const candidateColor = winnerColors[candidateName] || '#AAAAAA'; // Fallback color
-
+        function drawMiniChart(data, config, medianX, medianY, candidateName) {
+            miniChartSvg.selectAll("*").remove();
+            const candidateColor = winnerColors[candidateName] || '#AAAAAA';
             const miniMargin = { top: 5, right: 20, bottom: 20, left: 45 };
             const containerWidth = parseInt(miniChartSvg.style("width"));
             const containerHeight = parseInt(miniChartSvg.style("height"));
@@ -953,10 +955,8 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                  if (DEBUG_MODE) console.warn("[drawMiniChart] Mini chart container has no valid dimensions.");
                  return;
             }
-
             const miniWidth = containerWidth - miniMargin.left - miniMargin.right;
             const miniHeight = containerHeight - miniMargin.top - miniMargin.bottom;
-
             if (miniWidth <= 0 || miniHeight <= 0) {
                  if (DEBUG_MODE) console.warn("[drawMiniChart] Mini chart calculated dimensions are invalid.");
                  return;
@@ -964,9 +964,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
 
             const chartGroup = miniChartSvg.append("g")
                 .attr("transform", `translate(${miniMargin.left},${miniMargin.top})`);
-
             let contextXScale, contextYScale;
-
             const validDataForExtentContext = allDataGlobal.filter(d =>
                  d[config.xField] != null && !isNaN(d[config.xField]) && typeof d[config.xField] === 'number' &&
                  d[config.yField] != null && !isNaN(d[config.yField]) && typeof d[config.yField] === 'number'
@@ -977,7 +975,6 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                  const yExtentContext = d3.extent(validDataForExtentContext, d => d[config.yField]);
                  const xDomainContext = (xExtentContext[0] === undefined || xExtentContext[1] === undefined) ? [0, 1] : xExtentContext;
                  const yDomainContext = (yExtentContext[0] === undefined || yExtentContext[1] === undefined) ? [0, 1] : yExtentContext;
-
                  contextXScale = d3.scaleLinear().domain(xDomainContext).nice();
                  contextYScale = d3.scaleLinear().domain(yDomainContext).nice();
             }
@@ -989,67 +986,24 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             }
 
             const miniX = d3.scaleLinear().domain(contextXScale.domain()).range([0, miniWidth]);
-            chartGroup.append("g")
-                .attr("class", "mini-axis")
-                .attr("transform", `translate(0, ${miniHeight})`)
+            chartGroup.append("g").attr("class", "mini-axis").attr("transform", `translate(0, ${miniHeight})`)
                 .call(d3.axisBottom(miniX).ticks(3).tickSize(3).tickPadding(2));
-
-            chartGroup.append("text")
-                 .attr("class", "mini-axis-label")
-                 .attr("x", miniWidth / 2)
-                 .attr("y", miniHeight + miniMargin.bottom - 5)
-                 .text(config.xLabel);
+            chartGroup.append("text").attr("class", "mini-axis-label").attr("x", miniWidth / 2).attr("y", miniHeight + miniMargin.bottom - 0.1).text(config.xLabel);
 
             if (medianX !== undefined && isFinite(miniX(medianX))) {
-                chartGroup.append("line")
-                    .attr("class", "mini-median-line")
-                    .attr("x1", miniX(medianX))
-                    .attr("x2", miniX(medianX))
-                    .attr("y1", 0)
-                    .attr("y2", miniHeight)
-                    .style("stroke", candidateColor); // Apply dynamic color
-
-                chartGroup.append("text")
-                     .attr("class", "mini-median-label")
-                     .attr("x", miniX(medianX))
-                     .attr("y", -2)
-                     .attr("text-anchor", "middle")
-                     .text(medianX.toFixed(config.xDecimals ?? 1))
-                     .style("fill", candidateColor); // Apply dynamic color
+                chartGroup.append("line").attr("class", "mini-median-line").attr("x1", miniX(medianX)).attr("x2", miniX(medianX)).attr("y1", 0).attr("y2", miniHeight).style("stroke", candidateColor);
+                chartGroup.append("text").attr("class", "mini-median-label").attr("x", miniX(medianX)).attr("y", -2).attr("text-anchor", "middle").text(medianX.toFixed(config.xDecimals ?? 1)).style("fill", candidateColor);
             }
 
             const miniY = d3.scaleLinear().domain(contextYScale.domain()).range([miniHeight, 0]);
-            chartGroup.append("g")
-                 .attr("class", "mini-axis")
-                 .call(d3.axisLeft(miniY).ticks(3).tickSize(3).tickPadding(2));
-
-            chartGroup.append("text")
-                 .attr("class", "mini-axis-label")
-                 .attr("transform", "rotate(-90)")
-                 .attr("x", -miniHeight / 2)
-                 .attr("y", -miniMargin.left + 12)
-                 .text(config.yLabel);
+            chartGroup.append("g").attr("class", "mini-axis").call(d3.axisLeft(miniY).ticks(3).tickSize(3).tickPadding(2));
+            chartGroup.append("text").attr("class", "mini-axis-label").attr("transform", "rotate(-90)").attr("x", -miniHeight / 2).attr("y", -miniMargin.left + 12).text(config.yLabel);
 
             if (medianY !== undefined && isFinite(miniY(medianY))) {
-                 chartGroup.append("line")
-                     .attr("class", "mini-median-line")
-                     .attr("x1", 0)
-                     .attr("x2", miniWidth)
-                     .attr("y1", miniY(medianY))
-                     .attr("y2", miniY(medianY))
-                     .style("stroke", candidateColor); // Apply dynamic color
-
-                 chartGroup.append("text")
-                      .attr("class", "mini-median-label")
-                      .attr("x", -3)
-                      .attr("y", miniY(medianY))
-                      .attr("text-anchor", "end")
-                      .attr("alignment-baseline", "middle")
-                      .text(medianY.toFixed(config.yDecimals ?? 1))
-                      .style("fill", candidateColor); // Apply dynamic color
+                 chartGroup.append("line").attr("class", "mini-median-line").attr("x1", 0).attr("x2", miniWidth).attr("y1", miniY(medianY)).attr("y2", miniY(medianY)).style("stroke", candidateColor);
+                 chartGroup.append("text").attr("class", "mini-median-label").attr("x", -3).attr("y", miniY(medianY)).attr("text-anchor", "end").attr("alignment-baseline", "middle").text(medianY.toFixed(config.yDecimals ?? 1)).style("fill", candidateColor);
              }
         }
-        // END: Candidate Summary Pop-up Functions
 
 
         function applyGlobalFilterAndSearch() {
@@ -1062,45 +1016,37 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             let configForPopup = null;
             const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
 
-            // Decision logic for which config to use for the popup
             if (selectedWinner !== 'all' && !isSearching) {
-                // Priority 1: Static plot is the primary focus
-                if (staticPlotsVisible && activeStaticPlotConfig && mainChartOpacity < 0.5) { // Threshold for main chart fade
+                if (staticPlotsVisible && activeStaticPlotConfig) {
                     configForPopup = activeStaticPlotConfig;
-                    if (DEBUG_MODE) console.log(`[applyGlobalFilterAndSearch] Popup Context: ACTIVE STATIC (${activeStaticPlotConfig.id}), MainOpacity: ${mainChartOpacity.toFixed(2)}`);
+                    if (DEBUG_MODE) console.log(`[applyGlobalFilterAndSearch] Popup Context: ACTIVE STATIC (${activeStaticPlotConfig.id}), staticPlotsVisible=${staticPlotsVisible}, MainOpacity: ${mainChartOpacity.toFixed(2)}`);
                 }
-                // Priority 2: Main scatter plot is the primary focus
                 else if (currentView === 'scatter' && mainChartOpacity >= 0.5) {
                     configForPopup = mainScatterConfig;
-                     if (DEBUG_MODE) console.log(`[applyGlobalFilterAndSearch] Popup Context: MAIN SCATTER (${mainScatterConfig.id}), MainOpacity: ${mainChartOpacity.toFixed(2)}`);
+                    if (DEBUG_MODE) console.log(`[applyGlobalFilterAndSearch] Popup Context: MAIN SCATTER (${mainScatterConfig.id}), MainOpacity: ${mainChartOpacity.toFixed(2)}, staticPlotsVisible=${staticPlotsVisible}, activeStaticPlotConfig=${activeStaticPlotConfig?.id}`);
                 } else {
-                    if (DEBUG_MODE) console.log(`[applyGlobalFilterAndSearch] Popup Context: No specific config. staticPlotsVisible=${staticPlotsVisible}, activeStaticPlotConfig=${activeStaticPlotConfig?.id}, mainChartOpacity=${mainChartOpacity.toFixed(2)}, currentView=${currentView}, mainScatterConfig=${mainScatterConfig?.id}`);
+                    if (DEBUG_MODE) {
+                        console.log(`[applyGlobalFilterAndSearch] Popup Context: No specific config or conditions not met. SelectedWinner: ${selectedWinner}, IsSearching: ${isSearching}, staticPlotsVisible=${staticPlotsVisible}, activeStaticPlotConfig=${activeStaticPlotConfig?.id}, mainChartOpacity=${mainChartOpacity.toFixed(2)}, currentView=${currentView}, mainScatterConfig=${mainScatterConfig?.id}`);
+                    }
                 }
             }
 
-            // Show or hide the popup based on the decision
             if (configForPopup) {
                 const candidateSpecificData = allDataGlobal.filter(d => d.Castigator === selectedWinner);
-                // showSummaryPopup will handle empty candidateSpecificData or empty validCandidateData internally
                 showSummaryPopup(selectedWinner, candidateSpecificData, configForPopup);
                 showPopupDecision = true;
             }
 
             if (!showPopupDecision) {
                 hideSummaryPopup();
-                 if (DEBUG_MODE && selectedWinner !== 'all' && !isSearching) { // Only log if we might have expected a popup
-                    console.log(`[applyGlobalFilterAndSearch] Hiding Pop-up. Reason: No suitable configForPopup or filter not active. SelectedWinner: ${selectedWinner}, IsSearching: ${isSearching}, MainOpacity: ${mainChartOpacity.toFixed(2)}, StaticVisible: ${staticPlotsVisible}, ActiveStatic: ${activeStaticPlotConfig?.id}, CurrentView: ${currentView}`);
+                 if (DEBUG_MODE && selectedWinner !== 'all' && !isSearching) {
+                    console.log(`[applyGlobalFilterAndSearch] Hiding Pop-up. Reason: No suitable configForPopup or filter not active/search active. SelectedWinner: ${selectedWinner}, IsSearching: ${isSearching}, configForPopup: ${configForPopup?.id}`);
                  }
             }
 
-
-             // --- Existing Filter/Highlight Logic ---
             let areaScale;
             if (allDataGlobal) {
-                const validPercentages = allDataGlobal
-                    .map(d => d["Procent castigator"])
-                    .filter(p => p != null && !isNaN(p));
-
+                const validPercentages = allDataGlobal.map(d => d["Procent castigator"]).filter(p => p != null && !isNaN(p));
                 if (validPercentages.length > 0) {
                     const extent = d3.extent(validPercentages);
                      if (extent[0] !== undefined && extent[1] !== undefined) {
@@ -1119,72 +1065,48 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                     const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
-
                     if (!isWinnerMatch || !isSearchMatch) return 0.08;
-
                     let baseOpacity = 1.0;
                     const isMain = d3.select(this).classed('main-circle');
                     const isStatic = d3.select(this).classed('static-circle');
-
                     if (isStatic) {
                          const parentSvgId = d3.select(this.ownerSVGElement).attr('id');
                          const config = staticConfigs[parentSvgId];
-                         if(config && (d[config.xField] === null || d[config.yField] === null || d[config.xField] === undefined || d[config.yField] === undefined )) {
-                             baseOpacity = 0.05;
-                         } else {
-                             baseOpacity = 0.75;
-                         }
+                         if(config && (d[config.xField] === null || d[config.yField] === null || d[config.xField] === undefined || d[config.yField] === undefined )) baseOpacity = 0.05;
+                         else baseOpacity = 0.75;
                     } else if (isMain) {
-
-                        if (currentView === 'sphere') {
-                            baseOpacity = d.display_opacity_z ?? 1.0;
-                        } else if (currentView === 'map') {
-                            baseOpacity = (d.Lat && d.Long) ? 0.8 : 0;
-                        } else if (currentView === 'scatter') {
+                        if (currentView === 'sphere') baseOpacity = d.display_opacity_z ?? 1.0;
+                        else if (currentView === 'map') baseOpacity = (d.Lat && d.Long) ? 0.8 : 0;
+                        else if (currentView === 'scatter') {
                             const config = mainScatterConfig;
                              if (!config || !config.xField || !config.yField) return 0;
-
                             const xVal = d[config.xField], yVal = d[config.yField];
                             const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
-
                             if (!hasValidScatterData) return 0;
-
                             const isQuadActive = activeQuad !== 'all';
                             const inActiveQuad = isQuadActive && isPointInQuad(d, config, activeQuad);
-
                             if (isQuadActive && !inActiveQuad) baseOpacity = 0.05;
                             else baseOpacity = 0.8;
                         }
                     }
-
-                    if (isSearching && !exactSearchMatch && isWinnerMatch && isSearchMatch) {
-                         baseOpacity *= 0.6;
-                    }
-                    if (exactSearchMatch) {
-                        baseOpacity = isStatic ? 0.9 : 1.0;
-                    }
-
+                    if (isSearching && !exactSearchMatch && isWinnerMatch && isSearchMatch) baseOpacity *= 0.6;
+                    if (exactSearchMatch) baseOpacity = isStatic ? 0.9 : 1.0;
                     return Math.max(0.05, baseOpacity);
                 })
                 .attr("stroke", function(d) {
                     const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                     const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
-
                     if (!isWinnerMatch || !isSearchMatch) return "none";
-
                     if (exactSearchMatch) return "#FFFFFF";
                     if (currentFilter !== "all" && isWinnerMatch) return "#FFFFFF";
-
                     const isMain = d3.select(this).classed('main-circle');
                     if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
                          const config = mainScatterConfig;
                           if (!config || !config.xField || !config.yField) return "none";
                          const xVal = d[config.xField], yVal = d[config.yField];
                          const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
-                         if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
-                             return "#FFF";
-                         }
+                         if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) return "#FFF";
                     }
                     return "none";
                 })
@@ -1192,21 +1114,16 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                      const isWinnerMatch = currentFilter === 'all' || d.Castigator === currentFilter;
                      const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
-
                      if (!isWinnerMatch || !isSearchMatch) return 0;
                      const isMain = d3.select(this).classed('main-circle');
-
                      if (exactSearchMatch) return isMain ? 3 : 2.5;
                      if (currentFilter !== "all" && isWinnerMatch) return 1;
-
                      if (isMain && currentView === 'scatter' && activeQuad !== 'all') {
                           const config = mainScatterConfig;
                            if (!config || !config.xField || !config.yField) return 0;
                           const xVal = d[config.xField], yVal = d[config.yField];
                           const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
-                          if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
-                              return 1;
-                          }
+                          if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) return 1;
                      }
                      return 0;
                  })
@@ -1226,13 +1143,10 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                      const isMain = d3.select(this).classed('main-circle');
                      let baseRadius = 0;
                      const procent = d["Procent castigator"];
-
                      if (isMain) {
-                         if (currentView === 'sphere') {
-                             baseRadius = d.base_sphere_r ?? 0;
-                         } else if (currentView === 'map' && areaScale && procent != null && !isNaN(procent)) {
-                             baseRadius = (d.Lat != null && d.Long != null) ? areaScale(procent) : 0;
-                         } else if (currentView === 'scatter') {
+                         if (currentView === 'sphere') baseRadius = d.base_sphere_r ?? 0;
+                         else if (currentView === 'map' && areaScale && procent != null && !isNaN(procent)) baseRadius = (d.Lat != null && d.Long != null) ? areaScale(procent) : 0;
+                         else if (currentView === 'scatter') {
                              const config = mainScatterConfig;
                               if (!config || !config.xField || !config.yField) return 0;
                              const xVal = d[config.xField], yVal = d[config.yField];
@@ -1244,9 +1158,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                           if (config) {
                               const xVal = d[config.xField], yVal = d[config.yField];
                               baseRadius = (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) ? baseCircleDiameter * 0.75 : 0;
-                          } else {
-                              baseRadius = 0;
-                          }
+                          } else baseRadius = 0;
                      }
                      baseRadius = (typeof baseRadius === 'number' && !isNaN(baseRadius)) ? baseRadius : 0;
                      return (exactSearchMatch && baseRadius > 0) ? baseRadius * boostFactor : baseRadius;
@@ -1256,10 +1168,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                     const isSearchMatch = !isSearching || normalize(d.uat).includes(searchTerm);
                     const opacity = parseFloat(d3.select(this).attr("opacity"));
                     const radius = parseFloat(d3.select(this).attr("r"));
-
-                    if (isWinnerMatch && isSearchMatch && radius > 0.1 && opacity > 0.06) {
-                        return 'auto';
-                    }
+                    if (isWinnerMatch && isSearchMatch && radius > 0.1 && opacity > 0.06) return 'auto';
                     return 'none';
                  });
          }
@@ -1276,65 +1185,33 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                  config._xMedian = undefined;
                  config._yMedian = undefined;
              }
-
              svg.selectAll("*").remove();
-
-             const plotGroup = svg.append("g")
-                 .attr("transform", `translate(${margin.left},${margin.top})`);
-
+             const plotGroup = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
              const innerWidth = plotWidth - margin.left - margin.right;
              const innerHeight = plotHeight - margin.top - margin.bottom;
-
              const scatterPlotData = data.filter(d =>
                 d[config.xField] != null && !isNaN(d[config.xField]) && typeof d[config.xField] === 'number' &&
                 d[config.yField] != null && !isNaN(d[config.yField]) && typeof d[config.yField] === 'number'
              );
-
              const validDataForExtent = scatterPlotData;
-
              const xExtent = d3.extent(validDataForExtent, d => d[config.xField]);
              const yExtent = d3.extent(validDataForExtent, d => d[config.yField]);
              const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
              const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
-
              const x = d3.scaleLinear().domain(xDomain).nice().range([0, innerWidth]);
              const y = d3.scaleLinear().domain(yDomain).nice().range([innerHeight, 0]);
+             const xMedian = config._xMedian, yMedian = config._yMedian;
 
-             const xMedian = config._xMedian;
-             const yMedian = config._yMedian;
+            plotGroup.append("g").attr("class", "x-axis axis").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(x).ticks(7).tickSizeOuter(0));
+            plotGroup.append("text").attr("class", "axis-label x-label").attr("x", innerWidth / 2).attr("y", innerHeight + margin.bottom - 15).text(config.xLabelFull || config.xLabel);
+            plotGroup.append("g").attr("class", "y-axis axis").call(d3.axisLeft(y).ticks(7).tickSizeOuter(0));
+            plotGroup.append("text").attr("class", "axis-label y-label").attr("transform", "rotate(-90)").attr("x", -innerHeight / 2).attr("y", -margin.left + 20).text(config.yLabelFull || config.yLabel);
+            svg.append("text").attr("class", "plot-title").attr("x", margin.left + innerWidth / 2).attr("y", margin.top - 90).text(config.title); // Adjusted title Y
 
-            plotGroup.append("g").attr("class", "x-axis axis")
-                .attr("transform", `translate(0,${innerHeight})`)
-                .call(d3.axisBottom(x).ticks(7).tickSizeOuter(0));
-            plotGroup.append("text").attr("class", "axis-label x-label")
-                .attr("x", innerWidth / 2)
-                .attr("y", innerHeight + margin.bottom - 15)
-                .text(config.xLabelFull || config.xLabel);
-            plotGroup.append("g").attr("class", "y-axis axis")
-                .call(d3.axisLeft(y).ticks(7).tickSizeOuter(0));
-            plotGroup.append("text").attr("class", "axis-label y-label")
-                .attr("transform", "rotate(-90)")
-                .attr("x", -innerHeight / 2)
-                .attr("y", -margin.left + 20)
-                .text(config.yLabelFull || config.yLabel);
-             svg.append("text").attr("class", "plot-title")
-                 .attr("x", margin.left + innerWidth / 2)
-                 .attr("y", margin.top - 90)  // Adjusted title position
-                 .text(config.title);
-
-            if (xMedian !== undefined && xMedian !== null && isFinite(x(xMedian))) {
-                plotGroup.append("line").attr("class", "quadrant-line")
-                    .attr("x1", x(xMedian)).attr("x2", x(xMedian))
-                    .attr("y1", 0).attr("y2", innerHeight);
-            }
-            if (yMedian !== undefined && yMedian !== null && isFinite(y(yMedian))) {
-                plotGroup.append("line").attr("class", "quadrant-line")
-                    .attr("x1", 0).attr("x2", innerWidth)
-                    .attr("y1", y(yMedian)).attr("y2", y(yMedian));
-            }
+            if (xMedian !== undefined && xMedian !== null && isFinite(x(xMedian))) plotGroup.append("line").attr("class", "quadrant-line").attr("x1", x(xMedian)).attr("x2", x(xMedian)).attr("y1", 0).attr("y2", innerHeight);
+            if (yMedian !== undefined && yMedian !== null && isFinite(y(yMedian))) plotGroup.append("line").attr("class", "quadrant-line").attr("x1", 0).attr("x2", innerWidth).attr("y1", y(yMedian)).attr("y2", y(yMedian));
 
             const isMobile = window.innerWidth <= 600;
-            // --- MODIFIED PADDING/OFFSET VALUES FOR STATIC PLOTS ---
             const outerLabelPadding = isMobile ? 20 : 30;
             const outerLabelYOffset = isMobile ? -25 : -35;
             const outerLabelYOffsetBottom = isMobile ? 35 : 45;
@@ -1346,39 +1223,18 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                      { quad: 'III', anchor: 'start', xPos: -outerLabelPadding, yPos: innerHeight + outerLabelYOffsetBottom },
                      { quad: 'IV', anchor: 'end', xPos: innerWidth + outerLabelPadding, yPos: innerHeight + outerLabelYOffsetBottom }
                  ];
-
                  labelData.forEach(lbl => {
                      const labelText = config.quadLabels[lbl.quad];
                      if (!labelText) return;
-
                      const lines = labelText.split('\n');
-                     const textElement = plotGroup.append("text")
-                         .attr("class", "quadrant-label quadrant-label-outer")
-                         .attr("x", lbl.xPos)
-                         .attr("y", lbl.yPos)
-                         .attr("text-anchor", lbl.anchor);
-
-                     lines.forEach((line, i) => {
-                         textElement.append("tspan")
-                             .attr("x", lbl.xPos)
-                             .attr("dy", i === 0 ? "0" : "1.1em")
-                             .text(line);
-                     });
+                     const textElement = plotGroup.append("text").attr("class", "quadrant-label quadrant-label-outer").attr("x", lbl.xPos).attr("y", lbl.yPos).attr("text-anchor", lbl.anchor);
+                     lines.forEach((line, i) => textElement.append("tspan").attr("x", lbl.xPos).attr("dy", i === 0 ? "0" : "1.1em").text(line));
                  });
              }
-
-             const circles = plotGroup.selectAll(".data-circle")
-                .data(scatterPlotData, d => d.uat + d.jud)
-                .enter().append("circle")
-                .attr("class", "data-circle static-circle")
-                .attr("cx", d => x(d[config.xField]))
-                .attr("cy", d => y(d[config.yField]))
-                .attr("r", baseCircleDiameter * 0.75)
-                .attr("fill", d => colorScale(d.Castigator) || "#999")
-                .attr("opacity", 0.75)
-                .attr("stroke", "none")
-                .attr("stroke-width", 0)
-                .style("pointer-events", 'auto')
+             const circles = plotGroup.selectAll(".data-circle").data(scatterPlotData, d => d.uat + d.jud)
+                .enter().append("circle").attr("class", "data-circle static-circle").attr("cx", d => x(d[config.xField])).attr("cy", d => y(d[config.yField]))
+                .attr("r", baseCircleDiameter * 0.75).attr("fill", d => colorScale(d.Castigator) || "#999").attr("opacity", 0.75)
+                .attr("stroke", "none").attr("stroke-width", 0).style("pointer-events", 'auto')
                 .on("mouseover", (event, d) => {
                      tooltip.style("opacity", 1).html(scatterTooltip(d, config));
                      d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", 1.5);
@@ -1390,164 +1246,77 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                      const isSearching = searchTerm.length > 0;
                      const exactSearchMatch = isSearching && normalize(d.uat) === searchTerm;
                      const isHighlightedByFilter = currentFilter !== "all" && d.Castigator === currentFilter;
-
                      let finalStroke = "none", finalStrokeWidth = 0;
-                     if (exactSearchMatch) {
-                         finalStroke = "#FFFFFF";
-                         finalStrokeWidth = 2.5;
-                     } else if (isHighlightedByFilter) {
-                         finalStroke = "#FFFFFF";
-                         finalStrokeWidth = 1;
-                     }
+                     if (exactSearchMatch) { finalStroke = "#FFFFFF"; finalStrokeWidth = 2.5; }
+                     else if (isHighlightedByFilter) { finalStroke = "#FFFFFF"; finalStrokeWidth = 1; }
                      d3.select(event.currentTarget).attr("stroke", finalStroke).attr("stroke-width", finalStrokeWidth);
                 });
-
              staticCircles.push(circles);
              return circles;
          }
 
 
         d3.csv("scatter.csv", d3.autoType).then(data => {
-            allDataGlobal = data.filter(d =>
-                d.Castigator &&
-                d.uat &&
-                d.jud
-            );
-
+            allDataGlobal = data.filter(d => d.Castigator && d.uat && d.jud);
             allDataGlobal.forEach(d => {
                 const checkAndConvert = (value) => {
-                    if (value === "#N/A" || value === "#DIV/0!") {
-                        return null;
-                    }
+                    if (value === "#N/A" || value === "#DIV/0!") return null;
                     if (value != null && typeof value === 'string') {
                         const cleanedValue = parseFloat(String(value).replace(",", "."));
                         return isNaN(cleanedValue) ? null : cleanedValue;
                     }
-                     if (value == null || isNaN(value)) {
-                         return null;
-                    }
+                     if (value == null || isNaN(value)) return null;
                     return value;
                 };
-
-                const fieldsToClean = [
-                     "Procent castigator", "Prezenta",
-                     "Lat", "Long",
-                     "Procent plecari din populatie (2023)",
-                     "Suprafata locuibila/cap de locuitor (m patrati) 2023",
-                     "Numarul de salariati raportat la populatie (% din populatie) 2023",
-                     "Cote de impozit raportat la populatie (2022)",
-                     "Fonduri pe cap de locuitor (2022)",
-                     "Pacienti la un medic 2023",
-                     "Varsta medie a populatiei in 2023",
-                     "Ponderea somerilor in 2023"
-                 ];
-
+                const fieldsToClean = ["Procent castigator", "Prezenta", "Lat", "Long", "Procent plecari din populatie (2023)", "Suprafata locuibila/cap de locuitor (m patrati) 2023", "Numarul de salariati raportat la populatie (% din populatie) 2023", "Cote de impozit raportat la populatie (2022)", "Fonduri pe cap de locuitor (2022)", "Pacienti la un medic 2023", "Varsta medie a populatiei in 2023", "Ponderea somerilor in 2023"];
                 fieldsToClean.forEach(field => {
-                    if (d.hasOwnProperty(field)) {
-                        d[field] = checkAndConvert(d[field]);
-                    } else {
-                         d[field] = null;
-                    }
+                    if (d.hasOwnProperty(field)) d[field] = checkAndConvert(d[field]);
+                    else d[field] = null;
                 });
             });
 
-            const scatterConfig1 = {
-                id: "scatter-viz-1",
-                xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1,
-                title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor",
-                xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)",
-                quadLabels: {
-                    I: "I. Suburbii sau localități \nperiurbane prospere, \nspațiu mare", II: "II. Localități îmbătrânite\n și spații de locuit mari",
-                    III: "III. Orașe cu cartiere \naglomerate/densitate mare", IV: "IV. Zone rurale sărace \ncu pop. vârstnică"
-                }
-            };
-            const scatterConfig2 = {
-                id: "scatter-viz-2",
-                xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1,
-                title: "Plecările din localitate și ponderea șomerilor",
-                xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)",
-                quadLabels: {
-                    I: "I. Zone unde populația \nrămâne din lipsă \nde alternative", II: "II. Zone aflate \nîn declin economic sever",
-                    III: "III. Zone stabile economic", IV: "IV. Zone dinamice, \ndar tranzitorii"
-                }
-            };
-            const scatterConfig3 = {
-                 id: "scatter-viz-3",
-                xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0,
-                title: "Salariați vs. Venituri din Impozite",
-                xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)",
-                quadLabels: {
-                    I: "I. Comunități mici/turistice \nsau cu venituri speciale", II: "II. Economie solidă, \ncolectare fiscală eficientă",
-                    III: "III. Zone sărace, \nfără activitate economică", IV: "IV. Zone industriale \nsau muncitorești \ncu salarii mici"
-                }
-            };
-            const scatterConfig4 = {
-                 id: "scatter-viz-4",
-                xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0,
-                title: "Fonduri Europene vs. Acces la Medici",
-                xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic",
-                quadLabels: {
-                    I: "I. Zone sărace, \nfără fonduri", II: "II. Investiții recente \nfără impact asupra sistemului medical",
-                    III: "III. Zone izolate, populație \nmică sau posibile excepții", IV: "IV. Investiții consistente, \ninfrastructură bună"
-                }
-            };
+            const scatterConfig1 = { id: "scatter-viz-1", xField: "Varsta medie a populatiei in 2023", yField: "Suprafata locuibila/cap de locuitor (m patrati) 2023", xLabel: "Vârsta medie", yLabel: "Suprafață/loc.", xUnit: " ani", yUnit: " m²", xDecimals: 1, yDecimals: 1, title: "Vârsta medie a populației și suprafața locuibilă/cap de locuitor", xLabelFull: "Vârsta medie a populației (ani)", yLabelFull: "Suprafață locuibilă/locuitor (m²)", quadLabels: { I: "I. Suburbii sau localități \nperiurbane prospere, \nspațiu mare", II: "II. Localități îmbătrânite\n și spații de locuit mari", III: "III. Orașe cu cartiere \naglomerate/densitate mare", IV: "IV. Zone rurale sărace \ncu pop. vârstnică" } };
+            const scatterConfig2 = { id: "scatter-viz-2", xField: "Procent plecari din populatie (2023)", yField: "Ponderea somerilor in 2023", xLabel: "Plecări", yLabel: "Șomeri", xUnit: "%", yUnit: "%", xDecimals: 1, yDecimals: 1, title: "Plecările din localitate și ponderea șomerilor", xLabelFull: "Procent plecări din populație (%)", yLabelFull: "Pondere șomeri în populație (%)", quadLabels: { I: "I. Zone unde populația \nrămâne din lipsă \nde alternative", II: "II. Zone aflate \nîn declin economic sever", III: "III. Zone stabile economic", IV: "IV. Zone dinamice, \ndar tranzitorii" } };
+            const scatterConfig3 = { id: "scatter-viz-3", xField: "Numarul de salariati raportat la populatie (% din populatie) 2023", yField: "Cote de impozit raportat la populatie (2022)", xLabel: "Salariați", yLabel: "Impozit/loc.", xUnit: "%", yUnit: " lei", xDecimals: 1, yDecimals: 0, title: "Salariați vs. Venituri din Impozite", xLabelFull: "Salariați / Populație (%)", yLabelFull: "Cote impozit / Populație (lei/loc.)", quadLabels: { I: "I. Comunități mici/turistice \nsau cu venituri speciale", II: "II. Economie solidă, \ncolectare fiscală eficientă", III: "III. Zone sărace, \nfără activitate economică", IV: "IV. Zone industriale \nsau muncitorești \ncu salarii mici" } };
+            const scatterConfig4 = { id: "scatter-viz-4", xField: "Fonduri pe cap de locuitor (2022)", yField: "Pacienti la un medic 2023", xLabel: "Fonduri UE/loc.", yLabel: "Pacienți/medic", xUnit: " lei", yUnit: "", xDecimals: 0, yDecimals: 0, title: "Fonduri Europene vs. Acces la Medici", xLabelFull: "Fonduri europene / Locuitor (lei)", yLabelFull: "Număr pacienți / medic", quadLabels: { I: "I. Zone sărace, \nfără fonduri", II: "II. Investiții recente \nfără impact asupra sistemului medical", III: "III. Zone izolate, populație \nmică sau posibile excepții", IV: "IV. Investiții consistente, \ninfrastructură bună" } };
 
             mainScatterConfig = scatterConfig1;
-             if (allDataGlobal && allDataGlobal.length > 0) {
+            if (allDataGlobal && allDataGlobal.length > 0) {
                  const validDataForMedianX = allDataGlobal.map(d => d[mainScatterConfig.xField]).filter(v => v != null && !isNaN(v) && typeof v === 'number');
                  const validDataForMedianY = allDataGlobal.map(d => d[mainScatterConfig.yField]).filter(v => v != null && !isNaN(v) && typeof v === 'number');
                  mainScatterConfig._xMedian = validDataForMedianX.length > 0 ? d3.median(validDataForMedianX) : undefined;
                  mainScatterConfig._yMedian = validDataForMedianY.length > 0 ? d3.median(validDataForMedianY) : undefined;
-             } else {
-                 mainScatterConfig._xMedian = undefined;
-                 mainScatterConfig._yMedian = undefined;
-             }
+            } else { mainScatterConfig._xMedian = undefined; mainScatterConfig._yMedian = undefined; }
 
-             const validPercentagesMap = allDataGlobal.map(d => d["Procent castigator"]).filter(p => p != null && !isNaN(p));
-             let areaScale;
-             if (validPercentagesMap.length > 0) {
+            const validPercentagesMap = allDataGlobal.map(d => d["Procent castigator"]).filter(p => p != null && !isNaN(p));
+            let areaScale;
+            if (validPercentagesMap.length > 0) {
                  const extent = d3.extent(validPercentagesMap);
-                 if (extent[0] !== undefined && extent[1] !== undefined) {
-                     areaScale = d3.scaleSqrt().domain(extent).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
-                 }
-             }
-
-             const validLongs = allDataGlobal.map(d => d.Long).filter(l => l != null && !isNaN(l));
-             const validLats = allDataGlobal.map(d => d.Lat).filter(l => l != null && !isNaN(l));
-             let xGeo, yGeo;
-             if (validLongs.length > 0 && validLats.length > 0) {
+                 if (extent[0] !== undefined && extent[1] !== undefined) areaScale = d3.scaleSqrt().domain(extent).range([baseCircleDiameter * 0.8, baseCircleDiameter * 2.2]);
+            }
+            const validLongs = allDataGlobal.map(d => d.Long).filter(l => l != null && !isNaN(l));
+            const validLats = allDataGlobal.map(d => d.Lat).filter(l => l != null && !isNaN(l));
+            let xGeo, yGeo;
+            if (validLongs.length > 0 && validLats.length > 0) {
                  xGeo = d3.scaleLinear().domain(d3.extent(validLongs)).range([marginMain.left, mainWidth - marginMain.right]);
                  yGeo = d3.scaleLinear().domain(d3.extent(validLats)).range([mainHeight - marginMain.bottom, marginMain.top]);
-             }
-
+            }
             createSpherePositions(allDataGlobal, 250);
 
-            mainCircles = chartMain.selectAll("circle.main-circle")
-                .data(allDataGlobal, d => d.uat + d.jud)
-                .enter().append("circle")
-                .attr("class", "data-circle main-circle")
-                .attr("fill", d => colorScale(d.Castigator) || "#999")
-                .attr("opacity", 0)
-                .style("pointer-events", "auto")
+            mainCircles = chartMain.selectAll("circle.main-circle").data(allDataGlobal, d => d.uat + d.jud)
+                .enter().append("circle").attr("class", "data-circle main-circle").attr("fill", d => colorScale(d.Castigator) || "#999")
+                .attr("opacity", 0).style("pointer-events", "auto")
                 .on("mouseover", (event, d) => {
                      tooltip.style("opacity", 1);
                      let configForTooltip = mainScatterConfig;
                       const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
-                      if (mainChartOpacity < 0.5 && staticPlotsVisible && activeStaticPlotConfig) {
-                          configForTooltip = activeStaticPlotConfig;
-                      } else if (currentView !== 'scatter'){
-                          configForTooltip = null;
-                      }
-
-                     if (currentView === 'sphere' || currentView === 'map' || !configForTooltip) {
-                         tooltip.html(basicTooltip(d));
-                     } else {
+                      if (mainChartOpacity < 0.5 && staticPlotsVisible && activeStaticPlotConfig) configForTooltip = activeStaticPlotConfig;
+                      else if (currentView !== 'scatter') configForTooltip = null;
+                     if (currentView === 'sphere' || currentView === 'map' || !configForTooltip) tooltip.html(basicTooltip(d));
+                     else {
                          const xVal = d[configForTooltip.xField], yVal = d[configForTooltip.yField];
-                         if (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) {
-                             tooltip.html(scatterTooltip(d, configForTooltip));
-                         } else {
-                             tooltip.html(basicTooltip(d));
-                         }
+                         if (xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null) tooltip.html(scatterTooltip(d, configForTooltip));
+                         else tooltip.html(basicTooltip(d));
                      }
                      d3.select(event.currentTarget).raise().attr("stroke", "#000").attr("stroke-width", currentView === 'sphere' ? 2.5 : 2);
                  })
@@ -1564,45 +1333,27 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                           if (config && config.xField && config.yField) {
                             const xVal = d[config.xField], yVal = d[config.yField];
                             const hasValidScatterData = xVal !== undefined && xVal !== null && yVal !== undefined && yVal !== null;
-                            if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) {
-                                inActiveQuadHighlight = true;
-                            }
+                            if (hasValidScatterData && isPointInQuad(d, config, activeQuad)) inActiveQuadHighlight = true;
                           }
                      }
-
                     let finalStroke = "none", finalStrokeWidth = 0;
-                    if (exactSearchMatch) {
-                        finalStroke = "#FFFFFF"; finalStrokeWidth = 3;
-                    } else if (isHighlightedByFilter) {
-                        finalStroke = "#FFFFFF"; finalStrokeWidth = 1;
-                    } else if (inActiveQuadHighlight) {
-                        finalStroke = "#FFFFFF"; finalStrokeWidth = 1;
-                    }
+                    if (exactSearchMatch) { finalStroke = "#FFFFFF"; finalStrokeWidth = 3; }
+                    else if (isHighlightedByFilter) { finalStroke = "#FFFFFF"; finalStrokeWidth = 1; }
+                    else if (inActiveQuadHighlight) { finalStroke = "#FFFFFF"; finalStrokeWidth = 1; }
                     d3.select(event.currentTarget).attr("stroke", finalStroke).attr("stroke-width", finalStrokeWidth);
                 });
-
             updateSphereVisuals();
             sphereAnimation.play();
 
             const datalist = document.getElementById("localitati-list");
-            [...new Set(allDataGlobal.map(d => d.uat).filter(Boolean))]
-                .sort((a, b) => a.localeCompare(b, "ro-RO"))
-                .forEach(name => {
-                    const opt = document.createElement("option");
-                    opt.value = name;
-                    datalist.appendChild(opt);
-                });
-
+            [...new Set(allDataGlobal.map(d => d.uat).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ro-RO"))
+                .forEach(name => { const opt = document.createElement("option"); opt.value = name; datalist.appendChild(opt); });
             d3.select("#search-input").on("input", applyGlobalFilterAndSearch);
-            d3.select("#clear-search").on("click", () => {
-                d3.select("#search-input").property("value", "");
-                applyGlobalFilterAndSearch();
-            });
+            d3.select("#clear-search").on("click", () => { d3.select("#search-input").property("value", ""); applyGlobalFilterAndSearch(); });
             d3.select("#winner-filter").on("change", applyGlobalFilterAndSearch);
             closeSummaryButton.on("click", hideSummaryPopup);
 
-            staticCircles = [];
-            staticConfigs = {};
+            staticCircles = []; staticConfigs = {};
             createScatterPlot("#scatter-viz-1", allDataGlobal, scatterConfig1);
             createScatterPlot("#scatter-viz-2", allDataGlobal, scatterConfig2);
             createScatterPlot("#scatter-viz-3", allDataGlobal, scatterConfig3);
@@ -1611,124 +1362,84 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
 
 
             function toSphere() {
-                if (currentView === 'sphere') return;
-                hideSummaryPopup();
-                activeStaticPlotConfig = null;
+                if (currentView === 'sphere' || isViewTransitioning) return;
+                isViewTransitioning = true;
+                hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Sphere");
-                currentView = "sphere";
-                window.IO?.disconnect();
-                activeQuad = 'all';
-                observerInitialized = false;
-                sphereAnimation.play();
-                updateSearchControlsVisibility();
+                currentView = "sphere"; window.IO?.disconnect(); activeQuad = 'all'; observerInitialized = false;
+                sphereAnimation.play(); updateSearchControlsVisibility();
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
                 updateSphereVisuals();
+                setTimeout(() => { isViewTransitioning = false; }, 50);
             }
 
             function toMap() {
-                if (currentView === 'map' || !xGeo || !yGeo) return;
-                hideSummaryPopup();
-                 activeStaticPlotConfig = null;
+                if (currentView === 'map' || !xGeo || !yGeo || isViewTransitioning) return;
+                isViewTransitioning = true;
+                hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Map");
-                currentView = "map";
-                window.IO?.disconnect();
-                activeQuad = 'all';
-                observerInitialized = false;
-                sphereAnimation.pause();
-                updateSearchControlsVisibility();
+                currentView = "map"; window.IO?.disconnect(); activeQuad = 'all'; observerInitialized = false;
+                sphereAnimation.pause(); updateSearchControlsVisibility();
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
-                svgMain.append("text").attr("class", "map-title")
-                    .attr("x", mainWidth / 2).attr("y", marginMain.top / 2)
-                    .text("Distribuția câștigătorilor pe localități");
-                svgMain.append("text").attr("class", "map-subtitle")
-                    .attr("x", mainWidth / 2).attr("y", marginMain.top / 2 + 22)
-                    .text("Dimensiunea cercurilor indică procentul obținut de câștigător.");
-
+                svgMain.append("text").attr("class", "map-title").attr("x", mainWidth / 2).attr("y", marginMain.top / 2).text("Distribuția câștigătorilor pe localități");
+                svgMain.append("text").attr("class", "map-subtitle").attr("x", mainWidth / 2).attr("y", marginMain.top / 2 + 22).text("Dimensiunea cercurilor indică procentul obținut de câștigător.");
                 mainCircles.transition("mapPos").duration(1500).ease(d3.easeCubicInOut)
                     .attr("cx", d => (d.Long != null && !isNaN(d.Long) && isFinite(xGeo(d.Long))) ? xGeo(d.Long) : -100)
                     .attr("cy", d => (d.Lat != null && !isNaN(d.Lat) && isFinite(yGeo(d.Lat))) ? yGeo(d.Lat) : -100)
                     .attr("r", d => (d.Lat != null && d.Long != null && areaScale && d["Procent castigator"] != null && !isNaN(d["Procent castigator"])) ? areaScale(d["Procent castigator"]) : 0)
-                    .end().then(applyGlobalFilterAndSearch).catch(err => {
+                    .end().then(() => {
+                        applyGlobalFilterAndSearch();
+                        isViewTransitioning = false;
+                    }).catch(err => {
                         console.error("Map transition error:", err);
                         applyGlobalFilterAndSearch();
+                        isViewTransitioning = false;
                     });
-                applyGlobalFilterAndSearch();
             }
 
             function toScatter() {
-                if (currentView === 'scatter') return;
-                hideSummaryPopup();
-                 activeStaticPlotConfig = null;
+                if (currentView === 'scatter' || isViewTransitioning) return;
+                isViewTransitioning = true;
+                hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Main Scatter");
-                currentView = "scatter";
-                sphereAnimation.pause();
-                updateSearchControlsVisibility();
+                currentView = "scatter"; sphereAnimation.pause(); updateSearchControlsVisibility();
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
-
                 const config = mainScatterConfig;
                  if (!config || !config.xField || !config.yField) {
                      console.error("Main scatter config invalid for transition.");
-                     return;
+                     isViewTransitioning = false; return;
                  }
                 const innerWidth = mainWidth - marginMain.left - marginMain.right;
                 const innerHeight = mainHeight - marginMain.top - marginMain.bottom;
-
-                 const validScatterData = allDataGlobal.filter(d =>
+                const validScatterData = allDataGlobal.filter(d =>
                      d[config.xField] != null && !isNaN(d[config.xField]) && typeof d[config.xField] === 'number' &&
                      d[config.yField] != null && !isNaN(d[config.yField]) && typeof d[config.yField] === 'number'
                  );
-
                  if (validScatterData.length === 0) {
                      if (DEBUG_MODE) console.warn("[toScatter] No valid data points for the main scatter plot.");
                      svgMain.append("text").attr("x", mainWidth/2).attr("y", mainHeight/2).attr("text-anchor", "middle").attr("fill", "#ccc").text("Date insuficiente pentru acest grafic.");
-                     return;
+                     isViewTransitioning = false; return;
                  }
-
                 const xExtent = d3.extent(validScatterData, d => d[config.xField]);
                 const yExtent = d3.extent(validScatterData, d => d[config.yField]);
                 const xDomain = (xExtent[0] === undefined || xExtent[1] === undefined) ? [0, 1] : xExtent;
                 const yDomain = (yExtent[0] === undefined || yExtent[1] === undefined) ? [0, 1] : yExtent;
                 const x = d3.scaleLinear().domain(xDomain).nice().range([marginMain.left, mainWidth - marginMain.right]);
                 const y = d3.scaleLinear().domain(yDomain).nice().range([mainHeight - marginMain.bottom, marginMain.top]);
+                const xMedian = config._xMedian, yMedian = config._yMedian;
 
-                const xMedian = config._xMedian;
-                const yMedian = config._yMedian;
-
-                 svgMain.append("text").attr("class", "plot-title")
-                     .attr("x", mainWidth / 2)
-                     .attr("y", marginMain.top - 90) // Adjusted title position
-                     .text(config.title);
-                 svgMain.append("g").attr("class", "x-axis axis")
-                     .attr("transform", `translate(0,${mainHeight - marginMain.bottom})`)
-                     .call(d3.axisBottom(x).ticks(7));
-                 svgMain.append("text").attr("class", "x-label axis-label")
-                     .attr("x", mainWidth / 2).attr("y", mainHeight - 20)
-                     .text(config.xLabelFull || config.xLabel);
-                 svgMain.append("g").attr("class", "y-axis axis")
-                     .attr("transform", `translate(${marginMain.left},0)`)
-                     .call(d3.axisLeft(y).ticks(7));
-                 svgMain.append("text").attr("class", "y-label axis-label")
-                     .attr("transform", "rotate(-90)")
-                     .attr("x", -(marginMain.top + innerHeight / 2))
-                     .attr("y", marginMain.left - 60)
-                     .text(config.yLabelFull || config.yLabel);
-                 if (xMedian !== undefined && xMedian !== null && isFinite(x(xMedian))) {
-                     svgMain.append("line").attr("class", "quadrant-line")
-                         .attr("x1", x(xMedian)).attr("x2", x(xMedian))
-                         .attr("y1", marginMain.top).attr("y2", mainHeight - marginMain.bottom);
-                 }
-                 if (yMedian !== undefined && yMedian !== null && isFinite(y(yMedian))) {
-                     svgMain.append("line").attr("class", "quadrant-line")
-                         .attr("x1", marginMain.left).attr("x2", mainWidth - marginMain.right)
-                         .attr("y1", y(yMedian)).attr("y2", y(yMedian));
-                 }
+                 svgMain.append("text").attr("class", "plot-title").attr("x", mainWidth / 2).attr("y", marginMain.top - 90).text(config.title); // Adjusted Y
+                 svgMain.append("g").attr("class", "x-axis axis").attr("transform", `translate(0,${mainHeight - marginMain.bottom})`).call(d3.axisBottom(x).ticks(7));
+                 svgMain.append("text").attr("class", "x-label axis-label").attr("x", mainWidth / 2).attr("y", mainHeight - 20).text(config.xLabelFull || config.xLabel);
+                 svgMain.append("g").attr("class", "y-axis axis").attr("transform", `translate(${marginMain.left},0)`).call(d3.axisLeft(y).ticks(7));
+                 svgMain.append("text").attr("class", "y-label axis-label").attr("transform", "rotate(-90)").attr("x", -(marginMain.top + innerHeight / 2)).attr("y", marginMain.left - 60).text(config.yLabelFull || config.yLabel);
+                 if (xMedian !== undefined && xMedian !== null && isFinite(x(xMedian))) svgMain.append("line").attr("class", "quadrant-line").attr("x1", x(xMedian)).attr("x2", x(xMedian)).attr("y1", marginMain.top).attr("y2", mainHeight - marginMain.bottom);
+                 if (yMedian !== undefined && yMedian !== null && isFinite(y(yMedian))) svgMain.append("line").attr("class", "quadrant-line").attr("x1", marginMain.left).attr("x2", mainWidth - marginMain.right).attr("y1", y(yMedian)).attr("y2", y(yMedian));
 
                  const isMobileMain = window.innerWidth <= 600;
-                 // --- MODIFIED PADDING/OFFSET VALUES FOR MAIN PLOT ---
                  const mainOuterLabelPadding = isMobileMain ? 20 : 30;
                  const mainOuterLabelYOffset = isMobileMain ? -25 : -35;
                  const mainOuterLabelYOffsetBottom = isMobileMain ? 35 : 45;
-
                  if (config.quadLabels && xMedian !== undefined && yMedian !== undefined && xMedian !== null && yMedian !== null && isFinite(x(xMedian)) && isFinite(y(yMedian))) {
                      const mainLabelData = [
                          { quad: 'II', anchor: 'end', xPos: mainWidth - marginMain.right + mainOuterLabelPadding, yPos: marginMain.top + mainOuterLabelYOffset },
@@ -1736,116 +1447,70 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                          { quad: 'III', anchor: 'start', xPos: marginMain.left - mainOuterLabelPadding, yPos: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom },
                          { quad: 'IV', anchor: 'end', xPos: mainWidth - marginMain.right + mainOuterLabelPadding, yPos: mainHeight - marginMain.bottom + mainOuterLabelYOffsetBottom }
                      ];
-
                      mainLabelData.forEach(lbl => {
-                         const labelText = config.quadLabels[lbl.quad];
-                          if (!labelText) return;
-
+                         const labelText = config.quadLabels[lbl.quad]; if (!labelText) return;
                          const lines = labelText.split('\n');
-                         const textElement = svgMain.append("text")
-                             .attr("class", "quadrant-label quadrant-label-outer")
-                             .attr("x", lbl.xPos)
-                             .attr("y", lbl.yPos)
-                             .attr("text-anchor", lbl.anchor);
-
-                         lines.forEach((line, i) => {
-                             textElement.append("tspan")
-                                 .attr("x", lbl.xPos)
-                                 .attr("dy", i === 0 ? "0" : "1.1em")
-                                 .text(line);
-                         });
+                         const textElement = svgMain.append("text").attr("class", "quadrant-label quadrant-label-outer").attr("x", lbl.xPos).attr("y", lbl.yPos).attr("text-anchor", lbl.anchor);
+                         lines.forEach((line, i) => textElement.append("tspan").attr("x", lbl.xPos).attr("dy", i === 0 ? "0" : "1.1em").text(line));
                      });
                  }
-
                  const overlays = svgMain.selectAll(".quadrant-overlay").data(["I","II","III","IV"]);
-                 overlays.enter().append("rect")
-                    .attr("class","quadrant-overlay")
-                    .merge(overlays)
-                    .attr("opacity", 0)
-                    .attr("pointer-events","none")
+                 overlays.enter().append("rect").attr("class","quadrant-overlay").merge(overlays).attr("opacity", 0).attr("pointer-events","none")
                     .each(function(q){
                         if (xMedian === undefined || yMedian === undefined || xMedian === null || yMedian === null || !isFinite(x(xMedian)) || !isFinite(y(yMedian))) return;
-                        const isLeft = q==="I" || q==="III";
-                        const isTop = q==="I" || q==="II";
+                        const isLeft = q==="I" || q==="III", isTop = q==="I" || q==="II";
                         const xPos = isLeft ? marginMain.left : x(xMedian);
                         const yPos = isTop ? marginMain.top : y(yMedian);
                         const width = Math.max(0, isLeft ? x(xMedian)-marginMain.left : mainWidth-marginMain.right-x(xMedian));
                         const height = Math.max(0, isTop ? y(yMedian)-marginMain.top : mainHeight-marginMain.bottom-y(yMedian));
-                        if (isFinite(xPos) && isFinite(yPos) && isFinite(width) && width >= 0 && isFinite(height) && height >= 0) {
-                            d3.select(this).attr("x", xPos).attr("y", yPos).attr("width", width).attr("height", height);
-                        } else {
-                            d3.select(this).attr("width", 0).attr("height", 0);
-                        }
+                        if (isFinite(xPos) && isFinite(yPos) && isFinite(width) && width >= 0 && isFinite(height) && height >= 0) d3.select(this).attr("x", xPos).attr("y", yPos).attr("width", width).attr("height", height);
+                        else d3.select(this).attr("width", 0).attr("height", 0);
                  });
-
                  mainCircles.transition("scatterPos").duration(1500).ease(d3.easeCubicInOut)
-                    .attr("cx", d => {
-                        const xVal = d[config.xField];
-                        return (xVal != null && !isNaN(xVal) && typeof xVal === 'number' && isFinite(x(xVal))) ? x(xVal) : -100;
-                    })
-                    .attr("cy", d => {
-                        const yVal = d[config.yField];
-                        return (yVal != null && !isNaN(yVal) && typeof yVal === 'number' && isFinite(y(yVal))) ? y(yVal) : -100;
-                    })
-                    .attr("r", d => {
-                         const xVal = d[config.xField], yVal = d[config.yField];
-                         return (xVal != null && !isNaN(xVal) && typeof xVal === 'number' && yVal != null && !isNaN(yVal) && typeof yVal === 'number') ? baseCircleDiameter * 1.1 : 0;
-                    })
+                    .attr("cx", d => { const xVal = d[config.xField]; return (xVal != null && !isNaN(xVal) && typeof xVal === 'number' && isFinite(x(xVal))) ? x(xVal) : -100; })
+                    .attr("cy", d => { const yVal = d[config.yField]; return (yVal != null && !isNaN(yVal) && typeof yVal === 'number' && isFinite(y(yVal))) ? y(yVal) : -100; })
+                    .attr("r", d => { const xVal = d[config.xField], yVal = d[config.yField]; return (xVal != null && !isNaN(xVal) && typeof xVal === 'number' && yVal != null && !isNaN(yVal) && typeof yVal === 'number') ? baseCircleDiameter * 1.1 : 0; })
                     .end().then(() => {
                          if (DEBUG_MODE) console.log("[toScatter] Scatter transition finished. Setting up IO.");
-                         applyGlobalFilterAndSearch();
-                         setupIntersectionObserver(config);
+                         applyGlobalFilterAndSearch(); setupIntersectionObserver(mainScatterConfig);
+                         isViewTransitioning = false;
                     }).catch(err => {
                          console.error("Scatter transition error:", err);
                          applyGlobalFilterAndSearch();
-                         setupIntersectionObserver(config);
+                         isViewTransitioning = false;
                     });
-                applyGlobalFilterAndSearch();
             }
 
 
             const steps = document.querySelectorAll("#scatter-steps .step");
-
             function setupIntersectionObserver(config) {
-                window.IO?.disconnect();
-                observerInitialized = false;
+                window.IO?.disconnect(); observerInitialized = false;
                  if (!config || !config.xField || !config.yField) {
                      if (DEBUG_MODE) console.error("[IO Setup] Aborting: Invalid config provided for steps IO.", config);
                      return;
                  }
                 if (DEBUG_MODE) console.log("[IO Steps] Setting up Intersection Observer for Steps with config:", config.id);
-
                 window.IO = new IntersectionObserver(entries => {
                     const mainChartOpacity = parseFloat(d3.select("#chart-container").style("opacity") || 1);
                     if (currentView !== 'scatter' || mainChartOpacity < 0.1) {
                         if (DEBUG_MODE && currentView !== 'scatter') console.log("[IO Steps Callback] Aborted, not in scatter view or main chart faded.");
                         return;
                     }
-
                     const minVisibilityThreshold = 0.05;
-                    const visibleSteps = entries.filter(entry =>
-                        entry.isIntersecting && entry.intersectionRatio >= minVisibilityThreshold
-                    );
-
+                    const visibleSteps = entries.filter(entry => entry.isIntersecting && entry.intersectionRatio >= minVisibilityThreshold);
                     let highestVisibleStep = null;
                     if (visibleSteps.length > 0) {
                         visibleSteps.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
                         highestVisibleStep = visibleSteps[0].target;
                     }
                     const nextActiveQuad = highestVisibleStep ? highestVisibleStep.dataset.quad : 'all';
-
                     if (nextActiveQuad !== activeQuad) {
                         if (DEBUG_MODE) console.log(`[IO Steps Callback] *** Changing highlight: ${activeQuad} -> ${nextActiveQuad} *** (Highest visible: ${highestVisibleStep ? highestVisibleStep.dataset.quad : 'None'})`);
-                        activeQuad = nextActiveQuad;
-                        renderHighlight(activeQuad, config);
+                        activeQuad = nextActiveQuad; renderHighlight(activeQuad, config);
                     }
-                }, {
-                    threshold: Array.from({ length: 21 }, (_, i) => i * 0.05)
-                });
-
+                }, { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) });
                 steps.forEach(s => window.IO.observe(s));
                 if (DEBUG_MODE) console.log("[IO Steps] Observer attached to steps.");
-
                  if (!observerInitialized) {
                       if (DEBUG_MODE) console.log("[IO Steps Initial Check] Scheduling...");
                       setTimeout(() => {
@@ -1855,7 +1520,6 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                             return;
                          }
                          if (DEBUG_MODE) console.log("[IO Steps Initial Check] Running...");
-
                          const minVisibilityThreshold = 0.05;
                          const currentVisibleSteps = [];
                          steps.forEach(step => {
@@ -1864,12 +1528,9 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                             if (isIntersecting) {
                                 const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
                                 const ratio = Math.max(0, Math.min(1, visibleHeight / rect.height));
-                                if (ratio >= minVisibilityThreshold) {
-                                    currentVisibleSteps.push({ target: step, top: rect.top });
-                                }
+                                if (ratio >= minVisibilityThreshold) currentVisibleSteps.push({ target: step, top: rect.top });
                             }
                          });
-
                          let initialHighestStep = null;
                          if (currentVisibleSteps.length > 0) {
                              currentVisibleSteps.sort((a, b) => a.top - b.top);
@@ -1877,13 +1538,11 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                          }
                          const initialActiveQuad = initialHighestStep ? initialHighestStep.dataset.quad : 'all';
                          if (DEBUG_MODE) console.log(`[IO Steps Initial Check] Determined initial quad: ${initialActiveQuad}.`);
-
                          if (initialActiveQuad !== activeQuad) {
                               if (DEBUG_MODE) console.log(`[IO Steps Initial Check] *** Setting initial highlight: ${activeQuad} -> ${initialActiveQuad} ***`);
                               activeQuad = initialActiveQuad;
                          }
-                         renderHighlight(activeQuad, config);
-                         observerInitialized = true;
+                         renderHighlight(activeQuad, config); observerInitialized = true;
                      }, 350);
                  }
              }
@@ -1901,11 +1560,8 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                       svgMain.selectAll(".quadrant-overlay").transition("overlayFadeOut").duration(100).attr("opacity", 0);
                      return;
                  }
-
                 if (DEBUG_MODE) console.log(`[RenderHighlight] Rendering for quad: ${quad} with config: ${config.id}`);
-                svgMain.selectAll(".quadrant-overlay")
-                    .filter(qData => qData)
-                    .transition("overlayHighlight").duration(300)
+                svgMain.selectAll(".quadrant-overlay").filter(qData => qData).transition("overlayHighlight").duration(300)
                     .attr("opacity", qData => (quad === "all") ? 0 : (qData === quad ? 0.12 : 0));
                 applyGlobalFilterAndSearch();
             }
@@ -1914,160 +1570,117 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             const chartWrapper = document.querySelector('.chart-wrapper');
             const scatterStepsSection = document.getElementById('scatter-steps');
 
-            window.addEventListener("scroll", () => {
+            const processScroll = () => {
+                if (isViewTransitioning) {
+                    if (DEBUG_MODE) console.log("[Scroll Process] Skipped due to active view transition.");
+                    return;
+                }
                 const y = window.scrollY;
                 const wh = window.innerHeight;
                 if (!chartWrapper || !scatterStepsSection) return;
-
                 const wrapperRect = chartWrapper.getBoundingClientRect();
                 const stepsRect = scatterStepsSection.getBoundingClientRect();
-                const wrapperTop = wrapperRect.top + y;
-                const stepsTop = stepsRect.top + y;
+                const wrapperTopDoc = wrapperRect.top + window.scrollY;
+                const stepsTopDoc = stepsRect.top + window.scrollY;
                 const wrapperHeight = chartWrapper.offsetHeight;
 
-                const mapStartPoint = wrapperTop + wrapperHeight * 0.33 - wh;
-                const scatterStartPoint = stepsTop - wh * 0.6;
+                const mapStartTrigger = wrapperTopDoc + (wrapperHeight * 0.30) - wh;
+                const scatterStartTrigger = stepsTopDoc - (wh * 0.50);
 
-                let targetView;
-
-                if (y < mapStartPoint) {
-                    targetView = "sphere";
-                } else if (y >= mapStartPoint && y < scatterStartPoint) {
-                    targetView = "map";
-                } else {
-                    targetView = "scatter";
+                if (DEBUG_MODE && Math.random() < 0.05) {
+                     console.log(`[Scroll Debug] y:${y.toFixed(0)} | mapStart:${mapStartTrigger.toFixed(0)} | scatterStart:${scatterStartTrigger.toFixed(0)} | currentView:${currentView}`);
                 }
+                let targetView;
+                if (y < mapStartTrigger) targetView = "sphere";
+                else if (y >= mapStartTrigger && y < scatterStartTrigger) targetView = "map";
+                else targetView = "scatter";
 
-                if (targetView !== currentView) {
-                    if (DEBUG_MODE) console.log(`[Scroll Trigger] Changing view from ${currentView} to ${targetView} (y=${y.toFixed(0)}, mapStart=${mapStartPoint.toFixed(0)}, scatterStart=${scatterStartPoint.toFixed(0)})`);
+                if (targetView !== currentView && !isViewTransitioning) {
+                    if (DEBUG_MODE) console.log(`[Scroll Trigger] Changing view from ${currentView} to ${targetView} (y=${y.toFixed(0)})`);
                     if (targetView === "sphere") toSphere();
                     else if (targetView === "map") toMap();
                     else if (targetView === "scatter") toScatter();
                 }
-
                 updateSearchControlsVisibility();
-
                 const intro = document.getElementById("sphere-intro");
                 if (intro) {
-                    if (y < 80 && currentView === 'sphere') intro.classList.remove("hidden");
-                    else intro.classList.add("hidden");
+                    if ( (currentView !== 'sphere' || y >= 80 || isViewTransitioning) && !intro.classList.contains("hidden")) {
+                        intro.classList.add("hidden");
+                    } else if (currentView === 'sphere' && y < 80 && !isViewTransitioning && intro.classList.contains("hidden")) {
+                        intro.classList.remove("hidden");
+                    }
                 }
-
-            }, { passive: true });
+            };
+            const throttledScrollHandler = throttle(processScroll, SCROLL_THROTTLE_LIMIT);
+            window.addEventListener("scroll", throttledScrollHandler, { passive: true });
 
 
             const chartContainer = document.getElementById("chart-container");
             const staticPlotsSection = document.getElementById("flourish-block");
-
              if (chartContainer && staticPlotsSection) {
                 new IntersectionObserver(
                     entries => {
                         const staticPlotsEntry = entries[0];
-                        const fadeStartRatio = 0.05;
-                        const fadeEndRatio = 0.25;
+                        const fadeStartRatio = 0.05, fadeEndRatio = 0.25;
                         let opacity = 1;
-
-                         const oldStaticPlotsVisible = staticPlotsVisible;
-                        // Determine staticPlotsVisible based on intersection and position
+                        const oldStaticPlotsVisible = staticPlotsVisible;
                         if (staticPlotsEntry.isIntersecting) {
                             staticPlotsVisible = true;
                             const ratio = staticPlotsEntry.intersectionRatio;
-                            if (ratio >= fadeStartRatio) {
-                                opacity = 1 - Math.min(1, Math.max(0, (ratio - fadeStartRatio) / (fadeEndRatio - fadeStartRatio)));
-                            }
-                        } else if (staticPlotsEntry.boundingClientRect.top < 0) { // Scrolled past the top
-                            opacity = 0;
-                            staticPlotsVisible = true; // Still true as it's occupying the space for static plots
-                        } else { // Not intersecting and above the fold
-                            opacity = 1;
-                            staticPlotsVisible = false;
-                        }
-
+                            if (ratio >= fadeStartRatio) opacity = 1 - Math.min(1, Math.max(0, (ratio - fadeStartRatio) / (fadeEndRatio - fadeStartRatio)));
+                        } else if (staticPlotsEntry.boundingClientRect.top < 0) {
+                            opacity = 0; staticPlotsVisible = true;
+                        } else { opacity = 1; staticPlotsVisible = false; }
 
                         chartContainer.style.opacity = opacity;
                         chartContainer.style.pointerEvents = opacity < 0.5 ? "none" : "auto";
-
                         updateSearchControlsVisibility();
-
                         const intro = document.getElementById("sphere-intro");
                         if (intro && opacity < 0.8) intro.classList.add("hidden");
-
-                         if (staticPlotsVisible !== oldStaticPlotsVisible) {
-                             if (DEBUG_MODE) console.log(`[Flourish IO] staticPlotsVisible changed from ${oldStaticPlotsVisible} to ${staticPlotsVisible}. Opacity: ${opacity.toFixed(2)}`);
-                             applyGlobalFilterAndSearch(); // Critical call for popup update
-                         } else if (Math.abs(parseFloat(chartContainer.style.opacity) - opacity) > 0.01) {
-                            // If only opacity changed significantly, might still need to update popup
-                            applyGlobalFilterAndSearch();
+                         if (staticPlotsVisible !== oldStaticPlotsVisible || Math.abs(parseFloat(chartContainer.style.opacity) - opacity) > 0.01) {
+                             if (DEBUG_MODE && staticPlotsVisible !== oldStaticPlotsVisible) console.log(`[Flourish IO] staticPlotsVisible changed from ${oldStaticPlotsVisible} to ${staticPlotsVisible}. Opacity: ${opacity.toFixed(2)}`);
+                             applyGlobalFilterAndSearch();
                          }
-
-
                         if (opacity < 0.1 && window.IO) {
                              if (DEBUG_MODE) console.log("[Flourish IO] Disconnecting Step IO due to main chart fade");
-                             window.IO.disconnect();
-                             activeQuad = 'all';
-                             observerInitialized = false;
-                             renderHighlight('all', mainScatterConfig);
+                             window.IO.disconnect(); activeQuad = 'all'; observerInitialized = false; renderHighlight('all', mainScatterConfig);
                         } else if (opacity >= 0.1 && currentView === 'scatter' && !observerInitialized && window.IO && mainScatterConfig) {
                              if (DEBUG_MODE) console.log("[Flourish IO] Re-enabling Step IO as main chart became visible");
                               setupIntersectionObserver(mainScatterConfig);
                         }
-                    },
-                    { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) }
+                    }, { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) }
                 ).observe(staticPlotsSection);
              }
-
 
             const staticPlotContainers = document.querySelectorAll('.scatter-plot-container');
             if (staticPlotContainers.length > 0 && staticConfigs) {
                 const staticPlotObserver = new IntersectionObserver(entries => {
-                    let newActiveStaticPlotConfig = activeStaticPlotConfig; // Default to current
-
-                    if (!staticPlotsVisible) { // If the whole static plot section isn't considered visible for context
+                    let newActiveStaticPlotConfig = activeStaticPlotConfig;
+                    if (!staticPlotsVisible) {
                          if (activeStaticPlotConfig !== null) {
                              if (DEBUG_MODE) console.log("[Static Plot IO] Static plots section no longer primary for context, resetting activeStaticPlotConfig.");
                              newActiveStaticPlotConfig = null;
                          }
                     } else {
-                        let mostVisibleStaticPlot = null;
-                        let maxRatio = -1;
-
+                        let mostVisibleStaticPlot = null, maxRatio = -1;
                         entries.forEach(entry => {
                             if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
-                                maxRatio = entry.intersectionRatio;
-                                mostVisibleStaticPlot = entry.target;
+                                maxRatio = entry.intersectionRatio; mostVisibleStaticPlot = entry.target;
                             }
                         });
-
                         if (mostVisibleStaticPlot) {
                             const chartId = mostVisibleStaticPlot.dataset.chartId;
-                            if (chartId && staticConfigs[chartId]) {
-                                newActiveStaticPlotConfig = staticConfigs[chartId];
-                            }
-                        } else {
-                             // If no plot is intersecting according to this observer, but staticPlotsVisible is true overall,
-                             // it might mean we are between plots or at edges. Consider nulling or keeping current.
-                             // For now, if nothing is "most visible", newActiveConfig will be null if it started as such or retains prior.
-                             newActiveStaticPlotConfig = null; // If no plot is actively "most visible" by this specific observer
-                        }
+                            if (chartId && staticConfigs[chartId]) newActiveStaticPlotConfig = staticConfigs[chartId];
+                        } else newActiveStaticPlotConfig = null;
                     }
-
-                    if (newActiveStaticPlotConfig?.id !== activeStaticPlotConfig?.id ||
-                        (newActiveStaticPlotConfig === null && activeStaticPlotConfig !== null) ||
-                        (newActiveStaticPlotConfig !== null && activeStaticPlotConfig === null)) {
+                    if (newActiveStaticPlotConfig?.id !== activeStaticPlotConfig?.id || (newActiveStaticPlotConfig === null && activeStaticPlotConfig !== null) || (newActiveStaticPlotConfig !== null && activeStaticPlotConfig === null)) {
                         if (DEBUG_MODE) console.log(`[Static Plot IO] Active static config changing. Old: ${activeStaticPlotConfig?.id}, New: ${newActiveStaticPlotConfig?.id}. staticPlotsVisible: ${staticPlotsVisible}`);
-                        activeStaticPlotConfig = newActiveStaticPlotConfig;
-                        applyGlobalFilterAndSearch(); // This is the crucial call to update popup context
+                        activeStaticPlotConfig = newActiveStaticPlotConfig; applyGlobalFilterAndSearch();
                     }
-
-                }, {
-                    threshold: Array.from({ length: 11 }, (_, i) => i * 0.1),
-                    rootMargin: "-10% 0px -30% 0px"
-                });
-
+                }, { threshold: Array.from({ length: 11 }, (_, i) => i * 0.1), rootMargin: "-10% 0px -30% 0px" });
                 staticPlotContainers.forEach(container => staticPlotObserver.observe(container));
                  if (DEBUG_MODE) console.log("[Static Plot IO] Observer attached to static plot containers.");
             }
-
 
             const intro = document.getElementById("sphere-intro");
             const introOk = document.getElementById("intro-ok");
@@ -2077,48 +1690,29 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             }
 
             setTimeout(() => {
-                 const y = window.scrollY;
-                 const wh = window.innerHeight;
-                 if (!chartWrapper || !scatterStepsSection) {
-                     console.error("Initial view check failed: Elements not found.");
-                     toSphere();
-                     applyGlobalFilterAndSearch();
-                     updateSearchControlsVisibility();
-                     return;
-                 }
-                 const wrapperRect = chartWrapper.getBoundingClientRect();
-                 const stepsRect = scatterStepsSection.getBoundingClientRect();
-                 const wrapperTop = wrapperRect.top + y;
-                 const stepsTop = stepsRect.top + y;
+                 const y = window.scrollY; const wh = window.innerHeight;
+                 if (!chartWrapper || !scatterStepsSection) { console.error("Initial view check failed: Elements not found."); toSphere(); applyGlobalFilterAndSearch(); updateSearchControlsVisibility(); return; }
+                 const wrapperRect = chartWrapper.getBoundingClientRect(); const stepsRect = scatterStepsSection.getBoundingClientRect();
+                 const wrapperTop = wrapperRect.top + y; const stepsTop = stepsRect.top + y;
                  const wrapperHeight = chartWrapper.offsetHeight;
-                 const mapStartPoint = wrapperTop + wrapperHeight * 0.33 - wh;
-                 const scatterStartPoint = stepsTop - wh * 0.6;
+                 const mapStartPoint = wrapperTop + wrapperHeight * 0.30 - wh; // Adjusted trigger
+                 const scatterStartPoint = stepsTop - wh * 0.50; // Adjusted trigger
 
                  let initialViewFunction = toSphere;
-
-                 if (y >= mapStartPoint && y < scatterStartPoint) {
-                     initialViewFunction = toMap;
-                 } else if (y >= scatterStartPoint) {
-                     initialViewFunction = toScatter;
-                 }
+                 if (y >= mapStartPoint && y < scatterStartPoint) initialViewFunction = toMap;
+                 else if (y >= scatterStartPoint) initialViewFunction = toScatter;
 
                  if (DEBUG_MODE) console.log(`[Initial Load] Setting initial view: ${initialViewFunction.name} (y=${y.toFixed(0)}, mapStart=${mapStartPoint.toFixed(0)}, scatterStart=${scatterStartPoint.toFixed(0)})`);
                  initialViewFunction();
-
                  setTimeout(updateSearchControlsVisibility, 200);
-                 setTimeout(applyGlobalFilterAndSearch, 250); // Ensures popup context is evaluated after view setup
-
+                 setTimeout(applyGlobalFilterAndSearch, 250);
                  const introElem = document.getElementById("sphere-intro");
                  if (introElem) {
-                     if (y < 80 && currentView === 'sphere') {
-                         introElem.classList.remove("hidden");
-                     } else {
-                         introElem.classList.add("hidden");
-                     }
+                     if (y < 80 && currentView === 'sphere' && !isViewTransitioning) introElem.classList.remove("hidden");
+                     else introElem.classList.add("hidden");
                  }
                  if (DEBUG_MODE) console.log("[Initial Load] Initial view determined:", currentView);
             }, 150);
-
 
         }).catch(error => {
             console.error("Error loading or processing data:", error);
