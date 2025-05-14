@@ -104,7 +104,7 @@
             font-size: 0.9em;
             pointer-events: none;
             opacity: 0;
-            z-index: 10; 
+            z-index: 10;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border-radius: 4px;
             max-width: 90vw;
@@ -120,7 +120,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 11; 
+            z-index: 11;
             background: rgba(0, 0, 0, 0.8);
             padding: 10px 15px;
             border-radius: 8px;
@@ -214,14 +214,14 @@
         #sphere-intro p {
     font-size: 1rem;
     line-height: 1.4;
-    margin: 0; 
-    max-width: 600px;   
-    width: 90%;         
-                        
-    padding-left: 15px; 
+    margin: 0;
+    max-width: 600px;
+    width: 90%;
+
+    padding-left: 15px;
     padding-right: 15px;
-    box-sizing: border-box; 
-    
+    box-sizing: border-box;
+
     /* The <p> block itself will be centered by #sphere-intro's align-items: center */
 }
         #sphere-intro button{
@@ -238,7 +238,7 @@
             position:relative;
             z-index:3;
         }
-        .scatter-plot-container { 
+        .scatter-plot-container {
             max-width: 950px;
             width: 92%;
             margin: 10vh auto;
@@ -266,29 +266,29 @@
         .map-subtitle { fill: #ccc; font-size: 0.9em; text-anchor: middle; }
         .quadrant-line { stroke: #ffffff; stroke-dasharray: 3 3; stroke-width: 1.5px; opacity: 0.8; }
 
-       
-        .quadrant-label { 
+
+        .quadrant-label {
             fill: #ffffff;
-            font-size: 1em; 
+            font-size: 1em;
             font-weight: 400;
             opacity: 0.9;
          }
-         .quadrant-label-outer { 
-             
-             font-size: 1.4em; 
-             
-             fill: #e0e0e0; 
-             font-weight: 500; 
-             opacity: 0.95; 
-             
+         .quadrant-label-outer {
+
+             font-size: 1.4em;
+
+             fill: #e0e0e0;
+             font-weight: 500;
+             opacity: 0.95;
+
              text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
-             pointer-events: none; 
+             pointer-events: none;
          }
-         
+
          .quadrant-label-outer tspan {
-            
+
          }
-        
+
 
          .quadrant-overlay {
              fill: #ffffff;
@@ -297,17 +297,17 @@
              transition: opacity 0.3s ease;
          }
 
-        
+
         #candidate-summary-popup {
             position: fixed;
             bottom: 20px;
             left: 20px;
-            background: rgba(40, 40, 60, 0.95); 
+            background: rgba(40, 40, 60, 0.95);
             border: 1px solid #777;
             border-radius: 8px;
             padding: 18px 25px;
-            max-width: 400px; 
-            z-index: 12; 
+            max-width: 400px;
+            z-index: 12;
             opacity: 0;
             pointer-events: none;
             transform: translateY(20px);
@@ -326,17 +326,17 @@
 
         #summary-text p {
             margin: 0 0 10px 0;
-            text-align: left; 
-             font-size: inherit; 
-             color: inherit; 
+            text-align: left;
+             font-size: inherit;
+             color: inherit;
         }
          #summary-text strong {
-             color: #fff; 
+             color: #fff;
          }
-         #summary-text i { 
+         #summary-text i {
              color: #bbb;
-             font-style: normal; 
-             font-weight: 500; 
+             font-style: normal;
+             font-weight: 500;
          }
 
         #mini-chart-container {
@@ -350,7 +350,7 @@
             width: 100%;
             height: 100%;
         }
-        
+
         .mini-axis path, .mini-axis line {
             stroke: #888;
             stroke-width: 0.5;
@@ -365,18 +365,18 @@
             font-size: 9px;
             text-anchor: middle;
         }
-        .mini-bar { 
+        .mini-bar {
             fill: #88b5ff;
             stroke: #fff;
             stroke-width: 0.5;
         }
         .mini-median-line {
-            
+
             stroke-width: 1.5;
             stroke-dasharray: 2 2;
         }
          .mini-median-label {
-            
+
              font-size: 10px;
              font-weight: bold;
          }
@@ -396,7 +396,7 @@
         #close-summary-popup:hover {
             color: #fff;
         }
-       
+
 
 
         @media (max-width: 600px) {
@@ -420,19 +420,19 @@
                 width: 98%; padding: 10px 5px 5px 5px; margin: 5vh auto; box-shadow: none;
             }
             .scatter-explainer { padding: 0 5px; font-size: 0.9em; margin-top: 30px; line-height: 1.3; }
-             .plot-title { font-size: 1.1em; } 
-             .axis-label { font-size: 0.8em; } 
+             .plot-title { font-size: 1.1em; }
+             .axis-label { font-size: 0.8em; }
 
 
              .quadrant-label {
-                 font-size: 1.1em; 
+                 font-size: 1.1em;
              }
              .quadrant-label-outer {
-                  font-size: 1.1em; 
+                  font-size: 1.1em;
                   text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
              }
 
-             .axis text { font-size: 8px; } 
+             .axis text { font-size: 8px; }
 
 
             .step { margin: 60vh auto; }
@@ -444,15 +444,15 @@
             .cosmic-title { font-size: 1.5em; }
             .cosmic-supratitle { font-size: 1.3em; }
 
-           
+
             #candidate-summary-popup {
                 left: 10px;
                 right: 10px;
                 bottom: 10px;
                 max-width: none;
                 width: auto;
-                padding: 16px 20px;    
-                font-size: 0.85em;     
+                padding: 16px 20px;
+                font-size: 0.85em;
             }
             #close-summary-popup {
                 top: 3px;
@@ -460,14 +460,14 @@
                  font-size: 1.6em;
             }
              #mini-chart-container {
-                 height: 50px; 
+                 height: 50px;
              }
-             .mini-axis-label { font-size: 8px; } 
+             .mini-axis-label { font-size: 8px; }
              .mini-median-label { font-size: 9px; }
-             .mini-axis .tick text { font-size: 8px; } 
+             .mini-axis .tick text { font-size: 8px; }
 
              .scatter-plot-container svg .static-circle {
-                 r: 5; 
+                 r: 5;
              }
         }
 
@@ -490,7 +490,7 @@
     color: rgb(255, 217, 0);
   }
 
-  
+
 
     </style>
 </head>
@@ -545,7 +545,7 @@
         <h2>INTERACTIV | Voturile din turul I, explicate altfel</h2>
         <p>
         <a href="https://www.hotnews.ro" target="_blank" rel="noopener noreferrer">HotNews.ro</a> a analizat <span class="highlight">rezultatele primului tur</span> al alegerilor prezidențiale din 2025
-        și le-a corelat cu <span class="highlight">8 indicatori socio-economici</span> de la INS într-o serie de grafice 
+        și le-a corelat cu <span class="highlight">8 indicatori socio-economici</span> de la INS într-o serie de grafice
         interactive care ne arată cum influențează aceștia opțiunile electorale.<br> <br>
         Scopul a fost să observăm cum votează românii din diferite zone ale țării, de specificul economic și social al acestora.<br><br>
         Întregul material este <span class="highlight">interactiv.</span> <span class="highlight">Click</span>pe cercuri, grafice și filtre pentru a-l explora.
@@ -630,7 +630,7 @@ de vârstă și din toate mediile. Pe grafic însă se poate vedea o concentraț
 
             </p>
         </div>
-        
+
         <div id="scatter-container-2" class="scatter-plot-container" data-chart-id="scatter-viz-2">
             <svg id="scatter-viz-2" viewBox="0 0 900 550" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="scatter-explainer"><strong>Ce ne arată relația dintre plecările cu domiciliul și șomajul local?</strong><br>
@@ -734,14 +734,14 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         </div>
         <button id="close-summary-popup" title="Închide">&times;</button>
     </div>
-    
+
 
 
     <script>
-        
-        const DEBUG_MODE = true; 
 
-        
+        const DEBUG_MODE = true;
+
+
         function throttle(func, limit) {
             let lastFunc;
             let lastRan;
@@ -802,8 +802,8 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         let observerInitialized = false;
         let activeStaticPlotConfig = null;
 
-        let isViewTransitioning = false; 
-        const SCROLL_THROTTLE_LIMIT = 150; 
+        let isViewTransitioning = false;
+        const SCROLL_THROTTLE_LIMIT = 150;
 
 
         const normalize = str => (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -1368,7 +1368,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Sphere");
                 currentView = "sphere"; window.IO?.disconnect(); activeQuad = 'all'; observerInitialized = false;
                 sphereAnimation.play(); updateSearchControlsVisibility();
-                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
+                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .map-scroll-hint, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
                 updateSphereVisuals();
                 setTimeout(() => { isViewTransitioning = false; }, 50);
             }
@@ -1380,9 +1380,22 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Map");
                 currentView = "map"; window.IO?.disconnect(); activeQuad = 'all'; observerInitialized = false;
                 sphereAnimation.pause(); updateSearchControlsVisibility();
-                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
+                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .map-scroll-hint, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
+
                 svgMain.append("text").attr("class", "map-title").attr("x", mainWidth / 2).attr("y", marginMain.top / 2).text("Distribuția câștigătorilor pe localități");
                 svgMain.append("text").attr("class", "map-subtitle").attr("x", mainWidth / 2).attr("y", marginMain.top / 2 + 22).text("Dimensiunea cercurilor indică procentul obținut de câștigător.");
+
+                
+                svgMain.append("text")
+                    .attr("class", "map-scroll-hint") // New class for this text
+                    .attr("x", mainWidth / 2)
+                    .attr("y", mainHeight - (marginMain.bottom / 2) + 10) // Position it in the bottom margin area
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "1.2em")
+                    .style("fill", "#ffffff")
+                    .text("Scroll în continuare pentru grafice");
+               
+
                 mainCircles.transition("mapPos").duration(1500).ease(d3.easeCubicInOut)
                     .attr("cx", d => (d.Long != null && !isNaN(d.Long) && isFinite(xGeo(d.Long))) ? xGeo(d.Long) : -100)
                     .attr("cy", d => (d.Lat != null && !isNaN(d.Lat) && isFinite(yGeo(d.Lat))) ? yGeo(d.Lat) : -100)
@@ -1403,7 +1416,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                 hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Main Scatter");
                 currentView = "scatter"; sphereAnimation.pause(); updateSearchControlsVisibility();
-                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
+                svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .map-scroll-hint, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
                 const config = mainScatterConfig;
                  if (!config || !config.xField || !config.yField) {
                      console.error("Main scatter config invalid for transition.");
