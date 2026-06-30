@@ -803,6 +803,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
 
         let isViewTransitioning = false;
         let viewTransitionTimer = null;
+        let introDismissed = false;
         const SCROLL_THROTTLE_LIMIT = 150;
 
 
@@ -1624,7 +1625,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                 if (intro) {
                     if ( (currentView !== 'sphere' || y >= 80 || isViewTransitioning) && !intro.classList.contains("hidden")) {
                         intro.classList.add("hidden");
-                    } else if (currentView === 'sphere' && y < 80 && !isViewTransitioning && intro.classList.contains("hidden")) {
+                    } else if (currentView === 'sphere' && y < 80 && !isViewTransitioning && !introDismissed && intro.classList.contains("hidden")) {
                         intro.classList.remove("hidden");
                     }
                 }
@@ -1703,7 +1704,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             const intro = document.getElementById("sphere-intro");
             const introOk = document.getElementById("intro-ok");
             if (intro && introOk) {
-                function hideIntro() { intro.classList.add("hidden"); }
+                function hideIntro() { introDismissed = true; intro.classList.add("hidden"); }
                 introOk.addEventListener("click", hideIntro);
             }
 
@@ -1726,7 +1727,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                  setTimeout(applyGlobalFilterAndSearch, 250);
                  const introElem = document.getElementById("sphere-intro");
                  if (introElem) {
-                     if (y < 80 && currentView === 'sphere' && !isViewTransitioning) introElem.classList.remove("hidden");
+                     if (y < 80 && currentView === 'sphere' && !isViewTransitioning && !introDismissed) introElem.classList.remove("hidden");
                      else introElem.classList.add("hidden");
                  }
                  if (DEBUG_MODE) console.log("[Initial Load] Initial view determined:", currentView);
