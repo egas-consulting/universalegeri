@@ -802,6 +802,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         let activeStaticPlotConfig = null;
 
         let isViewTransitioning = false;
+        let viewTransitionTimer = null;
         const SCROLL_THROTTLE_LIMIT = 150;
 
 
@@ -1363,18 +1364,21 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             function toSphere() {
                 if (currentView === 'sphere' || isViewTransitioning) return;
                 isViewTransitioning = true;
+                clearTimeout(viewTransitionTimer);
                 hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Sphere");
                 currentView = "sphere"; window.IO?.disconnect(); activeQuad = 'all'; observerInitialized = false;
                 sphereAnimation.play(); updateSearchControlsVisibility();
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .map-scroll-hint, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
                 updateSphereVisuals();
-                setTimeout(() => { isViewTransitioning = false; }, 50);
+                viewTransitionTimer = setTimeout(() => { isViewTransitioning = false; }, 50);
             }
 
             function toMap() {
                 if (currentView === 'map' || !xGeo || !yGeo || isViewTransitioning) return;
                 isViewTransitioning = true;
+                clearTimeout(viewTransitionTimer);
+                viewTransitionTimer = setTimeout(() => { isViewTransitioning = false; applyGlobalFilterAndSearch(); }, 2000);
                 hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Map");
                 currentView = "map"; window.IO?.disconnect(); activeQuad = 'all'; observerInitialized = false;
@@ -1412,6 +1416,8 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             function toScatter() {
                 if (currentView === 'scatter' || isViewTransitioning) return;
                 isViewTransitioning = true;
+                clearTimeout(viewTransitionTimer);
+                viewTransitionTimer = setTimeout(() => { isViewTransitioning = false; applyGlobalFilterAndSearch(); }, 2000);
                 hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Main Scatter");
                 currentView = "scatter"; sphereAnimation.pause(); updateSearchControlsVisibility();
