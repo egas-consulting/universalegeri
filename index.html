@@ -804,6 +804,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         let isViewTransitioning = false;
         let viewTransitionTimer = null;
         let introDismissed = false;
+        let scrollRetry = null;
         const SCROLL_THROTTLE_LIMIT = 150;
 
 
@@ -1592,6 +1593,8 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             const processScroll = () => {
                 if (isViewTransitioning) {
                     if (DEBUG_MODE) console.log("[Scroll Process] Skipped due to active view transition.");
+                    clearTimeout(scrollRetry);
+                    scrollRetry = setTimeout(processScroll, 250);
                     return;
                 }
                 const y = window.scrollY;
