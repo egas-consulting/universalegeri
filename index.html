@@ -805,6 +805,7 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
         let viewTransitionTimer = null;
         let introDismissed = false;
         let scrollRetry = null;
+        let viewToken = 0;
         const SCROLL_THROTTLE_LIMIT = 150;
 
 
@@ -1366,6 +1367,8 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             function toSphere() {
                 if (currentView === 'sphere' || isViewTransitioning) return;
                 isViewTransitioning = true;
+                const tok = ++viewToken;
+                mainCircles.interrupt("mapPos").interrupt("scatterPos");
                 clearTimeout(viewTransitionTimer);
                 hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Sphere");
@@ -1373,14 +1376,16 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                 sphereAnimation.play(); updateSearchControlsVisibility();
                 svgMain.selectAll(".axis, .axis-label, .plot-title, .map-title, .map-subtitle, .map-scroll-hint, .quadrant-line, .quadrant-label, .quadrant-overlay").remove();
                 updateSphereVisuals();
-                viewTransitionTimer = setTimeout(() => { isViewTransitioning = false; }, 50);
+                viewTransitionTimer = setTimeout(() => { if (tok === viewToken) isViewTransitioning = false; }, 50);
             }
 
             function toMap() {
                 if (currentView === 'map' || !xGeo || !yGeo || isViewTransitioning) return;
                 isViewTransitioning = true;
+                const tok = ++viewToken;
+                mainCircles.interrupt("mapPos").interrupt("scatterPos");
                 clearTimeout(viewTransitionTimer);
-                viewTransitionTimer = setTimeout(() => { isViewTransitioning = false; applyGlobalFilterAndSearch(); }, 2000);
+                viewTransitionTimer = setTimeout(() => { if (tok === viewToken && isViewTransitioning) isViewTransitioning = false; }, 6000);
                 hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Map");
                 currentView = "map"; window.IO?.disconnect(); activeQuad = 'all'; observerInitialized = false;
@@ -1406,9 +1411,11 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                     .attr("cy", d => (d.Lat != null && !isNaN(d.Lat) && isFinite(yGeo(d.Lat))) ? yGeo(d.Lat) : -100)
                     .attr("r", d => (d.Lat != null && d.Long != null && areaScale && d["Procent castigator"] != null && !isNaN(d["Procent castigator"])) ? areaScale(d["Procent castigator"]) : 0)
                     .end().then(() => {
+                        if (tok !== viewToken) return;
                         applyGlobalFilterAndSearch();
                         isViewTransitioning = false;
                     }).catch(err => {
+                        if (tok !== viewToken) return;
                         console.error("Map transition error:", err);
                         applyGlobalFilterAndSearch();
                         isViewTransitioning = false;
@@ -1418,8 +1425,10 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
             function toScatter() {
                 if (currentView === 'scatter' || isViewTransitioning) return;
                 isViewTransitioning = true;
+                const tok = ++viewToken;
+                mainCircles.interrupt("mapPos").interrupt("scatterPos");
                 clearTimeout(viewTransitionTimer);
-                viewTransitionTimer = setTimeout(() => { isViewTransitioning = false; applyGlobalFilterAndSearch(); }, 2000);
+                viewTransitionTimer = setTimeout(() => { if (tok === viewToken && isViewTransitioning) isViewTransitioning = false; }, 6000);
                 hideSummaryPopup(); activeStaticPlotConfig = null;
                 if (DEBUG_MODE) console.log("[ViewChange] Transitioning to Main Scatter");
                 currentView = "scatter"; sphereAnimation.pause(); updateSearchControlsVisibility();
@@ -1491,14 +1500,17 @@ Localitățile câștigate la vot de Crin Antonescu arată o dispunere mai echil
                     .attr("cy", d => { const yVal = d[config.yField]; return (yVal != null && !isNaN(yVal) && typeof yVal === 'number' && isFinite(y(yVal))) ? y(yVal) : -100; })
                     .attr("r", d => { const xVal = d[config.xField], yVal = d[config.yField]; return (xVal != null && !isNaN(xVal) && typeof xVal === 'number' && yVal != null && !isNaN(yVal) && typeof yVal === 'number') ? baseCircleDiameter * 1.1 : 0; })
                     .end().then(() => {
-                         if (DEBUG_MODE) console.log("[toScatter] Scatter transition finished. Setting up IO.");
-                         applyGlobalFilterAndSearch(); setupIntersectionObserver(mainScatterConfig);
+                         if (tok !== viewToken) return;
+                         if (DEBUG_MODE) console.log("[toScatter] Scatter transition finished.");
+                         applyGlobalFilterAndSearch();
                          isViewTransitioning = false;
                     }).catch(err => {
+                         if (tok !== viewToken) return;
                          console.error("Scatter transition error:", err);
                          applyGlobalFilterAndSearch();
                          isViewTransitioning = false;
                     });
+                setupIntersectionObserver(mainScatterConfig);
             }
 
 
